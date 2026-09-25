@@ -26,8 +26,8 @@ hvorfor i notatet, og har stoppet.
 | 3 | AP-003 | Installer LibreOffice (`brew install --cask libreoffice`) så `soffice` finnes i PATH | 🧑 | — | **Ferdig** (LibreOffice 26.8.0.3, 2026-09-25) | — |
 | 4 | AP-004 | Tyrving: oracle-skript `scripts/oracle_tyrving.py` — rekalkulerer regnearket med LibreOffice headless og skriver `tests/fixtures/tyrving_cases.json` (2472 caser) | 🤖 | AP-002, AP-003 | **Ferdig** | `ferdig/AP-004-tyrving-oracle.md` |
 | 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | **Klar** — stikkprøve + 1 spørsmål | `active/AP-005-review-tyrving-fixtures.md` |
-| 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | Ny | — |
-| 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | Ny | — |
+| 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | **Ferdig** (29 caser, 3 åpne spørsmål) | `ferdig/AP-006-tyrving-regeltolkning.md` |
+| 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Klar** — 3 tolkninger + 3 spørsmål | `active/AP-007-review-regeltolkning.md` |
 | 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | Ny | — |
 | 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | Ny | — |
 
@@ -74,10 +74,10 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   regnearket, merket `float_edge` i fasiten. Anbefaling: motoren regner eksakt (`Decimal`) og har denne ene casen
   som dokumentert unntak.
 
-- **Formlene for lange løp stryker ikke hundredeler** *(til AP-006)*
-  For 600 m og lengre regner regnearket `(D*60+E)*10` uten å runde av tideler. PDF-teksten sier «I lengre løp skal
-  hundredeler strykes». Regnearket forutsetter altså at brukeren legger inn tid med tideler. Motoren må ta stilling
-  til hva den gjør med input som 2:04.56.
+- **Regnearket stryker ikke hundredeler i lange løp** *(AP-006)*
+  Regelteksten sier at hundredeler skal strykes (R2), men regnearket regner `(D*60+E)*10` rett fram. Motoren skal
+  følge regelteksten (case R2-01 – R2-03). Fasiten fra oracle bruker bare tideler i lange løp, så den er ikke
+  berørt. Bør med i meldingen til NFIF som en merknad.
 
 ---
 
