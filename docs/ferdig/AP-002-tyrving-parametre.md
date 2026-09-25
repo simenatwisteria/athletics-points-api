@@ -1,6 +1,6 @@
 # AP-002: Tyrving — parameterekstraksjon Excel → JSON, testet mot Excel-celler
 
-**Status:** Blokkert — venter på Simens avgjørelse om kildekonflikter (se `docs/BACKLOG.md` → Innboks)
+**Status:** Ferdig
 **Opprettet:** 2026-09-25 (PROMPT-001)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-001
@@ -62,3 +62,9 @@ Poengberegning (AP-008), oracle (AP-004), regeltekst fra DOC/PDF (AP-006).
   kap. 5.2, fordi (øvelse, kjønn, alder) ikke er unikt.
 - **Funn:** to kildekonflikter (J17 kule, J15 spyd), manglende PDF-kryssjekk, xls-test hoppes over i CI,
   hundredeler i lange løp. Alt står i `docs/BACKLOG.md` → Innboks.
+
+- **Oppfølging 2026-09-25 (PDF vinner):** `scripts/tyrving_pdf.py` leser begge PDF-ene med ordposisjoner, og
+  ekstraktoren sammenligner alle 560 kombinasjoner. Tre rader avviker og tar PDF-verdien, med regnearkets verdi i
+  `pdf_override.excel`: G19 2000 m (0,5 → 0,45), J17 kule 3kg (enkel → tre-intervall), J15 spyd
+  (0,4kg/42 → 0,5kg/38). G19 2000 m ble funnet i den fulle kryssjekken. `tests/test_tyrving_pdf.py` låser dette.
+  Se `docs/KILDEAVVIK.md`.

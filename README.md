@@ -15,6 +15,7 @@ Alle parametre ligger som JSON i repoet, og all fasit genereres fra de offisiell
 ## Dokumentasjon
 
 - [`docs/BACKLOG.md`](docs/BACKLOG.md) — oppgaver og status
+- [`docs/KILDEAVVIK.md`](docs/KILDEAVVIK.md) — kjente feil i NFIFs kildefiler og hvordan de håndteres
 - [`docs/BESLUTNINGER.md`](docs/BESLUTNINGER.md) — beslutninger og begrunnelser
 - [`docs/TEKNISK_FORSLAG_v2.1.md`](docs/TEKNISK_FORSLAG_v2.1.md) — formler, arkitektur, API-design
 - [`docs/ANALYSE_2026-09-06.md`](docs/ANALYSE_2026-09-06.md) — verifiseringsstrategi og loop

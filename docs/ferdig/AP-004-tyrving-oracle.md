@@ -1,6 +1,6 @@
 # AP-004: Tyrving — oracle-skript med LibreOffice headless → `tests/fixtures/tyrving_cases.json`
 
-**Status:** Klar
+**Status:** Ferdig
 **Opprettet:** 2026-09-25 (PROMPT-001)
 **Eier:** 🤖 Code (review: 🧑 Simen i AP-005)
 **Avhenger av:** AP-002, AP-003 (LibreOffice installert)
@@ -43,12 +43,18 @@ Regeltolkning fra DOC/PDF (AP-006), kalkulatoren (AP-008).
 
 ## Akseptansekriterier
 
-- [ ] `python scripts/oracle_tyrving.py` genererer fila fra bunnen av
-- [ ] To kjøringer gir identisk fil
-- [ ] 10 tilfeldige caser listet i sluttrapporten, klare for Simens stikkprøve
+- [x] `python scripts/oracle_tyrving.py` genererer fila fra bunnen av
+- [x] To kjøringer gir identisk fil
+- [x] 10 tilfeldige caser listet i sluttrapporten, klare for Simens stikkprøve (i `AP-005`)
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:** 
-- **Avvik fra oppgavefila:** 
-- **Funn som bør bli egne oppgaver:** 
+- **Gjort:** `scripts/oracle_tyrving.py` (med `--check`) → `tests/fixtures/tyrving_cases.json`, 2472 caser.
+  Enkle rader: 90/100/110 % av 1000p-nivået + ett 0-poengsresultat. Tre-intervall: 5/70/80/90/100/110 %.
+  Tider i hundredeler til og med 500 m og tideler over. Én regnearkkopi per variant (6), regnet om av LibreOffice
+  med egen profil (`OOXMLRecalcMode=0`), ca. 8 s. De tre PDF-rettingene gjøres i kopien, og skriptet sjekker
+  «før»-verdiene mot kilden. `tests/test_tyrving_fixtures.py` (8 tester). Kontroll: alle 560 caser på
+  1000p-nivået gir 1000, og 2471/2472 er like med eksakt desimalregning.
+- **Avvik fra oppgavefila:** 2472 caser, ikke ~1600. Fasit-fila er generert, men ikke låst før AP-005.
+- **Funn som bør bli egne oppgaver:** én flyttallsfeil i regnearket (`float_edge`), og LibreOffice-tester
+  hoppes over i CI. Begge står i Innboks.
