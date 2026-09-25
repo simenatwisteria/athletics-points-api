@@ -233,3 +233,6 @@ dist/
 *.swp
 ~$*
 .~lock.*
+
+# Loop-logger
+logs/

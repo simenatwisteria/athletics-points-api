@@ -59,6 +59,12 @@ desimaler beholdes under utregningen» og «poengsummen rundes alltid ned». Res
 feiltypen kan i prinsippet ramme ekte resultater. Casen er merket `float_edge` i fasiten. **Åpent:** skal
 motoren regne eksakt (desimal) og dermed avvike fra regnearket her? Avgjøres i AP-005.
 
+### Regnearket følger ikke regelen om å stryke hundredeler
+
+Regelteksten: «I lengre løp skal (som før) hundredeler strykes.» Regnearket regner `(D*60+E)*10` rett fram, så
+2:04.56 på 800 m gir 989 poeng i regnearket mot 991 etter regelen (2:04.5). Det stemmer bare hvis brukeren selv
+legger inn tideler. Motoren følger regelteksten (`tests/fixtures/tyrving_rules.json`, R2-01 – R2-03).
+
 ### Skrivefeil i PDF-ene (ingen poengkonsekvens)
 
 | PDF | Hvor | Står | Riktig |

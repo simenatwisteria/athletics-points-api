@@ -45,4 +45,5 @@ pip install -e ".[dev]"
 pytest -q                                                # tester
 ruff check . && mypy athletics_scoring                   # lint + typer
 cd sources && shasum -a 256 -c SHA256SUMS                # kildefilene er uendret
+scripts/loop.sh 10                                       # autonom loop, maks 10 runder, pusher aldri
 ```

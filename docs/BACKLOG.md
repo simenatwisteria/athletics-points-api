@@ -42,10 +42,9 @@ hvorfor i notatet, og har stoppet.
 | 14 | AP-014 | WMA Age Grading 2023: ekstraksjon, oracle, kalkulator. Fixtures krever Simens review | 🤖 | AP-001, AP-013 | Ny | — |
 | 15 | AP-015 | Last ned NFIF masters mangekamptabell menn + kvinner til `sources/masters/` (se `sources/masters/README.md`) | 🧑 | — | Ny | — |
 | 16 | AP-016 | Masters mangekamp (NFIF): tabell-lookup som primær, WA × WMA-faktor som kryssverifisering | 🤖 | AP-012, AP-014, AP-015 | Ny | — |
-| 17 | AP-017 | Loop-oppsett: `.claude/commands/loop.md` og `scripts/loop.sh` som jobber seg gjennom denne backlogen, med stoppbetingelser (blokkert, ingen framdrift, alt ferdig, maks runder) | 🤖 | — | Ny | — |
+| 17 | AP-017 | Loop-oppsett: `.claude/commands/loop.md` og `scripts/loop.sh` som jobber seg gjennom denne backlogen, med stoppbetingelser (blokkert, ingen framdrift, alt ferdig, maks runder) | 🤖 | — | **Ferdig** | `ferdig/AP-017-loop.md` |
 
-AP-017 har ingen avhengigheter og kan trekkes fram foran Tyrving-kalkulatoren hvis loopen skal brukes allerede der.
-Rekkefølgen over er slik Simen ba om den i PROMPT-001 — flytting avgjøres i Cowork.
+AP-017 ble tatt tidlig (2026-09-25) fordi den ikke har avhengigheter og alle andre 🤖-oppgaver ventet på Simen.
 
 ## Later — ikke i loop
 
