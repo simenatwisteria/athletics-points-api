@@ -60,9 +60,15 @@ AP-017 ble tatt tidlig (2026-09-25) fordi den ikke har avhengigheter og alle and
 Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 
 - **Meld avvikene i Tyrving-filene til NFIF** *(AP-002, forslag til 🧑-oppgave)*
-  Tre feil i regnearket og tre skrivefeil i PDF-en, dokumentert i `docs/KILDEAVVIK.md`. Utkast til e-post er gitt
+  To feil i regnearket (G19 2000 m, J17 kule) og tre skrivefeil i PDF-en, dokumentert i `docs/KILDEAVVIK.md`.
+  Spyd J15 skal ikke meldes: NFIF rettet den i `.xls` 2018-02-28, og `.xlsx` i `sources/` er en eldre kopi. Utkast til e-post er gitt
   Simen i chat 2026-09-25. Oppdater «Status overfor NFIF» i `KILDEAVVIK.md` når svaret kommer. Sier NFIF at
   regnearket er riktig, må regelen «PDF vinner» revurderes for den raden, og data og fasit må genereres på nytt.
+
+- **`sources/tyrving/tyrving-2014-redigerbar.xlsx` er ikke NFIFs gjeldende fil** *(verifisert 2026-09-25)*
+  Sist lagret av Simen 2024-06-28, har inntastede resultater og mangler NFIFs retting fra 2018. Simen bør laste ned
+  gjeldende regneark fra friidrett.no og erstatte den, eller rette opprinnelsen i `sources/README.md` (agenten
+  endrer ikke `sources/`). Parametrene og fasiten påvirkes ikke, fordi PDF-en vinner.
 
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub

@@ -22,7 +22,7 @@ DOC-filene er lest på en helt annen måte (tabulatorfelt) og gir **identiske** 
 |---|---|---|---|---|
 | 1 | `Gutter 19 år` rad 16 — 2000 m, celle `I16` | multiplikator **0,5** | **0,45** (samme som G14–G18) | som `.xlsx` |
 | 2 | `Jenter 17 år` rad 36 — Kule 3kg, cellene `I36`/`P36` | **enkel kvotient** med `I36 = 1.2` hardkodet (`P = 1000-O*I`) | **tre-intervall** 0,3 / 0,6 / 1,2 (som all annen kule) | som `.xlsx` |
-| 3 | `Jenter 15 år` rad 36 — Spyd, cellene `C36`/`H36` | **0,4kg**, 1000p = **42,00** | **500 g**, 1000p = **38,00** (400 g gjelder 10–14 år) | som PDF |
+| 3 | `Jenter 15 år` rad 36 — Spyd, cellene `C36`/`H36` | **0,4kg**, 1000p = **42,00** | **500 g**, 1000p = **38,00** (400 g gjelder 10–14 år) | som PDF — **rettet av NFIF 2018-02-28** |
 
 Poengeksempler. Regnearkets tall er regnet ut av LibreOffice på det urettede regnearket; PDF-tallene følger
 PDF-ens parametre og regler.
@@ -73,7 +73,18 @@ legger inn tideler. Motoren følger regelteksten (`tests/fixtures/tyrving_rules.
 | gutter | 20000 m kappgang, 18 og 19 år | `1:40.00.0`, `1:38.00.0` | `1:40:00.0`, `1:38:00.0` (jf. jenter-PDF-en) |
 | gutter | Slegge 2 kg, 80 %-rad, 12 år | `30,40` | `30.40` |
 
-### Avvik mellom `.xlsx` og `.xls`
+### Avvik mellom `.xlsx` og `.xls` — `.xlsx` er en eldre kopi
 
-Bare avvik 3 (spyd J15). Utover det har de to regnearkene identiske parametre og formler. `.xls` deler feil 1
-og 2 og er derfor ikke en uavhengig kontroll.
+Verifisert 2026-09-25 direkte med `xlrd` (uten LibreOffice-konvertering): eneste forskjell i tekst og parametre
+er avvik 3 (spyd J15). Forklaringen står på forsiden av `.xls`: rad 42 har `2014-08-13 | 2018-02-28 | Spyd J15`,
+altså en endringslogg der NFIF rettet spyd J15 i februar 2018. Den linjen mangler i `.xlsx`.
+
+Metadata i `.xlsx`: sist lagret av «Simen Armond» 2024-06-28 (opprettet av Ole Petter Sandvig 2003). Den har
+også 32 inntastede resultater i kolonne E. `.xlsx` er derfor trolig en lokal kopi laget fra en versjon fra før
+2018, ikke filen NFIF publiserer i dag. **Avvik 3 er ikke en feil hos NFIF** og skal ikke meldes.
+
+Konsekvens for data og fasit: ingen. PDF-en vinner uansett, og `.xls`, PDF og DOC er enige om spyd J15.
+Parameterekstraksjonen og oracle-en bruker fortsatt `.xlsx` som strukturkilde. Å bytte til `.xls` ville
+fjernet én retting, men krever LibreOffice-konvertering i ekstraksjonen. Avgjøres av Simen.
+
+`.xls` deler avvik 1 og 2 og er derfor ikke en uavhengig kontroll for dem.
