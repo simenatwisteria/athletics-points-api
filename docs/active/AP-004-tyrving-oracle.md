@@ -16,7 +16,7 @@ Uten låst fasit kan loopen ikke bevise at `TyrvingCalculator` er riktig (ANALYS
 ## Verifiserte fakta
 
 - Input-celler per rad: `D` (minutter) og `E` (sekunder/resultat). Output: `F` (poeng). Se AP-002.
-- `soffice` finnes ikke på maskinen per 2026-09-25 → AP-003.
+- `soffice` er installert (`/opt/homebrew/bin/soffice`, LibreOffice 26.8.0.3) — AP-003 ferdig 2026-09-25.
 
 ## Løsningsretning
 
