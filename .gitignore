@@ -216,3 +216,20 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Prosjekt ---
+.env
+.env.*
+!.env.example
+.DS_Store
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+node_modules/
+dist/
+.vercel/
+.idea/
+.vscode/
+*.swp
+~$*
+.~lock.*
