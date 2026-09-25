@@ -70,8 +70,9 @@ POINTS_FORMULAS = {
     "=IF(P#<0,0,IF(AND(E#=0,D#=0),0,ROUNDDOWN(P#,0)))",
 }
 OVERRIDE_REASON = (
-    "Regnearket avviker fra den offisielle PDF-en. PDF-en vinner (beslutning 2026-09-25, "
-    "docs/KILDEAVVIK.md). Regnearkets verdier står i «excel»."
+    "Regnearket avviker fra NFIFs offisielle tabell (DOC på friidrett.no, identisk med PDF-ene). "
+    "Tabellen vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). "
+    "Regnearkets verdier står i «excel»."
 )
 
 RUNNING = {40: "sprint", 60: "sprint", 80: "sprint", 100: "sprint", 200: "sprint", 300: "sprint",
@@ -270,7 +271,7 @@ def extract(source: Path = SOURCE) -> dict[str, Any]:
             "version": "2014",
             "source": "NFIF, Tyrvingtabellen (2014-utgave)",
             "sources": {str(p.relative_to(ROOT)): sha256(p) for p in sources},
-            "conflict_policy": "PDF vinner ved avvik fra regnearket (docs/KILDEAVVIK.md)",
+            "conflict_policy": "Offisiell tabell (DOC/PDF) vinner (docs/KILDEAVVIK.md)",
             "generated_by": "scripts/extract_tyrving_params.py",
             "entry_count": len(entries),
             "override_count": sum("pdf_override" in e for e in entries),

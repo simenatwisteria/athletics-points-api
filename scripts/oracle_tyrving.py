@@ -248,7 +248,7 @@ def generate() -> dict[str, Any]:
                 {"sheet": p["sheet"], "reason": p["reason"], "cells": sorted(p["cells"])}
                 for p in PATCHES
             ],
-            "patch_policy": "PDF vinner ved avvik fra regnearket (docs/KILDEAVVIK.md)",
+            "patch_policy": "Offisiell tabell (DOC/PDF) vinner (docs/KILDEAVVIK.md)",
             "case_count": len(cases),
             "float_edge_count": sum("float_edge" in c for c in cases),
             "result_fields": "som athletics_scoring.models.Result",

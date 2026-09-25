@@ -78,8 +78,15 @@ def parse_doc(text: str, gender: str) -> list[PdfRecord]:
                     multipliers=tuple(block["f"]),  # type: ignore[arg-type]
                 )
                 for age, value in block["h"].items():  # type: ignore[union-attr]
-                    record.h1000[age] = parse_result(value)[0]
+                    record.h1000[age], typo = parse_result(value)
+                    record.typos += [typo] if typo else []
                 record.checks = {"80": block["80"], "p": block["p"]}  # type: ignore[dict-item]
+                record.typos += [
+                    f"«{v}» har komma"
+                    for column in record.checks.values()
+                    for v in column.values()
+                    if "," in v
+                ]
                 records.append(record)
                 label, block = [], {}
             continue
@@ -97,7 +104,8 @@ def parse_doc(text: str, gender: str) -> list[PdfRecord]:
             multipliers=(parse_number(multiplier),),
         )
         for age, value in _values(fields).items():
-            record.h1000[age] = parse_result(value)[0]
+            record.h1000[age], typo = parse_result(value)
+            record.typos += [typo] if typo else []
         records.append(record)
         label = []
     return records

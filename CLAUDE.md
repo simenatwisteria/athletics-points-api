@@ -6,7 +6,7 @@ verifiseres først; FastAPI og React kommer senere.
 
 - Oppgaver og status: `docs/BACKLOG.md` (eneste oppgaveliste), oppgavefiler i `docs/active/`
 - Hvorfor: `docs/BESLUTNINGER.md`, `docs/ANALYSE_2026-09-06.md` · Hvordan: `docs/TEKNISK_FORSLAG_v2.1.md`
-- Kildefiler og sjekksummer: `sources/README.md` · Kjente feil i kildene (PDF vinner): `docs/KILDEAVVIK.md`
+- Kildefiler og sjekksummer: `sources/README.md` · Kjente feil i kildene (offisiell tabell vinner): `docs/KILDEAVVIK.md`
 
 ## Uforanderlige regler
 

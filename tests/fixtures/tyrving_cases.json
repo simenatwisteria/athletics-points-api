@@ -31,7 +31,7 @@
     ]
    }
   ],
-  "patch_policy": "PDF vinner ved avvik fra regnearket (docs/KILDEAVVIK.md)",
+  "patch_policy": "Offisiell tabell (DOC/PDF) vinner (docs/KILDEAVVIK.md)",
   "case_count": 2472,
   "float_edge_count": 1,
   "result_fields": "som athletics_scoring.models.Result"

@@ -27,6 +27,7 @@ def _key(record: tyrving_pdf.PdfRecord) -> tuple[object, ...]:
         record.multipliers,
         tuple(sorted(record.h1000.items())),
         tuple(sorted((k, tuple(sorted(v.items()))) for k, v in record.checks.items())),
+        tuple(sorted(record.typos)),
     )
 
 

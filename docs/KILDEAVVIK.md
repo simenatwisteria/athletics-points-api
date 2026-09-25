@@ -3,8 +3,11 @@
 Register over steder der NFIFs kildefiler er uenige med hverandre eller med seg selv, og hva prosjektet gjør
 med det. Kildefilene i `sources/` endres aldri. Rettingene skjer i kode, er synlige i dataene og er låst i tester.
 
-**Regel (Simen, 2026-09-25): Ved konflikt vinner PDF-en.** Forsiden i regnearket sier selv at «den offisielle
-utgaven av Tyrvingtabellen er en to siders tabell», altså PDF-en.
+**Regel (Simen, 2026-09-25): Ved konflikt vinner NFIFs offisielle tabell.** Forsiden i regnearket sier selv at
+«den offisielle utgaven av Tyrvingtabellen er en to siders tabell». Den publiseres som Word-dokumenter på
+friidrett.no. DOC-filene i `sources/` er byte-identiske med det Simen lastet ned 2026-09-25. PDF-ene har ukjent
+opphav, men gir identiske tabeller, inkludert skrivefeilene (`tests/test_tyrving_doc.py`). Koden leser PDF-ene
+fordi det ikke krever LibreOffice. Der det står «PDF» under, gjelder det også DOC.
 
 **Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene i PDF-en. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
 

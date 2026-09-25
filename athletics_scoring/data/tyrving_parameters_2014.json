@@ -8,7 +8,7 @@
       "sources/tyrving/tyrving-2014-gutter.pdf": "5112f82affc2fb6844caa30dcca51a87419c91c09dcbbcff804ee9fbd24da4ff",
       "sources/tyrving/tyrving-2014-jenter.pdf": "85ed54697ca614ebb63cbbf863691022145d4ce19f77f7d81a8e3b87dda12d49"
     },
-    "conflict_policy": "PDF vinner ved avvik fra regnearket (docs/KILDEAVVIK.md)",
+    "conflict_policy": "Offisiell tabell (DOC/PDF) vinner (docs/KILDEAVVIK.md)",
     "generated_by": "scripts/extract_tyrving_params.py",
     "entry_count": 560,
     "override_count": 3,
@@ -216,7 +216,7 @@
         "row": 16
       },
       "pdf_override": {
-        "reason": "Regnearket avviker fra den offisielle PDF-en. PDF-en vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
+        "reason": "Regnearket avviker fra NFIFs offisielle tabell (DOC på friidrett.no, identisk med PDF-ene). Tabellen vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
         "excel": {
           "params": {
             "h1000": 338,
@@ -3879,7 +3879,7 @@
         "row": 36
       },
       "pdf_override": {
-        "reason": "Regnearket avviker fra den offisielle PDF-en. PDF-en vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
+        "reason": "Regnearket avviker fra NFIFs offisielle tabell (DOC på friidrett.no, identisk med PDF-ene). Tabellen vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
         "excel": {
           "formula_type": "simple_quotient",
           "params": {
@@ -6185,7 +6185,7 @@
         "row": 36
       },
       "pdf_override": {
-        "reason": "Regnearket avviker fra den offisielle PDF-en. PDF-en vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
+        "reason": "Regnearket avviker fra NFIFs offisielle tabell (DOC på friidrett.no, identisk med PDF-ene). Tabellen vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). Regnearkets verdier står i «excel».",
         "excel": {
           "implement": "0,4kg",
           "params": {

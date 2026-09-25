@@ -97,4 +97,8 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
 - **2026-09-25** — **PDF vinner ved konflikt mellom Tyrving-kildene** (Simen). Forsiden i regnearket kaller
   PDF-en den offisielle utgaven. Kryssjekk av alle 560 kombinasjoner fant tre regnearkfeil; de er rettet i data
   og fasit, men aldri i `sources/`. Register: `docs/KILDEAVVIK.md`.
+- **2026-09-25** — **Grunnlaget er NFIFs offisielle tabell, publisert som DOC på friidrett.no.** DOC-filene i
+  `sources/` er byte-identiske med Simens nedlasting samme dag. PDF-ene har ukjent opphav, men identisk innhold, og
+  brukes videre av koden fordi de kan leses uten LibreOffice. Ingen tall endres. NFIFs gjeldende `.xls` avviker
+  fra tabellen på to rader (G19 2000 m, J17 kule).
 - **2026-09-25** — Masters mangekamp: NFIF-tabellen er fasit (lookup), WA × WMA brukes bare til kryssverifisering. Det er NFIF som publiserer tabellen som faktisk brukes.
