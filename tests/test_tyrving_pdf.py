@@ -2,6 +2,8 @@
 
 import json
 import math
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -82,3 +84,35 @@ def test_typos_are_the_known_ones(records: list[tyrving_pdf.PdfRecord]) -> None:
 )
 def test_parse_result(text: str, expected: float) -> None:
     assert tyrving_pdf.parse_result(text)[0] == pytest.approx(expected)
+
+
+# NFIFs gjeldende regneark (.xls) mot PDF-ene: avvikene som skal meldes til forbundet.
+EXPECTED_XLS_VS_PDF = {
+    ("Gutter 19 år", 16, "quotient", 0.5, 0.45),
+    ("Jenter 17 år", 36, "formula_type", "simple_quotient", "three_interval"),
+    ("Jenter 17 år", 36, "f1", None, 0.3),
+    ("Jenter 17 år", 36, "f2", None, 0.6),
+    ("Jenter 17 år", 36, "f3", None, 1.2),
+}
+
+
+@pytest.mark.skipif(shutil.which("soffice") is None, reason="krever LibreOffice (soffice)")
+def test_current_nfif_xls_against_pdf(records: list[tyrving_pdf.PdfRecord], tmp_path: Path) -> None:
+    import openpyxl
+    from extract_tyrving_params import extract_sheet
+
+    source = ROOT / "sources" / "tyrving" / "tyrving-2014.xls"
+    shutil.copy(source, tmp_path / source.name)
+    subprocess.run(
+        ["soffice", f"-env:UserInstallation={(tmp_path / 'profile').as_uri()}", "--headless",
+         "--convert-to", "xlsx", "--outdir", str(tmp_path), str(tmp_path / source.name)],
+        check=True,
+        capture_output=True,
+    )  # fmt: skip
+    workbook = openpyxl.load_workbook(tmp_path / "tyrving-2014.xlsx")
+    entries = [e for ws in workbook.worksheets[1:] for e in extract_sheet(ws)]
+    assert len(entries) == 560
+    differences = {
+        (d.sheet, d.row, d.field, d.excel, d.pdf) for d in tyrving_pdf.compare(entries, records)
+    }
+    assert differences == EXPECTED_XLS_VS_PDF

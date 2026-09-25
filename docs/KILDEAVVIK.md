@@ -6,7 +6,7 @@ med det. Kildefilene i `sources/` endres aldri. Rettingene skjer i kode, er synl
 **Regel (Simen, 2026-09-25): Ved konflikt vinner PDF-en.** Forsiden i regnearket sier selv at «den offisielle
 utgaven av Tyrvingtabellen er en to siders tabell», altså PDF-en.
 
-**Status overfor NFIF:** ikke meldt ennå. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
+**Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene i PDF-en. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
 
 ## Tyrving 2014
 
@@ -17,6 +17,10 @@ DOC-filene er lest på en helt annen måte (tabulatorfelt) og gir **identiske** 
 (`scripts/tyrving_doc.py`, `tests/test_tyrving_doc.py`), så DOC og PDF er enige i alle avvikene under.
 
 ### Avvik som endrer poeng
+
+**Avvik i NFIFs gjeldende regneark** (`tyrving-2014.xls`, lastet ned fra friidrett.no 2026-09-25, sist endret av
+NFIF 2018-02-28): avvik 1 og 2. Låst i `test_current_nfif_xls_against_pdf`. Avvik 3 finnes bare i den eldre
+`.xlsx`-kopien og er allerede rettet av NFIF.
 
 | # | Hvor (regnearket) | Regnearket (`.xlsx`) | PDF og DOC | `.xls` |
 |---|---|---|---|---|
