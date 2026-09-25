@@ -29,6 +29,9 @@ Uten låst fasit kan loopen ikke bevise at `TyrvingCalculator` er riktig (ANALYS
 
 ## Fallgruver
 
+- **To rader i `.xlsx` er feil ifølge PDF-en** (J17 kule, J15 spyd — se `docs/BACKLOG.md` → Innboks). Ikke
+  start før Simen har avgjort hvordan de skal behandles i fixtures.
+
 - Oracle importerer **ikke** noe fra `athletics_scoring`. Da er den ikke lenger uavhengig.
 - `openpyxl` rekalkulerer ikke; verdiene må komme fra LibreOffice.
 - Fixtures regnes ikke som låst før Simen har godkjent dem (AP-005). Sett status `Venter på Simen` når fila er

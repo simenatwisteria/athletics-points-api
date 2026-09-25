@@ -1,6 +1,6 @@
 # AP-002: Tyrving — parameterekstraksjon Excel → JSON, testet mot Excel-celler
 
-**Status:** Klar
+**Status:** Blokkert — venter på Simens avgjørelse om kildekonflikter (se `docs/BACKLOG.md` → Innboks)
 **Opprettet:** 2026-09-25 (PROMPT-001)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-001
@@ -45,12 +45,20 @@ Poengberegning (AP-008), oracle (AP-004), regeltekst fra DOC/PDF (AP-006).
 
 ## Akseptansekriterier
 
-- [ ] ~530 kombinasjoner i JSON, antallet rapportert i sluttrapporten
-- [ ] `test_tyrving_params` grønn for alle kombinasjoner
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` grønt
+- [x] ~530 kombinasjoner i JSON, antallet rapportert i sluttrapporten (560)
+- [x] `test_tyrving_params` grønn for alle kombinasjoner
+- [x] `pytest -q && ruff check . && mypy athletics_scoring` grønt
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:** 
-- **Avvik fra oppgavefila:** 
-- **Funn som bør bli egne oppgaver:** 
+- **Gjort:** `scripts/extract_tyrving_params.py` (med `--check`) skriver `tyrving_parameters_2014.json`:
+  560 kombinasjoner, 43 event-ID-er, nøkkel (event_id, kjønn, alder, utstyr). Hver rad klassifiseres mot fire
+  kjente formelmaler (tid i hundredeler, tid i tideler, distanse enkel, distanse tre-intervall), og ukjente
+  maler gir feil. Hver oppføring har `source` (ark, rad). `tests/test_tyrving_params.py` (10 tester) leser
+  Excel direkte: parametre, dekning, unikhet, identitet, formeltype, skala, at JSON-en er oppdatert, og
+  `.xls`-kryssjekk (hoppes over uten `soffice`). Mutasjonssjekk: én endret parameter gir rød test.
+- **Avvik fra oppgavefila:** 560 kombinasjoner, ikke ~530. 110 m hekk for G17–19 finnes med to hekkehøyder,
+  så utstyr er en del av nøkkelen. Formatet er en flat `entries`-liste, ikke `events → params` som i v2.1
+  kap. 5.2, fordi (øvelse, kjønn, alder) ikke er unikt.
+- **Funn:** to kildekonflikter (J17 kule, J15 spyd), manglende PDF-kryssjekk, xls-test hoppes over i CI,
+  hundredeler i lange løp. Alt står i `docs/BACKLOG.md` → Innboks.

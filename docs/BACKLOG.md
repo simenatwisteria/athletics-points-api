@@ -22,7 +22,7 @@ hvorfor i notatet, og har stoppet.
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
 | 1 | AP-001 | Grunnmur: `models.py`, abstrakt `engine.py`, `registry.py` | 🤖 | — | **Ferdig** | `ferdig/AP-001-grunnmur.md` |
-| 2 | AP-002 | Tyrving: parameterekstraksjon Excel → `data/tyrving_parameters_2014.json` (~530 kombinasjoner) + test mot Excel-celler | 🤖 | AP-001 | Under arbeid | `active/AP-002-tyrving-parametre.md` |
+| 2 | AP-002 | Tyrving: parameterekstraksjon Excel → `data/tyrving_parameters_2014.json` (560 kombinasjoner) + test mot Excel-celler | 🤖 | AP-001 | **Blokkert** — kildene er uenige om 2 rader, se Innboks | `active/AP-002-tyrving-parametre.md` |
 | 3 | AP-003 | Installer LibreOffice (`brew install --cask libreoffice`) så `soffice` finnes i PATH | 🧑 | — | **Ferdig** (LibreOffice 26.8.0.3, 2026-09-25) | — |
 | 4 | AP-004 | Tyrving: oracle-skript `scripts/oracle_tyrving.py` — rekalkulerer regnearket med LibreOffice headless og skriver `tests/fixtures/tyrving_cases.json` (~1600 caser) | 🤖 | AP-002, AP-003 | Klar | `active/AP-004-tyrving-oracle.md` |
 | 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | Ny | — |
@@ -60,7 +60,32 @@ Rekkefølgen over er slik Simen ba om den i PROMPT-001 — flytting avgjøres i 
 
 Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 
-- *(tom)*
+- **Kildene er uenige om to Tyrving-rader — Simen må avgjøre hvilken kilde som vinner** *(AP-002, blokkerer AP-004/AP-005/AP-008)*
+  `tyrving_parameters_2014.json` gjengir `.xlsx` uendret. Radene er merket med `conflict` og et alternativ, og
+  ingenting er avgjort.
+  1. `Jenter 17 år` rad 36, Kule 3kg: `.xlsx` og `.xls` regner enkel kvotient med `I36 = 1.2` hardkodet
+     (`P = 1000-O*I`). All annen kule, og PDF-en, bruker tre-intervall 0,3 / 0,6 / 1,2. Over 80 % av 12,60 m
+     (10,08 m) gir regnearket for få poeng.
+  2. `Jenter 15 år` rad 36, Spyd: `.xlsx` har **0,4kg / 1000p = 42**. Både `.xls` og PDF-en har **500 g / 1000p = 38**
+     (400 g gjelder 10–14 år, 500 g gjelder 15–17 år).
+  Forslag: la PDF-en (den offisielle utgaven, jf. Forside-arket) vinne ved konflikt, og behandle begge radene likt.
+  Konsekvens for AP-004: en oracle som rekalkulerer `.xlsx` gir feil fasit for begge radene. De må enten holdes
+  utenfor fixtures eller rettes i en kopi, og det må Simen bestemme.
+
+- **Ingen fullstendig kryssjekk mot PDF-ene ennå** *(AP-002)*
+  Parametrene er sjekket celle for celle mot `.xlsx`, og `.xls` er sammenlignet automatisk (bare J15 spyd skiller).
+  `.xls` deler formelfeilen for J17 kule, så den er ikke en uavhengig kilde. PDF-ene ble bare lest for de to
+  konfliktradene. En automatisk sammenligning av alle 560 parametre mot PDF-tabellene vil sannsynligvis finne
+  flere avvik hvis de finnes. `pypdf` gir tekst, men kolonnene for alder må tolkes varsomt (tomme celler forsvinner).
+
+- **xls-kryssjekken hoppes over i CI** *(AP-002)*
+  `test_xls_has_same_parameters` krever `soffice` og er `skip` i GitHub Actions. Den kjører lokalt. Vurder
+  `apt-get install libreoffice-calc` i CI når oracle (AP-004) uansett trenger LibreOffice.
+
+- **Formlene for lange løp stryker ikke hundredeler** *(til AP-006)*
+  For 600 m og lengre regner regnearket `(D*60+E)*10` uten å runde av tideler. PDF-teksten sier «I lengre løp skal
+  hundredeler strykes». Regnearket forutsetter altså at brukeren legger inn tid med tideler. Motoren må ta stilling
+  til hva den gjør med input som 2:04.56.
 
 ---
 
