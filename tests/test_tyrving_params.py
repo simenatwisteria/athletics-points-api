@@ -64,9 +64,7 @@ def test_meta_points_at_unchanged_sources(data: dict[str, Any]) -> None:
     assert data["meta"]["entry_count"] == len(data["entries"]) == 560
 
 
-def test_every_formula_row_extracted_exactly_once(
-    data: dict[str, Any], workbook: Workbook
-) -> None:
+def test_every_formula_row_extracted_exactly_once(data: dict[str, Any], workbook: Workbook) -> None:
     sources = [(e["source"]["sheet"], e["source"]["row"]) for e in data["entries"]]
     assert len(sources) == len(set(sources))
     assert set(sources) == _formula_rows(workbook)

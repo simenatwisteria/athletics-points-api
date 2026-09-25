@@ -191,9 +191,7 @@ def _parse_table(lines: list[list[dict[str, Any]]], table: _Table, gender: str) 
         if keyword is not None:
             pending_label += [w["text"] for w in line[:keyword]]
             marker = line[keyword]["text"]
-            factor_word = next(
-                w for w in line[keyword:] if re.fullmatch(r"\d+(,\d+)?", w["text"])
-            )
+            factor_word = next(w for w in line[keyword:] if re.fullmatch(r"\d+(,\d+)?", w["text"]))
             if marker == "Over":
                 block = {"f": [parse_number(factor_word["text"])], "h": values, "80": [], "p": []}
             elif block is None:
