@@ -1,7 +1,8 @@
 """DOC-filene og PDF-ene gir identiske Tyrving-tabeller.
 
-To uavhengige leseveier (tabulatorfelt i DOC, x-posisjoner i PDF) som må gi samme svar. Det bekrefter
-PDF-leseren og at DOC og PDF sier det samme i alle avvikene fra regnearket (docs/KILDEAVVIK.md).
+To uavhengige leseveier (tabulatorfelt i DOC, x-posisjoner i PDF) som må gi samme svar. Det
+bekrefter PDF-leseren, og at DOC og PDF sier det samme i alle avvikene fra regnearket
+(docs/KILDEAVVIK.md).
 """
 
 import shutil

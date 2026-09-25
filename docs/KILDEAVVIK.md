@@ -13,10 +13,12 @@ utgaven av Tyrvingtabellen er en to siders tabell», altså PDF-en.
 Avvikene ble funnet ved å lese alle 560 kombinasjonene i regnearket og sammenligne dem automatisk med begge
 PDF-ene (`scripts/tyrving_pdf.py`, `tests/test_tyrving_pdf.py`). PDF-ene er internt konsistente: alle 116
 tre-intervall-blokker har 80 %-verdier og poeng som stemmer med 1000p-verdien og multiplikatorene.
+DOC-filene er lest på en helt annen måte (tabulatorfelt) og gir **identiske** tabeller
+(`scripts/tyrving_doc.py`, `tests/test_tyrving_doc.py`), så DOC og PDF er enige i alle avvikene under.
 
 ### Avvik som endrer poeng
 
-| # | Hvor (regnearket) | Regnearket (`.xlsx`) | PDF | `.xls` |
+| # | Hvor (regnearket) | Regnearket (`.xlsx`) | PDF og DOC | `.xls` |
 |---|---|---|---|---|
 | 1 | `Gutter 19 år` rad 16 — 2000 m, celle `I16` | multiplikator **0,5** | **0,45** (samme som G14–G18) | som `.xlsx` |
 | 2 | `Jenter 17 år` rad 36 — Kule 3kg, cellene `I36`/`P36` | **enkel kvotient** med `I36 = 1.2` hardkodet (`P = 1000-O*I`) | **tre-intervall** 0,3 / 0,6 / 1,2 (som all annen kule) | som `.xlsx` |

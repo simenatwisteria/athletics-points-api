@@ -1,7 +1,7 @@
 """Leser Tyrvingtabellen 2014 fra DOC-filene, som kontroll av PDF-leseren (scripts/tyrving_pdf.py).
 
 LibreOffice konverterer DOC til tabulatordelt tekst der tomme celler er bevart, så de ti siste
-feltene i hver tabellrad er alltid 10–19 år. Det er en helt annen leseveg enn PDF-ens x-posisjoner.
+feltene i hver tabellrad er alltid 10-19 år. Det er en helt annen leseveg enn PDF-ens x-posisjoner.
 """
 
 from __future__ import annotations
