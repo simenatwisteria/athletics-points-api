@@ -1,6 +1,6 @@
 # AP-001: Grunnmur — `models.py`, abstrakt `engine.py`, `registry.py`
 
-**Status:** Klar
+**Status:** Ferdig
 **Opprettet:** 2026-09-25 (PROMPT-001)
 **Eier:** 🤖 Code
 **Avhenger av:** —
@@ -41,11 +41,14 @@ Ingen poengberegning, ingen Tyrving-spesifikk logikk, ingen FastAPI.
 
 ## Akseptansekriterier
 
-- [ ] `Registry.get("x")` returnerer nyeste versjon; ukjent system/versjon gir eget unntak
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` grønt
+- [x] `Registry.get("x")` returnerer nyeste versjon; ukjent system/versjon gir eget unntak
+- [x] `pytest -q && ruff check . && mypy athletics_scoring` grønt
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:** 
-- **Avvik fra oppgavefila:** 
-- **Funn som bør bli egne oppgaver:** 
+- **Gjort:** `models.py` (`Gender`, `Result`, `CalculationStep`, `EventInfo`, `ScoreResult`, typealias
+  `Parameters = Mapping[str, float]`), `engine.py` (`ScoringEngine` med `system`/`version` som `ClassVar`),
+  `registry.py` (`register`, `get`, `systems`), `errors.py`. 13 tester.
+- **Avvik fra oppgavefila:** `Result` validerer negative verdier og `time_minutes` uten `time_seconds`, og har
+  `total_seconds`. `calculation_steps` er `tuple` (frossen). Egen `DuplicateEngineError` ved dobbel registrering.
+- **Funn som bør bli egne oppgaver:** ingen.

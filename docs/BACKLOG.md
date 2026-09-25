@@ -21,8 +21,8 @@ hvorfor i notatet, og har stoppet.
 
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
-| 1 | AP-001 | Grunnmur: `models.py`, abstrakt `engine.py`, `registry.py` | 🤖 | — | Klar | `active/AP-001-grunnmur.md` |
-| 2 | AP-002 | Tyrving: parameterekstraksjon Excel → `data/tyrving_parameters_2014.json` (~530 kombinasjoner) + test mot Excel-celler | 🤖 | AP-001 | Klar | `active/AP-002-tyrving-parametre.md` |
+| 1 | AP-001 | Grunnmur: `models.py`, abstrakt `engine.py`, `registry.py` | 🤖 | — | **Ferdig** | `ferdig/AP-001-grunnmur.md` |
+| 2 | AP-002 | Tyrving: parameterekstraksjon Excel → `data/tyrving_parameters_2014.json` (~530 kombinasjoner) + test mot Excel-celler | 🤖 | AP-001 | Under arbeid | `active/AP-002-tyrving-parametre.md` |
 | 3 | AP-003 | Installer LibreOffice (`brew install --cask libreoffice`) så `soffice` finnes i PATH | 🧑 | — | **Ferdig** (LibreOffice 26.8.0.3, 2026-09-25) | — |
 | 4 | AP-004 | Tyrving: oracle-skript `scripts/oracle_tyrving.py` — rekalkulerer regnearket med LibreOffice headless og skriver `tests/fixtures/tyrving_cases.json` (~1600 caser) | 🤖 | AP-002, AP-003 | Klar | `active/AP-004-tyrving-oracle.md` |
 | 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | Ny | — |
