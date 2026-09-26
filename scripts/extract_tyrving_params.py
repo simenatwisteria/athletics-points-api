@@ -73,20 +73,20 @@ OFFICIAL_PAGE = (
     "https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/"
 )
 # Kildedokumentene i meta.source_documents (AP-027). Opprinnelse: sources/README.md.
-# document_url er None der lenken til akkurat den fila ikke er kjent.
+# document_url er None der fila ikke har en offisiell nedlastingslenke (PDF-ene og .xlsx).
 SOURCE_DOCUMENTS: list[dict[str, Any]] = [
     {
         "key": "nfif-tyrving-2014-gutter",
         "title": "Tyrvingtabellen 2014, gutter (offisiell tabell og regeltekst)",
         "path": ROOT / "sources" / "tyrving" / "tyrving-2014-gutter.doc",
-        "document_url": None,
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-gutter-2014.doc",
         "retrieved": "2026-09-25",
     },
     {
         "key": "nfif-tyrving-2014-jenter",
         "title": "Tyrvingtabellen 2014, jenter (offisiell tabell og regeltekst)",
         "path": ROOT / "sources" / "tyrving" / "tyrving-2014-jenter.doc",
-        "document_url": None,
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-jenter-2014.doc",
         "retrieved": "2026-09-25",
     },
     {
@@ -108,6 +108,13 @@ SOURCE_DOCUMENTS: list[dict[str, Any]] = [
         "title": "Tyrvingtabellen 2014, redigerbart regneark (strukturkilde, eldre kopi)",
         "path": SOURCE,
         "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+    {
+        "key": "nfif-tyrving-2014-xls",
+        "title": "Tyrvingtabellen 2014, NFIFs gjeldende regneark (kryssjekk)",
+        "path": ROOT / "sources" / "tyrving" / "tyrving-2014.xls",
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/poengtabell-tyrvingtabellen.xls",
         "retrieved": "2026-09-25",
     },
 ]

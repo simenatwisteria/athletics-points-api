@@ -14,7 +14,7 @@
         "title": "Tyrvingtabellen 2014, gutter (offisiell tabell og regeltekst)",
         "publisher": "Norges Friidrettsforbund (NFIF)",
         "official_page": "https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/",
-        "document_url": null,
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-gutter-2014.doc",
         "local_path": "sources/tyrving/tyrving-2014-gutter.doc",
         "sha256": "9cda1bfee1f31fe0b9d3c232ee04bdf73a34f00d7219eb1c1c949d262d1b9c2f",
         "retrieved": "2026-09-25"
@@ -24,7 +24,7 @@
         "title": "Tyrvingtabellen 2014, jenter (offisiell tabell og regeltekst)",
         "publisher": "Norges Friidrettsforbund (NFIF)",
         "official_page": "https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/",
-        "document_url": null,
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-jenter-2014.doc",
         "local_path": "sources/tyrving/tyrving-2014-jenter.doc",
         "sha256": "5e57056180f069a6f22bfe20e9690789d61920c006d5b52682c43a78fdf7c776",
         "retrieved": "2026-09-25"
@@ -57,6 +57,16 @@
         "document_url": null,
         "local_path": "sources/tyrving/tyrving-2014-redigerbar.xlsx",
         "sha256": "713ef97f36f3194d235e4d5d85e136278f92aeb98365d5cfb593ff75ec8550df",
+        "retrieved": "2026-09-25"
+      },
+      {
+        "key": "nfif-tyrving-2014-xls",
+        "title": "Tyrvingtabellen 2014, NFIFs gjeldende regneark (kryssjekk)",
+        "publisher": "Norges Friidrettsforbund (NFIF)",
+        "official_page": "https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/",
+        "document_url": "https://www.friidrett.no/siteassets/arrangement/poengtabell-tyrvingtabellen.xls",
+        "local_path": "sources/tyrving/tyrving-2014.xls",
+        "sha256": "d23266b89b3bc5adbf21e0a1bc3d690dd1430fbc5471f02f8e7c3d20e3ef6058",
         "retrieved": "2026-09-25"
       }
     ],
