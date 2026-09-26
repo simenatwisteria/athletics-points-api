@@ -1,6 +1,6 @@
 # AP-027: Kildesporing i parametre og beregningssteg
 
-**Status:** Klar
+**Status:** Ferdig 2026-09-26
 **Opprettet:** 2026-09-26 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-001
@@ -84,19 +84,36 @@ Alt annet avgjør du selv, og skriver valget i sluttrapporten.
 
 ## Akseptansekriterier
 
-- [ ] Kontrolltallene over er egne testcaser og er grønne
-- [ ] `CalculationStep.ref` finnes og brukes i Tyrving-stegene for BV-003, BV-011 og BV-012
-- [ ] Testen som sjekker at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` er grønn
-- [ ] `git diff athletics_scoring/data/tyrving_parameters_2014.json` viser bare endringer i `meta`
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
-- [ ] Ingen endringer i `sources/` eller låste `tests/fixtures/`
-- [ ] Midlertidige filer og hjelpeskript fra underveis er fjernet
-- [ ] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
+- [x] Kontrolltallene over er egne testcaser og er grønne
+- [x] `CalculationStep.ref` finnes og brukes i Tyrving-stegene for BV-003, BV-011 og BV-012
+- [x] Testen som sjekker at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` er grønn
+- [x] `git diff athletics_scoring/data/tyrving_parameters_2014.json` viser bare endringer i `meta`
+- [x] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
+- [x] Ingen endringer i `sources/` eller låste `tests/fixtures/`
+- [x] Midlertidige filer og hjelpeskript fra underveis er fjernet
+- [x] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:**
-- **Bevis:**
+- **Gjort:** `CalculationStep.ref: str | None = None` (`models.py`). `ScoringEngine.sources()` (`engine.py`,
+  kaster `NotImplementedError` som standard, som `reverse`). `meta.source_documents` med fem Tyrving-filer (DOC
+  gutter/jenter, PDF gutter/jenter, regnearket), skrevet av `scripts/extract_tyrving_params.py` og generert på
+  nytt. `TyrvingCalculator.sources()` leser dem fra JSON-en. Tyrving-stegene: `manual_timing_addition` → BV-012,
+  nytt steg `hundredths_dropped` → BV-011, `points` → BV-003, `points_raw` → kildenøkkelen for kjønnet
+  (`nfif-tyrving-2014-gutter`/`-jenter`, DOC-ene). Ny test `tests/test_kildesporing.py` (6 tester).
+- **Bevis:** `pytest -q` 105 passed (inkl. alle 2472 fasit-caser i `test_all_fixture_cases`), `ruff check .` og
+  `mypy athletics_scoring` grønne. `extract_tyrving_params.py --check` gir OK. `git diff --stat` på JSON-en:
+  52 innsettinger, alle inne i `meta.source_documents`. G15 800 m 2:04,56 gir 991 og et steg med
+  `ref == "BV-011"` og verdi 124,5.
 - **Valg tatt underveis:**
-- **Avvik fra oppgavefila:**
-- **Funn som bør bli egne oppgaver:**
+  - `hundredths_dropped` legges bare til når det faktisk strykes noe i et løp over 500 m. Steget forklarer da
+    hvorfor tiden ble endret; uten endring er det ingenting å forklare.
+  - `sources()` er ikke abstrakt, så eksisterende motorer (og `Dummy` i `test_registry.py`) fortsatt virker. Den
+    kaster i stedet for å returnere tom liste, så en motor uten kilder ikke går stille gjennom `GET /systems`.
+  - `document_url` er `null` for alle fem filene. `sources/README.md` har ikke URL-en til DOC-ene, og
+    PDF-ene og regnearket har ukjent eller utdatert opphav. Ikke gjettet (Innboks).
+  - `retrieved` er datoen filene kom inn i `sources/` (2026-09-25).
+- **Avvik fra oppgavefila:** Det er ikke laget et eget «kildesteg». `test_score_result_explains_calculation`
+  låser labellista til `["eighty_percent", "points_raw", "points"]`, og testen skal ikke endres. Kildenøkkelen
+  ligger i stedet som `ref` på `points_raw`, som er tabellformelen med parametrene fra kilden.
+- **Funn som bør bli egne oppgaver:** Direktelenker til DOC-ene i `sources/README.md` (Innboks).
