@@ -66,6 +66,13 @@ desimaler beholdes under utregningen» og «poengsummen rundes alltid ned». Res
 feiltypen kan i prinsippet ramme ekte resultater. Casen er merket `float_edge` i fasiten. **Åpent:** skal
 motoren regne eksakt (desimal) og dermed avvike fra regnearket her? Avgjøres i AP-005.
 
+### Ekstern kontroll: Rjukan IL sin Tyrvingkalkulator (2026-09-26)
+
+https://rjukanfriidrett.no/rilfrioks/tyrvingKalk.php har egen parametertabell. Den har Word-dokumentets verdier på alle
+tre avvikene over, og regner flyttallskanten til 12 (eksakt). Av 2432 sammenlignbare caser i fasiten er 2419 identiske.
+Resten skyldes fire parameterfeil på nettsiden (G19 400 m, J19 1000 m, G17 2000 m, G15 100 m hekk 84 cm) og
+flyttallskanten. Detaljer i `docs/active/AP-005-review-tyrving-fixtures.md`.
+
 ### Regnearket følger ikke regelen om å stryke hundredeler
 
 Regelteksten: «I lengre løp skal (som før) hundredeler strykes.» Regnearket regner `(D*60+E)*10` rett fram, så
