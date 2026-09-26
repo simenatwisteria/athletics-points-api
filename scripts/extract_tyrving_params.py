@@ -69,6 +69,48 @@ POINTS_FORMULAS = {
     "=IF(P#<0,0,IF(E#=0,0,ROUNDDOWN(P#,0)))",
     "=IF(P#<0,0,IF(AND(E#=0,D#=0),0,ROUNDDOWN(P#,0)))",
 }
+OFFICIAL_PAGE = (
+    "https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/"
+)
+# Kildedokumentene i meta.source_documents (AP-027). Opprinnelse: sources/README.md.
+# document_url er None der lenken til akkurat den fila ikke er kjent.
+SOURCE_DOCUMENTS: list[dict[str, Any]] = [
+    {
+        "key": "nfif-tyrving-2014-gutter",
+        "title": "Tyrvingtabellen 2014, gutter (offisiell tabell og regeltekst)",
+        "path": ROOT / "sources" / "tyrving" / "tyrving-2014-gutter.doc",
+        "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+    {
+        "key": "nfif-tyrving-2014-jenter",
+        "title": "Tyrvingtabellen 2014, jenter (offisiell tabell og regeltekst)",
+        "path": ROOT / "sources" / "tyrving" / "tyrving-2014-jenter.doc",
+        "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+    {
+        "key": "nfif-tyrving-2014-gutter-pdf",
+        "title": "Tyrvingtabellen 2014, gutter (PDF, samme innhold som DOC)",
+        "path": tyrving_pdf.PDFS["M"],
+        "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+    {
+        "key": "nfif-tyrving-2014-jenter-pdf",
+        "title": "Tyrvingtabellen 2014, jenter (PDF, samme innhold som DOC)",
+        "path": tyrving_pdf.PDFS["F"],
+        "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+    {
+        "key": "nfif-tyrving-2014-regneark",
+        "title": "Tyrvingtabellen 2014, redigerbart regneark (strukturkilde, eldre kopi)",
+        "path": SOURCE,
+        "document_url": None,
+        "retrieved": "2026-09-25",
+    },
+]
 OVERRIDE_REASON = (
     "Regnearket avviker fra NFIFs offisielle tabell (DOC på friidrett.no, identisk med PDF-ene). "
     "Tabellen vinner (beslutning 2026-09-25, docs/KILDEAVVIK.md). "
@@ -271,6 +313,19 @@ def extract(source: Path = SOURCE) -> dict[str, Any]:
             "version": "2014",
             "source": "NFIF, Tyrvingtabellen (2014-utgave)",
             "sources": {str(p.relative_to(ROOT)): sha256(p) for p in sources},
+            "source_documents": [
+                {
+                    "key": doc["key"],
+                    "title": doc["title"],
+                    "publisher": "Norges Friidrettsforbund (NFIF)",
+                    "official_page": OFFICIAL_PAGE,
+                    "document_url": doc["document_url"],
+                    "local_path": str(doc["path"].relative_to(ROOT)),
+                    "sha256": sha256(doc["path"]),
+                    "retrieved": doc["retrieved"],
+                }
+                for doc in SOURCE_DOCUMENTS
+            ],
             "conflict_policy": "Offisiell tabell (DOC/PDF) vinner (docs/KILDEAVVIK.md)",
             "generated_by": "scripts/extract_tyrving_params.py",
             "entry_count": len(entries),

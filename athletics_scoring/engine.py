@@ -1,7 +1,7 @@
 """Felles grensesnitt for alle poengsystemer."""
 
 from abc import ABC, abstractmethod
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from athletics_scoring.models import EventInfo, Gender, Parameters, Result, ScoreResult
 
@@ -35,6 +35,14 @@ class ScoringEngine(ABC):
     def get_parameters(
         self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
     ) -> Parameters: ...
+
+    def sources(self) -> list[dict[str, Any]]:
+        """Kildedokumentene motoren bygger på (``meta.source_documents`` i parameterfila).
+
+        Hvert dokument har ``key``, ``title``, ``publisher``, ``official_page``, ``document_url``,
+        ``local_path``, ``sha256`` og ``retrieved``. ``CalculationStep.ref`` kan peke til ``key``.
+        """
+        raise NotImplementedError(f"{self.system} {self.version} har ikke oppgitt kilder")
 
     def reverse(
         self, event_id: str, gender: Gender, age_class: str, target_points: int

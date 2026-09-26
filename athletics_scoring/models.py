@@ -46,6 +46,9 @@ class CalculationStep:
     label: str
     value: float
     formula: str
+    ref: str | None = None
+    """Hvorfor steget er slik: et beregningsvalg (``"BV-011"``, se ``docs/BEREGNINGSVALG.md``) eller
+    nøkkelen til et kildedokument (``key`` i ``ScoringEngine.sources()``)."""
 
 
 @dataclass(frozen=True, slots=True)

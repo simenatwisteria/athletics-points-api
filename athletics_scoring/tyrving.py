@@ -45,6 +45,9 @@ from athletics_scoring.models import (
 )
 
 DATA_FILE = "tyrving_parameters_2014.json"
+# Den offisielle tabellen (NFIFs DOC) som parametrene og regelteksten er hentet fra, per kjønn.
+# Nøklene er ``key`` i ``meta.source_documents``.
+SOURCE_KEYS = {Gender.MALE: "nfif-tyrving-2014-gutter", Gender.FEMALE: "nfif-tyrving-2014-jenter"}
 
 # R1: tillegg for manuell tid, etter distanse i meter (flatløp og hekk).
 MANUAL_TIMING_ADDITION = {
@@ -117,10 +120,18 @@ class TyrvingCalculator(ScoringEngine):
     version: ClassVar[str] = "2014"
 
     @cached_property
-    def _entries(self) -> list[dict[str, Any]]:
+    def _data(self) -> dict[str, Any]:
         text = resources.files("athletics_scoring").joinpath("data", DATA_FILE).read_text("utf-8")
-        entries: list[dict[str, Any]] = json.loads(text)["entries"]
+        data: dict[str, Any] = json.loads(text)
+        return data
+
+    @property
+    def _entries(self) -> list[dict[str, Any]]:
+        entries: list[dict[str, Any]] = self._data["entries"]
         return entries
+
+    def sources(self) -> list[dict[str, Any]]:
+        return [dict(doc) for doc in self._data["meta"]["source_documents"]]
 
     # --- oppslag -------------------------------------------------------------------------------
 
@@ -215,13 +226,26 @@ class TyrvingCalculator(ScoringEngine):
             value += addition
             steps.append(
                 CalculationStep(
-                    "manual_timing_addition", float(addition), "R1: tillegg for manuell tid"
+                    "manual_timing_addition",
+                    float(addition),
+                    "R1: tillegg for manuell tid",
+                    ref="BV-012",
                 )
             )
 
         # R2: hundredeler til og med 500 m, tideler i lengre løp (hundredeler strykes).
         resolution = Decimal("0.01") if entry["scale"] == 100 else Decimal("0.1")
-        return value.quantize(resolution, rounding=ROUND_DOWN)
+        truncated = value.quantize(resolution, rounding=ROUND_DOWN)
+        if truncated != value and entry["scale"] == 10:
+            steps.append(
+                CalculationStep(
+                    "hundredths_dropped",
+                    float(truncated),
+                    f"R2: {_fmt(value)} s → {_fmt(truncated)} s, hundredeler strykes",
+                    ref="BV-011",
+                )
+            )
+        return truncated
 
     def calculate(
         self,
@@ -257,8 +281,14 @@ class TyrvingCalculator(ScoringEngine):
 
         points = max(0, math.floor(points_raw))
         lower, upper = _plausible_range(entry)
-        steps.append(CalculationStep("points_raw", float(points_raw), "før nedrunding"))
-        steps.append(CalculationStep("points", float(points), "rundet ned, minst 0 (R3)"))
+        steps.append(
+            CalculationStep(
+                "points_raw", float(points_raw), "før nedrunding", ref=SOURCE_KEYS[gender]
+            )
+        )
+        steps.append(
+            CalculationStep("points", float(points), "rundet ned, minst 0 (R3)", ref="BV-003")
+        )
         return ScoreResult(
             points=points,
             scoring_system=self.system,
