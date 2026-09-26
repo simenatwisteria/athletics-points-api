@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Tyrvingpoeng – mangekamp</title>
+<script src="./support.js"></script>
+<script src="./tyrving-sketch.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;background:#F5F2EC;color:#1C1B19}
+a{color:#B8391F}a:hover{color:#8F2A15}
+button{font-family:inherit}
+input{font-family:inherit}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #1F5E8C;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #F5F2EC; display: flex; flex-direction: column">
+<header style="padding: 20px 20px 12px 20px; display: flex; flex-direction: column; gap: 14px; background: #1C1B19; color: #F5F2EC">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 34px; letter-spacing: 0.5px">Tyrvingpoeng</h1>
+<span style="font-size: 13px; color: #CFC8BB">Mangekamp under 15 år</span>
+</div>
+<nav aria-label="Visning" style="display: flex; gap: 6px">
+<a href="Main.dc.html" style="flex-grow: 1; text-align: center; padding: 10px 0; border-radius: 10px; background: #2E2C28; color: #F5F2EC; text-decoration: none; font-weight: 600; font-size: 15px">Kalkulator</a>
+<a href="Mangekamp.dc.html" aria-current="page" style="flex-grow: 1; text-align: center; padding: 10px 0; border-radius: 10px; background: #B8391F; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 15px">Mangekamp</a>
+</nav>
+</header>
+
+<main style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 16px 20px 20px 20px; display: flex; flex-direction: column; gap: 18px">
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Klasse</h2>
+<div style="display: flex; gap: 6px; background: #E8E3D9; padding: 4px; border-radius: 12px">
+<sc-for list="{{genders}}" as="g" hint-placeholder-count="2">
+<button type="button" onClick="{{g.pick}}" aria-pressed="{{g.pressed}}" style="{{g.style}}">{{g.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{ages}}" as="a" hint-placeholder-count="2">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.pressed}}" style="{{a.style}}">{{a.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Mangekamp</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" aria-pressed="true" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px solid #B8391F; background: #B8391F; color: #FFFFFF; font-size: 16px; font-weight: 700">Egen sammensetning</button>
+<button type="button" disabled="disabled" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px dashed #CFC8BB; background: transparent; color: #5F5A52; font-size: 16px; font-weight: 600">Femkamp [fra NFIF]</button>
+</div>
+<p style="margin: 0; font-size: 13px; color: #5F5A52">Faste mangekamper per klasse kommer når vi har NFIFs oversikt. Da fylles øvelsene inn automatisk.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Legg til øvelse</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{available}}" as="av" hint-placeholder-count="6">
+<button type="button" onClick="{{av.add}}" style="min-height: 40px; padding: 0 14px; border-radius: 20px; border: 2px solid #CFC8BB; background: #FFFFFF; color: #1C1B19; font-size: 15px; font-weight: 600; cursor: pointer">+ {{av.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{rows}}" as="row" hint-placeholder-count="3">
+<div style="{{row.cardStyle}}">
+<div style="display: flex; align-items: center; gap: 8px">
+<span style="flex-grow: 1; font-weight: 700; font-size: 17px">{{row.title}}</span>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 28px; color: #B8391F; min-width: 64px; text-align: right">{{row.points}}</span>
+<button type="button" onClick="{{row.remove}}" aria-label="{{row.removeLabel}}" style="width: 44px; height: 44px; border: 0; background: transparent; color: #5F5A52; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+</div>
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid #E2DDD3">
+<span style="font-size: 14px; font-weight: 600; color: #5F5A52">1000 poeng</span>
+<span style="font-size: 16px; font-weight: 700">{{row.thousand}}</span>
+</div>
+<div style="display: flex; gap: 8px; align-items: center">
+<button type="button" onClick="{{row.activate}}" aria-expanded="{{row.expanded}}" aria-label="{{row.fieldLabel}}" style="{{row.fieldStyle}}">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 26px; color: {{row.displayColor}}">{{row.display}}</span>
+<span style="font-size: 14px; color: #5F5A52">{{row.unit}}</span>
+</button>
+<sc-if value="{{row.manualAllowed}}" hint-placeholder-val="{{false}}">
+<label style="display: flex; align-items: center; gap: 6px; font-size: 14px; min-height: 44px; margin-left: auto">
+<input type="checkbox" checked="{{row.manual}}" onChange="{{row.toggleManual}}" style="width: 20px; height: 20px; accent-color: #B8391F">
+Manuell
+</label>
+</sc-if>
+</div>
+<div style="font-size: 13px; color: #5F5A52">{{row.note}}</div>
+</div>
+</sc-for>
+</section>
+</main>
+
+<sc-if value="{{kbOpen}}" hint-placeholder-val="{{false}}">
+<div role="group" aria-label="Talltastatur" style="background: #E8E3D9; border-top: 1px solid #CFC8BB; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; gap: 4px; padding: 4px 8px 0 16px">
+<span style="flex-grow: 1; font-size: 14px; color: #5F5A52">{{kbTitle}}</span>
+<button type="button" onClick="{{nextRow}}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; color: #1C1B19; font-size: 16px; font-weight: 700; cursor: pointer">{{nextLabel}}</button>
+<button type="button" onClick="{{closeKeypad}}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; color: #B8391F; font-size: 17px; font-weight: 700; cursor: pointer">Ferdig</button>
+</div>
+<div style="padding: 4px 12px 12px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+<button type="button" onClick="{{k.press}}" aria-label="{{k.aria}}" style="{{k.style}}">{{k.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<footer style="background: #1C1B19; color: #F5F2EC; padding: 12px 20px 14px 20px; display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column">
+<span style="font-size: 14px; color: #CFC8BB">{{countText}}</span>
+<span style="font-size: 13px; color: #CFC8BB">{{missingText}}</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px">
+<span style="font-size: 15px; color: #CFC8BB">Sum</span>
+<span aria-live="polite" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 44px; line-height: 1">{{total}}</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gender: 'J', age: '13',
+      picked: ['hurdles_60m|76,2cm/7,5m', 'high_jump|', 'shot_put|2kg', 'long_jump|', 'middle_600m|'],
+      values: {
+        'hurdles_60m|76,2cm/7,5m': { digits: '1090', manual: false },
+        'high_jump|': { digits: '148', manual: false },
+        'shot_put|2kg': { digits: '1040', manual: false },
+        'long_jump|': { digits: '492', manual: false },
+        'middle_600m|': { digits: '1447', manual: false },
+      },
+      active: null,
+    };
+  }
+  chip(selected) {
+    return selected
+      ? 'min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px solid #B8391F; background: #B8391F; color: #FFFFFF; font-size: 16px; font-weight: 700; cursor: pointer'
+      : 'min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px solid #CFC8BB; background: #FFFFFF; color: #1C1B19; font-size: 16px; font-weight: 600; cursor: pointer';
+  }
+  seg(selected) {
+    return selected
+      ? 'flex-grow: 1; min-height: 44px; border: 0; border-radius: 9px; background: #FFFFFF; color: #1C1B19; font-size: 16px; font-weight: 700; cursor: pointer'
+      : 'flex-grow: 1; min-height: 44px; border: 0; border-radius: 9px; background: transparent; color: #5F5A52; font-size: 16px; font-weight: 600; cursor: pointer';
+  }
+  thousand(e) {
+    const T = window.TYRV;
+    const h = e.p.h1000;
+    if (e.m === 'distance') return T.fmt(h.toFixed(2)) + ' m';
+    if (e.min) {
+      const m = Math.floor(h / 60);
+      return m + ':' + T.fmt((h - m * 60).toFixed(1)).padStart(4, '0');
+    }
+    return T.fmt(h.toFixed(2)) + ' s';
+  }
+  // Samme tastatur som kalkulatoren: sifre fylles inn fra høyre.
+  parse(e, digits) {
+    if (e.m === 'time' && e.min) {
+      const d = digits.padStart(4, '0');
+      const tenth = d.slice(-1), secs = d.slice(-3, -1), mins = String(parseInt(d.slice(0, -3), 10));
+      return { v1: mins, v2: secs + ',' + tenth, display: mins + ':' + secs + ',' + tenth, secondsOk: parseInt(secs, 10) < 60 };
+    }
+    const d = digits.padStart(3, '0');
+    const whole = String(parseInt(d.slice(0, -2), 10));
+    return { v1: whole + ',' + d.slice(-2), v2: '', display: whole + ',' + d.slice(-2), secondsOk: true };
+  }
+  setClass(gender, age) {
+    const T = window.TYRV;
+    const evs = (T && T.DATA[gender + age]) || [];
+    const byId = (k) => evs.find((e) => e.id === k.split('|')[0]);
+    const picked = this.state.picked.map(byId).filter(Boolean).map((e) => T.key(e));
+    this.setState({ gender, age, picked, values: {}, active: null });
+  }
+  setValue(k, patch) {
+    const values = Object.assign({}, this.state.values);
+    values[k] = Object.assign({ digits: '', manual: false }, values[k], patch);
+    this.setState({ values });
+  }
+  renderVals() {
+    const T = window.TYRV;
+    const s = this.state;
+    const evs = (T && T.DATA[s.gender + s.age]) || [];
+    const pickedIds = s.picked.map((k) => k.split('|')[0]);
+    const seen = [];
+    const available = evs.filter((e) => {
+      if (pickedIds.includes(e.id) || seen.includes(e.id)) return false;
+      seen.push(e.id); return true;
+    }).map((e) => ({ label: e.name, add: () => this.setState({ picked: s.picked.concat([T.key(e)]), active: T.key(e) }) }));
+    let total = 0, missing = 0;
+    const rows = s.picked.map((k) => {
+      const e = evs.find((x) => T.key(x) === k);
+      if (!e) return null;
+      const v = s.values[k] || { digits: '', manual: false };
+      const parsed = this.parse(e, v.digits);
+      let r = v.digits ? T.calc(e, parsed.v1, parsed.v2, v.manual) : { ok: false };
+      if (v.digits && !parsed.secondsOk) r = { ok: false };
+      const outOfRange = r.ok && !r.plausible;
+      if (outOfRange) r = { ok: false, range: r.range };
+      if (r.ok) total += r.points; else missing += 1;
+      const isActive = s.active === k;
+      const title = e.name + (e.impl ? ' · ' + T.implLabel(e.impl) : '');
+      return {
+        k, e, title,
+        points: r.ok ? String(r.points) : '–',
+        note: r.ok ? 'Regnet som ' + r.used + (r.steps.length ? ' · ' + r.steps.join(' · ') : '')
+          : v.digits && !parsed.secondsOk ? 'Sekundene må være under 60'
+          : outOfRange ? 'Utenfor rimelig område (' + r.range + ')' : 'Trykk på feltet for å taste inn',
+        display: v.digits ? parsed.display : this.thousand(e).replace(/ [ms]$/, ''),
+        displayColor: v.digits ? '#1C1B19' : '#A39C90',
+        unit: e.m === 'distance' ? 'm' : (e.min ? 'min:sek' : 's'),
+        thousand: this.thousand(e),
+        manualAllowed: !!e.man,
+        manual: !!v.manual,
+        expanded: isActive ? 'true' : 'false',
+        fieldLabel: 'Resultat ' + e.name + ': ' + (v.digits ? parsed.display : 'tomt'),
+        removeLabel: 'Fjern ' + e.name,
+        cardStyle: 'background: #FFFFFF; border: ' + (isActive ? '2px solid #B8391F' : '1px solid #E2DDD3') + '; border-radius: 14px; padding: ' + (isActive ? '11px 13px' : '12px 14px') + '; display: flex; flex-direction: column; gap: 8px',
+        fieldStyle: 'width: 150px; height: 48px; box-sizing: border-box; border: 2px solid ' + (isActive ? '#B8391F' : '#CFC8BB') + '; border-radius: 10px; background: #FFFFFF; padding: 0 12px; display: flex; align-items: center; justify-content: flex-end; gap: 6px; cursor: pointer',
+        activate: () => this.setState({ active: k }),
+        toggleManual: (ev) => this.setValue(k, { manual: ev.target.checked }),
+        remove: () => this.setState({ picked: s.picked.filter((x) => x !== k), active: s.active === k ? null : s.active }),
+      };
+    }).filter(Boolean);
+    const activeRow = rows.find((row) => row.k === s.active);
+    const idx = activeRow ? rows.indexOf(activeRow) : -1;
+    const maxDigits = activeRow && activeRow.e.m === 'time' && activeRow.e.min ? 6 : 5;
+    const digitStyle = 'height: 48px; border: 0; border-radius: 12px; background: #FFFFFF; color: #1C1B19; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 26px; cursor: pointer';
+    const fnStyle = 'height: 48px; border: 0; border-radius: 12px; background: #D6CFC2; color: #1C1B19; font-size: 17px; font-weight: 700; cursor: pointer';
+    const cur = () => ((this.state.values[this.state.active] || {}).digits || '');
+    const add = (d) => () => {
+      const c = cur();
+      if (!this.state.active || c.length >= maxDigits || (c === '' && d === '0')) return;
+      this.setValue(this.state.active, { digits: c + d });
+    };
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((d) => ({ label: d, aria: d, press: add(d), style: digitStyle }));
+    keys.push({ label: 'Tøm', aria: 'Tøm resultatet', press: () => this.state.active && this.setValue(this.state.active, { digits: '' }), style: fnStyle });
+    keys.push({ label: '0', aria: '0', press: add('0'), style: digitStyle });
+    keys.push({ label: '⌫', aria: 'Slett siste siffer', press: () => this.state.active && this.setValue(this.state.active, { digits: cur().slice(0, -1) }), style: fnStyle });
+    const next = idx >= 0 && idx < rows.length - 1 ? rows[idx + 1] : null;
+    return {
+      genders: [['G', 'Gutter'], ['J', 'Jenter']].map(([v, label]) => ({ label, pressed: s.gender === v ? 'true' : 'false', style: this.seg(s.gender === v), pick: () => this.setClass(v, s.age) })),
+      ages: ['11', '13'].map((a) => ({ label: a + ' år', pressed: s.age === a ? 'true' : 'false', style: this.chip(s.age === a), pick: () => this.setClass(s.gender, a) })),
+      available,
+      rows,
+      kbOpen: !!activeRow,
+      kbTitle: activeRow ? activeRow.e.name + ' · ' + (activeRow.e.m === 'distance' ? 'meter' : activeRow.e.min ? 'min:sek' : 'sekunder') : '',
+      keys,
+      nextLabel: next ? 'Neste ›' : '',
+      nextRow: () => next && this.setState({ active: next.k }),
+      closeKeypad: () => this.setState({ active: null }),
+      total: total.toLocaleString('nb-NO'),
+      countText: rows.length + (rows.length === 1 ? ' øvelse' : ' øvelser'),
+      missingText: missing ? missing + ' uten gyldig resultat' : 'Alle resultater registrert',
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-020**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-026**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -46,11 +46,25 @@ hvorfor i notatet, og har stoppet.
 
 AP-017 ble tatt tidlig (2026-09-25) fordi den ikke har avhengigheter og alle andre 🤖-oppgaver ventet på Simen.
 
+## API og frontend — rekkefølge besluttet 2026-09-26
+
+Kontrakten først, så API, så frontend (B-1, B-9). Kontrakten bygger på skissen (`docs/DESIGN.md` kap. 7) og på
+bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
+
+| # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
+|---|---|---|---|---|---|---|
+| 18 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
+| 19 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch/oppslag for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, sjekk av minfriidrett.no | Ny | — |
+| 20 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-020 | Ny | — |
+| 21 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
+| 22 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
+| 23 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
+
 ## Later — ikke i loop
 
 | ID | Oppgave | Status | Notat |
 |---|---|---|---|
-| AP-018 | FastAPI-wrapper, deploy på Railway, frontend på Vercel | Ny | Først når pakken er verifisert (B-1). Railway/Vercel kobles på når `/health` finnes. |
+| AP-018 | FastAPI-wrapper, deploy på Railway, frontend på Vercel | **Erstattet** 2026-09-26 | Delt opp i AP-020–AP-025 (se «API og frontend» over). |
 | AP-019 | Serietabellen / Seriepoeng (Lagserien) | Ny | B-17. Flyttet bak WA fordi masters og mangekamp avhenger av WA (ANALYSE 2026-09-06, B-21-forslag). |
 
 ---

@@ -1,0 +1,17 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-09-26T16:10:00Z"},
+  "title": "Tyrvingkalkulator – skisse",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "App.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Versjon 2: tabeller, språk og kompakt skjema", "is_interactive": true, "radius": 28},
+    "Main.dc.html": {"x": 0, "y": 1287, "w": 390, "h": 844, "title": "Versjon 1: kalkulator", "is_interactive": true, "radius": 28},
+    "Mangekamp.dc.html": {"x": 470, "y": 1287, "w": 390, "h": 844, "title": "Versjon 1: mangekamp", "is_interactive": true, "radius": 28}
+  },
+  "order": ["App.dc.html", "Main.dc.html", "Mangekamp.dc.html"],
+  "notes": {
+    "v1title": {"x": 0, "y": 1010, "text": "Første skisse (til sammenligning)", "kind": "title1", "maxW": 860}
+  },
+  "designSystems": []
+}

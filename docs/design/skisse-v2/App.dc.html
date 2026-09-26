@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Poengtabeller – app</title>
+<script src="./support.js"></script>
+<script src="./tyrving-sketch.js"></script>
+<script src="./app-data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;background:#F5F2EC;color:#1C1B19}
+a{color:#B8391F}a:hover{color:#8F2A15}
+button{font-family:inherit}
+button:focus-visible{outline:3px solid #1F5E8C;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #F5F2EC; display: flex; flex-direction: column; position: relative">
+
+<sc-if value="{{isHome}}" hint-placeholder-val="{{true}}">
+<header style="background: #1C1B19; color: #F5F2EC; padding: 18px 16px 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 32px">{{t.tables}}</h1>
+<div role="group" aria-label="{{t.language}}" style="display: flex; background: #2E2C28; border-radius: 10px; padding: 3px; gap: 2px">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="2">
+<button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="{{l.style}}">{{l.label}}</button>
+</sc-for>
+</div>
+</header>
+<main style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 14px 16px 20px 16px; display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0 4px; font-size: 15px; color: #5F5A52">{{t.tablesIntro}}</p>
+<sc-for list="{{groups}}" as="gr" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0 4px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5F5A52">{{gr.title}}</h2>
+<div style="background: #FFFFFF; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<sc-for list="{{gr.rows}}" as="row" hint-placeholder-count="2">
+<button type="button" onClick="{{row.open}}" style="{{row.style}}">
+<span style="flex-grow: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left">
+<span style="font-size: 17px; font-weight: 700; color: #1C1B19">{{row.name}}</span>
+<span style="font-size: 13px; color: #5F5A52">{{row.sub}}</span>
+</span>
+<span style="{{row.badgeStyle}}">{{row.badge}}</span>
+<svg width="9" height="15" viewBox="0 0 9 15" fill="none" stroke="#A39C90" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 1.5l6 6-6 6"/></svg>
+</button>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</main>
+</sc-if>
+
+<sc-if value="{{isCalc}}" hint-placeholder-val="{{false}}">
+<header style="background: #1C1B19; color: #F5F2EC; height: 56px; padding: 0 12px 0 6px; display: flex; align-items: center; gap: 4px; flex-shrink: 0">
+<button type="button" onClick="{{goHome}}" style="min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: #F2B8A8; font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 4px; cursor: pointer">
+<svg width="10" height="17" viewBox="0 0 10 17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5l-7 7 7 7"/></svg>
+{{t.back}}
+</button>
+<h1 style="flex-grow: 1; margin: 0; text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 24px">{{tableName}}</h1>
+</header>
+
+<main style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 12px 16px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{hasModes}}" hint-placeholder-val="{{true}}">
+<div role="group" style="display: flex; background: #E8E3D9; border-radius: 10px; padding: 3px; gap: 3px">
+<sc-for list="{{modes}}" as="md" hint-placeholder-count="2">
+<button type="button" onClick="{{md.pick}}" aria-pressed="{{md.pressed}}" style="{{md.style}}">{{md.label}}</button>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="background: #FFFFFF; border-radius: 14px; display: flex; flex-direction: column">
+<div style="min-height: 52px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #EEE9E0">
+<span style="flex-grow: 1; font-size: 16px">{{t.gender}}</span>
+<div role="group" aria-label="{{t.gender}}" style="display: flex; background: #EEE9E0; border-radius: 9px; padding: 2px; gap: 2px">
+<sc-for list="{{genders}}" as="g" hint-placeholder-count="2">
+<button type="button" onClick="{{g.pick}}" aria-pressed="{{g.pressed}}" style="{{g.style}}">{{g.label}}</button>
+</sc-for>
+</div>
+</div>
+<sc-for list="{{formRows}}" as="fr" hint-placeholder-count="3">
+<div style="{{fr.rowStyle}}">
+<span style="flex-grow: 1; font-size: 16px">{{fr.label}}</span>
+<sc-if value="{{fr.isMenu}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{fr.open}}" aria-haspopup="menu" style="min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: #B8391F; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer">
+{{fr.value}}
+<svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 5.5L5 2l3.5 3.5M1.5 10.5L5 14l3.5-3.5"/></svg>
+</button>
+</sc-if>
+<sc-if value="{{fr.isText}}" hint-placeholder-val="{{false}}">
+<span style="padding: 0 8px; font-size: 16px; color: #5F5A52">{{fr.value}}</span>
+</sc-if>
+<sc-if value="{{fr.isSwitch}}" hint-placeholder-val="{{false}}">
+<button type="button" role="switch" aria-checked="{{fr.checked}}" aria-label="{{fr.label}}" onClick="{{fr.toggle}}" style="{{fr.switchStyle}}"><span style="{{fr.knobStyle}}"></span></button>
+</sc-if>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{showNotReady}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border: 2px dashed #CFC8BB; border-radius: 14px; padding: 16px; font-size: 15px; color: #5F5A52">{{t.notReady}}</div>
+</sc-if>
+
+<sc-if value="{{showSingle}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{openKeypad}}" aria-expanded="{{kbExpanded}}" aria-label="{{displayLabel}}" style="{{fieldStyle}}">
+<span style="font-size: 15px; color: #5F5A52; flex-grow: 1; text-align: left">{{t.result}}</span>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 38px; color: {{displayColor}}">{{display}}</span>
+<span style="font-size: 15px; color: #5F5A52; min-width: 28px">{{unit}}</span>
+</button>
+<section aria-live="polite" style="background: #FFFFFF; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: baseline; gap: 8px">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 56px; line-height: 1; color: {{pointsColor}}">{{points}}</span>
+<span style="font-size: 17px; font-weight: 600">{{t.points}}</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end">
+<span style="font-size: 13px; color: #5F5A52">{{t.p1000}}</span>
+<span style="font-size: 18px; font-weight: 700">{{thousand}}</span>
+</div>
+</div>
+<div style="font-size: 14px; color: #5F5A52">{{scoreNote}}</div>
+<sc-if value="{{hasScore}}" hint-placeholder-val="{{true}}">
+<details style="border-top: 1px solid #EEE9E0; padding-top: 6px">
+<summary style="cursor: pointer; font-weight: 600; font-size: 15px; min-height: 32px; display: flex; align-items: center">{{t.howCalc}}</summary>
+<p style="margin: 4px 0 0 0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.5">{{detail}}</p>
+</details>
+</sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{showCombinedAgeNote}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border-radius: 14px; padding: 16px; font-size: 15px; color: #5F5A52">{{t.combinedAge}}</div>
+</sc-if>
+
+<sc-if value="{{showCombined}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border-radius: 14px; display: flex; flex-direction: column">
+<sc-for list="{{rows}}" as="row" hint-placeholder-count="5">
+<div style="{{row.style}}">
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column">
+<span style="font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{row.name}}</span>
+<span style="font-size: 12px; color: #5F5A52">{{row.sub}}</span>
+</div>
+<button type="button" onClick="{{row.activate}}" aria-label="{{row.fieldLabel}}" style="{{row.fieldStyle}}">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; color: {{row.displayColor}}">{{row.display}}</span>
+</button>
+<span style="width: 48px; text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 24px; color: #B8391F">{{row.points}}</span>
+<button type="button" onClick="{{row.remove}}" aria-label="{{row.removeLabel}}" style="width: 36px; height: 44px; border: 0; background: transparent; color: #A39C90; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+</div>
+</sc-for>
+<button type="button" onClick="{{openAdd}}" aria-haspopup="menu" style="min-height: 52px; padding: 0 16px; border: 0; background: transparent; color: #B8391F; font-size: 16px; font-weight: 700; text-align: left; cursor: pointer">+ {{t.addEvent}}</button>
+</div>
+</sc-if>
+</main>
+
+<sc-if value="{{showSumBar}}" hint-placeholder-val="{{false}}">
+<footer style="background: #1C1B19; color: #F5F2EC; padding: 10px 20px 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0">
+<span style="font-size: 14px; color: #CFC8BB">{{sumNote}}</span>
+<div style="display: flex; align-items: baseline; gap: 8px">
+<span style="font-size: 15px; color: #CFC8BB">{{t.sum}}</span>
+<span aria-live="polite" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 40px; line-height: 1">{{total}}</span>
+</div>
+</footer>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{kbOpen}}" hint-placeholder-val="{{false}}">
+<div role="group" aria-label="{{kbTitle}}" style="position: absolute; left: 0; right: 0; bottom: 0; background: #E8E3D9; border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(28, 27, 25, 0.18); display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; gap: 4px; padding: 6px 8px 0 16px">
+<span style="flex-grow: 1; font-size: 14px; color: #5F5A52">{{kbTitle}}</span>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; color: #B8391F; padding: 0 6px">{{kbPoints}}</span>
+<sc-if value="{{hasNext}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{nextRow}}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; color: #1C1B19; font-size: 16px; font-weight: 700; cursor: pointer">{{t.next}} ›</button>
+</sc-if>
+<button type="button" onClick="{{closeKeypad}}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; color: #B8391F; font-size: 17px; font-weight: 700; cursor: pointer">{{t.done}}</button>
+</div>
+<div style="padding: 4px 12px 16px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+<button type="button" onClick="{{k.press}}" aria-label="{{k.aria}}" style="{{k.style}}">{{k.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{closeMenu}}" aria-label="{{t.done}}" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; border: 0; background: rgba(28, 27, 25, 0.28); cursor: default"></button>
+<div role="menu" aria-label="{{menuTitle}}" style="position: absolute; top: 130px; right: 16px; width: 290px; max-height: 600px; overflow-y: auto; background: #FFFFFF; border-radius: 14px; box-shadow: 0 12px 40px rgba(28, 27, 25, 0.28); display: flex; flex-direction: column">
+<sc-for list="{{menuSections}}" as="sec" hint-placeholder-count="2">
+<div style="padding: 10px 16px 4px 16px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5F5A52; border-top: 1px solid #EEE9E0">{{sec.title}}</div>
+<sc-for list="{{sec.items}}" as="it" hint-placeholder-count="4">
+<button type="button" role="menuitemradio" aria-checked="{{it.checked}}" onClick="{{it.pick}}" style="min-height: 44px; padding: 0 16px; border: 0; background: transparent; display: flex; align-items: center; gap: 10px; text-align: left; font-size: 16px; color: #1C1B19; cursor: pointer">
+<span style="width: 16px; color: #B8391F; font-weight: 700">{{it.mark}}</span>
+<span style="flex-grow: 1">{{it.label}}</span>
+<span style="font-size: 13px; color: #5F5A52">{{it.sub}}</span>
+</button>
+</sc-for>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lang: 'no', screen: 'home', table: 'tyrving', mode: 'single', gi: 1, cls: '13',
+      key: 'hurdles_60m|76,2cm/7,5m', digits: '1050', manual: false, kb: false, menu: null,
+      picked: ['hurdles_60m|76,2cm/7,5m', 'high_jump|', 'shot_put|2kg', 'long_jump|', 'middle_600m|'],
+      values: {
+        'hurdles_60m|76,2cm/7,5m': { digits: '1090', manual: false }, 'high_jump|': { digits: '148', manual: false },
+        'shot_put|2kg': { digits: '1040', manual: false }, 'long_jump|': { digits: '492', manual: false },
+        'middle_600m|': { digits: '1447', manual: false },
+      },
+      active: null,
+    };
+  }
+  A() { return window.APPDATA; }
+  T() { return window.TYRV; }
+  tbl() { return this.A().TABLES.find((x) => x.id === this.state.table); }
+  gcode() { return this.tbl().genders[this.state.gi]; }
+  keyOf(e) { return e.id + '|' + (e.impl || ''); }
+  events() {
+    const t = this.tbl(), A = this.A();
+    if (t.id === 'tyrving') return A.TYRVING[this.gcode() + this.state.cls] || [];
+    return t.events.map((id) => ({ id, impl: null, placeholder: true }));
+  }
+  name(e) { return this.A().eventName(e.id, this.state.lang); }
+  impl(e) { return e.impl ? this.T().implLabel(e.impl) : ''; }
+  classLabel(c) {
+    const t = this.tbl(), lang = this.state.lang;
+    if (t.classKind === 'age') return lang === 'en' ? 'Age ' + c : c + ' år';
+    if (t.classKind === 'masters') return (this.gcode() === 'W' ? (lang === 'en' ? 'W' : 'K') : 'M') + c;
+    if (lang === 'en' && t.classesEn) return t.classesEn[t.classes.indexOf(c)];
+    return c;
+  }
+  unitOf(e) {
+    const t = this.tx();
+    return e.m === 'distance' ? t.mUnit : e.min ? t.minUnit : t.secUnit;
+  }
+  tx() { return this.A().I18N[this.state.lang]; }
+  fmtH(e) {
+    const T = this.T(), h = e.p.h1000;
+    if (e.m === 'distance') return T.fmt(h.toFixed(2)) + ' m';
+    if (e.min) { const m = Math.floor(h / 60); return m + ':' + T.fmt((h - m * 60).toFixed(1)).padStart(4, '0'); }
+    return T.fmt(h.toFixed(2)) + ' s';
+  }
+  parse(e, digits) {
+    const dec = this.state.lang === 'en' ? '.' : ',';
+    if (e.m === 'time' && e.min) {
+      const d = digits.padStart(4, '0');
+      const tenth = d.slice(-1), secs = d.slice(-3, -1), mins = String(parseInt(d.slice(0, -3), 10));
+      return { v1: mins, v2: secs + ',' + tenth, display: mins + ':' + secs + dec + tenth, secondsOk: parseInt(secs, 10) < 60 };
+    }
+    const d = digits.padStart(3, '0');
+    const whole = String(parseInt(d.slice(0, -2), 10));
+    return { v1: whole + ',' + d.slice(-2), v2: '', display: whole + dec + d.slice(-2), secondsOk: true };
+  }
+  score(e, digits, manual) {
+    if (!e || e.placeholder || !digits) return { ok: false };
+    const p = this.parse(e, digits);
+    if (!p.secondsOk) return { ok: false, parsed: p, why: 'secs' };
+    const r = this.T().calc(e, p.v1, p.v2, manual);
+    if (!r.ok) return { ok: false, parsed: p };
+    if (!r.plausible) return { ok: false, parsed: p, why: 'range', range: r.range };
+    return Object.assign({ parsed: p }, r);
+  }
+  seg(sel, small) {
+    const h = small ? 36 : 40;
+    return sel
+      ? 'flex-grow: 1; min-width: 64px; height: ' + h + 'px; padding: 0 12px; border: 0; border-radius: 8px; background: #FFFFFF; color: #1C1B19; font-size: 15px; font-weight: 700; box-shadow: 0 1px 3px rgba(28,27,25,0.15); cursor: pointer'
+      : 'flex-grow: 1; min-width: 64px; height: ' + h + 'px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: #5F5A52; font-size: 15px; font-weight: 600; cursor: pointer';
+  }
+  setTable(id) {
+    const t = this.A().TABLES.find((x) => x.id === id);
+    const cls = id === 'tyrving' ? this.state.cls : t.classes[0];
+    this.setState({ table: id, screen: 'calc', cls, mode: 'single', digits: id === this.state.table ? this.state.digits : '', kb: false, menu: null, active: null,
+      key: id === this.state.table ? this.state.key : '' });
+  }
+  setClassOrGender(patch) {
+    const next = Object.assign({}, this.state, patch);
+    const t = this.tbl();
+    const evs = t.id === 'tyrving' ? (this.A().TYRVING[t.genders[next.gi] + next.cls] || []) : t.events.map((id) => ({ id, impl: null }));
+    const id = this.state.key.split('|')[0];
+    const same = evs.find((e) => e.id === id) || evs[0];
+    const picked = this.state.picked.map((k) => evs.find((e) => e.id === k.split('|')[0])).filter(Boolean).map((e) => this.keyOf(e));
+    this.setState(Object.assign(patch, { key: same ? this.keyOf(same) : '', digits: '', values: {}, picked, active: null, menu: null, kb: false }));
+  }
+  renderVals() {
+    const A = this.A(), T = this.T(), s = this.state, t = this.tx();
+    window.APP_LANG = s.lang;
+    window.APP_DECIMAL = s.lang === 'en' ? '.' : ',';
+    const langs = [['no', 'NO'], ['en', 'EN']].map(([v, label]) => ({
+      label, pressed: s.lang === v ? 'true' : 'false', pick: () => this.setState({ lang: v }),
+      style: s.lang === v
+        ? 'min-width: 48px; height: 38px; border: 0; border-radius: 8px; background: #F5F2EC; color: #1C1B19; font-size: 15px; font-weight: 700; cursor: pointer'
+        : 'min-width: 48px; height: 38px; border: 0; border-radius: 8px; background: transparent; color: #CFC8BB; font-size: 15px; font-weight: 600; cursor: pointer',
+    }));
+    const groups = ['youth', 'senior', 'masters'].map((g) => ({
+      title: t[g],
+      rows: A.TABLES.filter((x) => x.group === g).map((x, i, arr) => ({
+        name: x.name[s.lang === 'en' ? 1 : 0], sub: x.sub[s.lang === 'en' ? 1 : 0],
+        badge: x.ready ? t.ready : t.coming,
+        badgeStyle: x.ready
+          ? 'padding: 3px 10px; border-radius: 12px; background: #E3F0E8; color: #1D5B3A; font-size: 13px; font-weight: 700'
+          : 'padding: 3px 10px; border-radius: 12px; background: #EEE9E0; color: #5F5A52; font-size: 13px; font-weight: 600',
+        style: 'min-height: 62px; padding: 8px 14px 8px 16px; border: 0; background: #FFFFFF; display: flex; align-items: center; gap: 10px; cursor: pointer' + (i < arr.length - 1 ? '; border-bottom: 1px solid #EEE9E0' : ''),
+        open: () => this.setTable(x.id),
+      })),
+    }));
+    const base = { t, langs, groups, isHome: s.screen === 'home', isCalc: s.screen === 'calc', menuOpen: false, kbOpen: false, menuSections: [], keys: [] };
+    if (s.screen === 'home') return base;
+
+    const tb = this.tbl();
+    const evs = this.events();
+    const current = evs.find((e) => this.keyOf(e) === s.key) || evs[0];
+    const combinedAllowed = tb.combined && parseInt(s.cls, 10) <= 14;
+    const isCombined = tb.combined && s.mode === 'combined';
+    const gLabels = tb.genders === 'GJ' ? t.g : t.gw;
+    const genders = tb.genders.split('').map((c, i) => ({ label: gLabels[c], pressed: s.gi === i ? 'true' : 'false', style: this.seg(s.gi === i, true), pick: () => this.setClassOrGender({ gi: i }) }));
+    const modes = [['single', t.single], ['combined', t.combined]].map(([v, label]) => ({ label, pressed: s.mode === v ? 'true' : 'false', style: this.seg(s.mode === v), pick: () => this.setState({ mode: v, kb: false, active: null }) }));
+    const variants = current ? evs.filter((e) => e.id === current.id) : [];
+    const rowStyle = 'min-height: 52px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #EEE9E0';
+    const lastRowStyle = 'min-height: 52px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 12px';
+    const formRows = [{ label: tb.classKind === 'age' ? t.age : t.klass, value: this.classLabel(s.cls), isMenu: true, open: () => this.setState({ menu: 'class' }) }];
+    if (!isCombined && current) {
+      formRows.push({ label: t.event, value: this.name(current), isMenu: true, open: () => this.setState({ menu: 'event' }) });
+      if (variants.length > 1) formRows.push({ label: t.implement, value: this.impl(current), isMenu: true, open: () => this.setState({ menu: 'impl' }) });
+      else if (current.impl) formRows.push({ label: t.implement, value: this.impl(current), isText: true });
+      if (current.man) {
+        const on = !!s.manual;
+        const add = T.fmt({ 60: '0.20', 80: '0.20', 300: '0.20', 100: '0.24', 110: '0.24', 200: '0.24', 400: '0.14' }[A.distanceOf(current.id)]);
+        formRows.push({ label: t.manual + ' (+' + add + ' s)', isSwitch: true, checked: on ? 'true' : 'false', toggle: () => this.setState({ manual: !s.manual }),
+          switchStyle: 'position: relative; width: 52px; height: 32px; border: 0; border-radius: 16px; background: ' + (on ? '#B8391F' : '#D6CFC2') + '; cursor: pointer; flex-shrink: 0',
+          knobStyle: 'position: absolute; top: 3px; left: ' + (on ? '23px' : '3px') + '; width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)' });
+      }
+    }
+    formRows.forEach((r, i) => { r.rowStyle = i < formRows.length - 1 ? rowStyle : lastRowStyle; r.isMenu = !!r.isMenu; r.isText = !!r.isText; r.isSwitch = !!r.isSwitch; });
+
+    // Meny
+    const byCategory = (list, pickFn, isChecked) => ['run', 'hurdles', 'walk', 'jumps', 'throws'].map((c) => {
+      const seen = [];
+      const items = list.filter((e) => A.category(e.id) === c && !seen.includes(e.id) && seen.push(e.id))
+        .map((e) => ({ label: this.name(e), sub: '', checked: isChecked(e) ? 'true' : 'false', mark: isChecked(e) ? '✓' : '', pick: () => pickFn(e) }));
+      return { title: t.cats[c], items };
+    }).filter((sec) => sec.items.length);
+    let menuSections = [], menuTitle = '';
+    if (s.menu === 'class') {
+      menuTitle = formRows[0].label;
+      menuSections = [{ title: menuTitle, items: tb.classes.map((c) => ({ label: this.classLabel(c), sub: '', checked: c === s.cls ? 'true' : 'false', mark: c === s.cls ? '✓' : '', pick: () => this.setClassOrGender({ cls: c }) })) }];
+    } else if (s.menu === 'event') {
+      menuTitle = t.event;
+      menuSections = byCategory(evs, (e) => this.setState({ key: this.keyOf(e), digits: '', manual: false, menu: null }), (e) => current && e.id === current.id);
+    } else if (s.menu === 'impl') {
+      menuTitle = t.implement;
+      menuSections = [{ title: this.name(current), items: variants.map((e) => ({ label: this.impl(e), sub: '', checked: this.keyOf(e) === this.keyOf(current) ? 'true' : 'false', mark: this.keyOf(e) === this.keyOf(current) ? '✓' : '', pick: () => this.setState({ key: this.keyOf(e), digits: '', menu: null }) })) }];
+    } else if (s.menu === 'add') {
+      menuTitle = t.addEvent;
+      const pickedIds = s.picked.map((k) => k.split('|')[0]);
+      menuSections = byCategory(evs.filter((e) => !pickedIds.includes(e.id)), (e) => this.setState({ picked: s.picked.concat([this.keyOf(e)]), active: this.keyOf(e), menu: null }), () => false);
+    }
+
+    // Tastatur
+    const activeEvent = isCombined ? evs.find((e) => this.keyOf(e) === s.active) : current;
+    const activeDigits = isCombined ? ((s.values[s.active] || {}).digits || '') : s.digits;
+    const setDigits = (d) => {
+      if (isCombined) { const v = Object.assign({}, s.values); v[s.active] = Object.assign({ digits: '', manual: false }, v[s.active], { digits: d }); this.setState({ values: v }); }
+      else this.setState({ digits: d });
+    };
+    const maxDigits = activeEvent && activeEvent.m === 'time' && activeEvent.min ? 6 : 5;
+    const digitStyle = 'height: 50px; border: 0; border-radius: 12px; background: #FFFFFF; color: #1C1B19; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 26px; cursor: pointer';
+    const fnStyle = 'height: 50px; border: 0; border-radius: 12px; background: #D6CFC2; color: #1C1B19; font-size: 16px; font-weight: 700; cursor: pointer';
+    const add = (d) => () => { if (activeDigits.length < maxDigits && !(activeDigits === '' && d === '0')) setDigits(activeDigits + d); };
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((d) => ({ label: d, aria: d, press: add(d), style: digitStyle }));
+    keys.push({ label: t.clear, aria: t.clear, press: () => setDigits(''), style: fnStyle });
+    keys.push({ label: '0', aria: '0', press: add('0'), style: digitStyle });
+    keys.push({ label: '⌫', aria: 'Backspace', press: () => setDigits(activeDigits.slice(0, -1)), style: fnStyle });
+
+    // Enkeltøvelse
+    const r = !isCombined && current ? this.score(current, s.digits, s.manual) : { ok: false };
+    let scoreNote = '';
+    if (r.ok) scoreNote = t.calcAs + ' ' + r.used + (r.steps.length ? ' · ' + r.steps.join(' · ') : '');
+    else if (r.why === 'range') scoreNote = t.outOfRange + ' (' + r.range + ')';
+    else if (r.why === 'secs') scoreNote = s.lang === 'en' ? 'Seconds must be below 60' : 'Sekundene må være under 60';
+    else scoreNote = t.tapToEnter;
+
+    // Mangekamp
+    let total = 0, missing = 0;
+    const rows = isCombined && combinedAllowed ? s.picked.map((k, i) => {
+      const e = evs.find((x) => this.keyOf(x) === k);
+      if (!e) return null;
+      const v = s.values[k] || { digits: '', manual: false };
+      const sc = this.score(e, v.digits, v.manual);
+      if (sc.ok) total += sc.points; else missing += 1;
+      const on = s.active === k;
+      return {
+        name: this.name(e) + (e.impl ? ' · ' + this.impl(e) : ''),
+        sub: t.p1000 + ': ' + this.fmtH(e),
+        display: v.digits ? this.parse(e, v.digits).display : '–',
+        displayColor: v.digits ? '#1C1B19' : '#A39C90',
+        points: sc.ok ? String(sc.points) : '–',
+        fieldLabel: t.result + ' ' + this.name(e),
+        removeLabel: t.remove + ' ' + this.name(e),
+        style: 'min-height: 56px; padding: 4px 4px 4px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #EEE9E0' + (on ? '; background: #FBF1EE' : ''),
+        fieldStyle: 'width: 92px; height: 44px; box-sizing: border-box; border: 2px solid ' + (on ? '#B8391F' : '#E2DDD3') + '; border-radius: 10px; background: #FFFFFF; padding: 0 10px; display: flex; align-items: center; justify-content: flex-end; cursor: pointer',
+        activate: () => this.setState({ active: k }),
+        remove: () => this.setState({ picked: s.picked.filter((x) => x !== k), active: s.active === k ? null : s.active }),
+        k,
+      };
+    }).filter(Boolean) : [];
+    const idx = rows.findIndex((x) => x.k === s.active);
+    const next = idx >= 0 && idx < rows.length - 1 ? rows[idx + 1] : null;
+    const activeScore = activeEvent ? this.score(activeEvent, activeDigits, isCombined ? (s.values[s.active] || {}).manual : s.manual) : { ok: false };
+
+    return Object.assign(base, {
+      tableName: tb.name[s.lang === 'en' ? 1 : 0],
+      goHome: () => this.setState({ screen: 'home', kb: false, menu: null, active: null }),
+      hasModes: !!tb.combined, modes, genders, formRows,
+      showNotReady: !tb.ready,
+      showSingle: tb.ready && !isCombined,
+      showCombined: tb.ready && isCombined && combinedAllowed,
+      showCombinedAgeNote: tb.ready && isCombined && !combinedAllowed,
+      showSumBar: tb.ready && isCombined && combinedAllowed && !s.active,
+      menuOpen: !!s.menu, menuSections, menuTitle, closeMenu: () => this.setState({ menu: null }),
+      openAdd: () => this.setState({ menu: 'add' }),
+      kbOpen: isCombined ? !!s.active : s.kb,
+      kbTitle: activeEvent ? this.name(activeEvent) + ' · ' + this.unitOf(activeEvent) : '',
+      kbPoints: activeScore.ok ? activeScore.points + ' p' : '',
+      hasNext: isCombined && !!next,
+      nextRow: () => next && this.setState({ active: next.k }),
+      closeKeypad: () => this.setState({ kb: false, active: null }),
+      keys,
+      openKeypad: () => this.setState({ kb: true }),
+      kbExpanded: s.kb ? 'true' : 'false',
+      fieldStyle: 'min-height: 60px; box-sizing: border-box; border: 2px solid ' + (s.kb ? '#B8391F' : '#E2DDD3') + '; border-radius: 14px; background: #FFFFFF; padding: 0 16px; display: flex; align-items: center; gap: 8px; cursor: pointer',
+      display: current && s.digits ? this.parse(current, s.digits).display : (current && !current.placeholder ? this.fmtH(current).replace(/ [ms]$/, '') : ''),
+      displayColor: s.digits ? '#1C1B19' : '#A39C90',
+      displayLabel: t.result + ': ' + (s.digits && current ? this.parse(current, s.digits).display : '–'),
+      unit: current ? (current.m === 'distance' ? 'm' : current.min ? 'min' : 's') : '',
+      points: r.ok ? String(r.points) : '–',
+      pointsColor: r.ok ? '#B8391F' : '#A39C90',
+      thousand: current && !current.placeholder ? this.fmtH(current) : '',
+      scoreNote, hasScore: !!r.ok, detail: r.ok ? r.detail : '',
+      rows, total: total.toLocaleString(s.lang === 'en' ? 'en-GB' : 'nb-NO'),
+      sumNote: missing ? missing + ' ' + t.missing : t.allSet,
+    });
+  }
+}
+</script>
+</body>
+</html>

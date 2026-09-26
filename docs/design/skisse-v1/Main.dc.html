@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Tyrvingpoeng – kalkulator</title>
+<script src="./support.js"></script>
+<script src="./tyrving-sketch.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;background:#F5F2EC;color:#1C1B19}
+a{color:#B8391F}a:hover{color:#8F2A15}
+button{font-family:inherit}
+input{font-family:inherit}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #1F5E8C;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #F5F2EC; display: flex; flex-direction: column">
+<header style="padding: 20px 20px 12px 20px; display: flex; flex-direction: column; gap: 14px; background: #1C1B19; color: #F5F2EC">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 34px; letter-spacing: 0.5px">Tyrvingpoeng</h1>
+<span style="font-size: 13px; color: #CFC8BB">2014-tabellen</span>
+</div>
+<nav aria-label="Visning" style="display: flex; gap: 6px">
+<a href="Main.dc.html" aria-current="page" style="flex-grow: 1; text-align: center; padding: 10px 0; border-radius: 10px; background: #B8391F; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 15px">Kalkulator</a>
+<a href="Mangekamp.dc.html" style="flex-grow: 1; text-align: center; padding: 10px 0; border-radius: 10px; background: #2E2C28; color: #F5F2EC; text-decoration: none; font-weight: 600; font-size: 15px">Mangekamp</a>
+</nav>
+</header>
+
+<main style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 16px 20px 20px 20px; display: flex; flex-direction: column; gap: 18px">
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Klasse</h2>
+<div style="display: flex; gap: 6px; background: #E8E3D9; padding: 4px; border-radius: 12px">
+<sc-for list="{{genders}}" as="g" hint-placeholder-count="2">
+<button type="button" onClick="{{g.pick}}" aria-pressed="{{g.pressed}}" style="{{g.style}}">{{g.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{ages}}" as="a" hint-placeholder-count="4">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.pressed}}" style="{{a.style}}">{{a.label}}</button>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 13px; color: #5F5A52">Skisse: 11, 13, 15 og 17 år. Den ferdige løsningen har 10–19 år.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Øvelse</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{events}}" as="ev" hint-placeholder-count="8">
+<button type="button" onClick="{{ev.pick}}" aria-pressed="{{ev.pressed}}" style="{{ev.style}}">{{ev.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{hasImplementChoice}}" hint-placeholder-val="{{false}}">
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Utstyr</h2>
+<p style="margin: 0; font-size: 14px; color: #5F5A52">Øvelsen finnes med flere hekkehøyder. Velg den som ble brukt.</p>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{implements}}" as="im" hint-placeholder-count="2">
+<button type="button" onClick="{{im.pick}}" aria-pressed="{{im.pressed}}" style="{{im.style}}">{{im.label}}</button>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #5F5A52">Resultat</h2>
+<span style="font-size: 14px; color: #5F5A52">{{implementNote}}</span>
+</div>
+<button type="button" onClick="{{openKeypad}}" aria-expanded="{{kbExpanded}}" aria-label="{{displayLabel}}" style="{{fieldStyle}}">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 40px; letter-spacing: 0.5px; color: {{displayColor}}">{{display}}</span>
+<span style="font-size: 16px; color: #5F5A52">{{unit}}</span>
+</button>
+<p style="margin: 0; font-size: 13px; color: #5F5A52">{{hint}}</p>
+<sc-if value="{{manualAllowed}}" hint-placeholder-val="{{true}}">
+<label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 16px">
+<input type="checkbox" checked="{{manual}}" onChange="{{toggleManual}}" style="width: 22px; height: 22px; accent-color: #B8391F">
+Manuell tidtaking <span style="color: #5F5A52">(legger til {{manualAdd}})</span>
+</label>
+</sc-if>
+</section>
+
+<section aria-live="polite" style="background: #FFFFFF; border: 1px solid #E2DDD3; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid #E2DDD3">
+<span style="font-size: 14px; font-weight: 600; color: #5F5A52">1000 poeng</span>
+<span style="font-size: 18px; font-weight: 700">{{thousandResult}}</span>
+</div>
+<sc-if value="{{hasScore}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; align-items: baseline; gap: 10px">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 64px; line-height: 1; color: #B8391F">{{points}}</span>
+<span style="font-size: 18px; font-weight: 600">poeng</span>
+</div>
+<div style="font-size: 15px">{{eventTitle}} · {{usedResult}}</div>
+<sc-for list="{{steps}}" as="st" hint-placeholder-count="0">
+<div style="font-size: 14px; color: #5F5A52">{{st.text}}</div>
+</sc-for>
+<details style="border-top: 1px solid #E2DDD3; padding-top: 10px">
+<summary style="cursor: pointer; font-weight: 600; font-size: 15px; min-height: 32px">Slik er det regnet</summary>
+<p style="margin: 8px 0 0 0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.5; color: #1C1B19">{{detail}}</p>
+</details>
+</sc-if>
+<sc-if value="{{noScore}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 16px; color: #5F5A52">{{emptyText}}</div>
+</sc-if>
+</section>
+</main>
+<sc-if value="{{kbOpen}}" hint-placeholder-val="{{false}}">
+<div role="group" aria-label="Talltastatur" style="background: #E8E3D9; border-top: 1px solid #CFC8BB; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px 0 16px">
+<span style="font-size: 14px; color: #5F5A52">{{kbTitle}}</span>
+<button type="button" onClick="{{closeKeypad}}" style="min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: #B8391F; font-size: 17px; font-weight: 700; cursor: pointer">Ferdig</button>
+</div>
+<div style="padding: 4px 12px 16px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+<button type="button" onClick="{{k.press}}" aria-label="{{k.aria}}" style="{{k.style}}">{{k.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { gender: 'G', age: '15', key: 'sprint_60m|', digits: '740', manual: true, kbOpen: false };
+  }
+  chip(selected) {
+    return selected
+      ? 'min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px solid #B8391F; background: #B8391F; color: #FFFFFF; font-size: 16px; font-weight: 700; cursor: pointer'
+      : 'min-height: 44px; padding: 0 16px; border-radius: 22px; border: 2px solid #CFC8BB; background: #FFFFFF; color: #1C1B19; font-size: 16px; font-weight: 600; cursor: pointer';
+  }
+  seg(selected) {
+    return selected
+      ? 'flex-grow: 1; min-height: 44px; border: 0; border-radius: 9px; background: #FFFFFF; color: #1C1B19; font-size: 16px; font-weight: 700; cursor: pointer'
+      : 'flex-grow: 1; min-height: 44px; border: 0; border-radius: 9px; background: transparent; color: #5F5A52; font-size: 16px; font-weight: 600; cursor: pointer';
+  }
+  thousand(e) {
+    const T = window.TYRV;
+    const h = e.p.h1000;
+    if (e.m === 'distance') return T.fmt(h.toFixed(2)) + ' m';
+    if (e.min) {
+      const m = Math.floor(h / 60);
+      return m + ':' + T.fmt((h - m * 60).toFixed(1)).padStart(4, '0');
+    }
+    return T.fmt(h.toFixed(2)) + ' s';
+  }
+  // Sifre fylles inn fra høyre, som beløp i Apple Cash: 7-4-0 gir 7,40. Lange løp: 2-0-4-5 gir 2:04,5.
+  parse(e, digits) {
+    if (!e) return { v1: '', v2: '', display: '', secondsOk: true };
+    if (e.m === 'time' && e.min) {
+      const d = digits.padStart(4, '0');
+      const tenth = d.slice(-1), secs = d.slice(-3, -1), mins = String(parseInt(d.slice(0, -3), 10));
+      return { v1: mins, v2: secs + ',' + tenth, display: mins + ':' + secs + ',' + tenth, secondsOk: parseInt(secs, 10) < 60 };
+    }
+    const d = digits.padStart(3, '0');
+    const whole = String(parseInt(d.slice(0, -2), 10));
+    return { v1: whole + ',' + d.slice(-2), v2: '', display: whole + ',' + d.slice(-2), secondsOk: true };
+  }
+  key(label, aria, press, style) { return { label, aria, press, style }; }
+  list(gender, age) { return (window.TYRV && window.TYRV.DATA[gender + age]) || []; }
+  setClass(gender, age) {
+    const T = window.TYRV;
+    const evs = this.list(gender, age);
+    const currentId = this.state.key.split('|')[0];
+    const same = evs.find((e) => e.id === currentId);
+    this.setState({ gender, age, key: same ? T.key(same) : (evs[0] ? T.key(evs[0]) : ''), digits: '', manual: false });
+  }
+  renderVals() {
+    const T = window.TYRV;
+    const s = this.state;
+    const evs = this.list(s.gender, s.age);
+    const current = evs.find((e) => T && T.key(e) === s.key) || evs[0];
+    const seenIds = [];
+    const events = evs.filter((e) => { if (seenIds.includes(e.id)) return false; seenIds.push(e.id); return true; })
+      .map((e) => {
+        const sel = current && current.id === e.id;
+        return { label: e.name, pressed: sel ? 'true' : 'false', style: this.chip(sel),
+          pick: () => this.setState({ key: T.key(e), digits: '', manual: false }) };
+      });
+    const variants = current ? evs.filter((e) => e.id === current.id) : [];
+    const implementsList = variants.map((e) => {
+      const sel = T.key(e) === T.key(current);
+      return { label: T.implLabel(e.impl), pressed: sel ? 'true' : 'false', style: this.chip(sel), pick: () => this.setState({ key: T.key(e), digits: '' }) };
+    });
+    const parsed = this.parse(current, s.digits);
+    let r = current ? T.calc(current, parsed.v1, parsed.v2, s.manual) : { ok: false, error: 'Velg en øvelse' };
+    if (!s.digits) r = { ok: false, error: 'Trykk på resultatfeltet for å taste inn' };
+    else if (!parsed.secondsOk) r = { ok: false, error: 'Sekundene må være under 60' };
+    else if (r.ok && !r.plausible) r = { ok: false, error: 'Utenfor rimelig område for øvelsen (' + r.range + '). Tast videre.' };
+    const maxDigits = current && current.m === 'time' && current.min ? 6 : 5;
+    const digitStyle = 'height: 52px; border: 0; border-radius: 12px; background: #FFFFFF; color: #1C1B19; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 28px; cursor: pointer';
+    const fnStyle = 'height: 52px; border: 0; border-radius: 12px; background: #D6CFC2; color: #1C1B19; font-size: 17px; font-weight: 700; cursor: pointer';
+    const add = (d) => () => {
+      const cur = this.state.digits;
+      if (cur.length >= maxDigits || (cur === '' && d === '0')) return;
+      this.setState({ digits: cur + d });
+    };
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((d) => this.key(d, d, add(d), digitStyle));
+    keys.push(this.key('Tøm', 'Tøm resultatet', () => this.setState({ digits: '' }), fnStyle));
+    keys.push(this.key('0', '0', add('0'), digitStyle));
+    keys.push(this.key('⌫', 'Slett siste siffer', () => this.setState({ digits: this.state.digits.slice(0, -1) }), fnStyle));
+    const addTable = { 60: '0,20 s', 80: '0,20 s', 300: '0,20 s', 100: '0,24 s', 110: '0,24 s', 200: '0,24 s', 400: '0,14 s' };
+    const dist = current ? (current.id.match(/_(\d+)m$/) || [])[1] : null;
+    return {
+      genders: [['G', 'Gutter'], ['J', 'Jenter']].map(([v, label]) => ({ label, pressed: s.gender === v ? 'true' : 'false', style: this.seg(s.gender === v), pick: () => this.setClass(v, s.age) })),
+      ages: ['11', '13', '15', '17'].map((a) => ({ label: a + ' år', pressed: s.age === a ? 'true' : 'false', style: this.chip(s.age === a), pick: () => this.setClass(s.gender, a) })),
+      events,
+      hasImplementChoice: variants.length > 1,
+      implements: implementsList,
+      implementNote: current && current.impl && variants.length === 1 ? T.implLabel(current.impl) : '',
+      keys,
+      kbOpen: s.kbOpen,
+      kbExpanded: s.kbOpen ? 'true' : 'false',
+      kbTitle: current ? current.name + (current.m === 'distance' ? ' · meter' : current.min ? ' · min:sek' : ' · sekunder') : '',
+      openKeypad: () => this.setState({ kbOpen: true }),
+      closeKeypad: () => this.setState({ kbOpen: false }),
+      fieldStyle: 'width: 100%; height: 64px; box-sizing: border-box; border: 2px solid ' + (s.kbOpen ? '#B8391F' : '#CFC8BB') + '; border-radius: 14px; background: #FFFFFF; padding: 0 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; cursor: pointer',
+      display: s.digits ? parsed.display : (current ? this.thousand(current).replace(/ [ms]$/, '') : ''),
+      displayColor: s.digits ? '#1C1B19' : '#A39C90',
+      displayLabel: 'Resultat: ' + (s.digits ? parsed.display : 'tomt'),
+      unit: current && current.m === 'distance' ? 'm' : (current && current.min ? 'min:sek' : 's'),
+      hint: current ? 'Trykk på feltet og tast bare sifre: ' + (current.m === 'distance' ? '5-2-0 blir 5,20 m.' : current.min ? '2-0-4-5 blir 2:04,5.' : '7-4-0 blir 7,40 s.') : '',
+      manualAllowed: !!(current && current.man),
+      manualAdd: addTable[dist] || '',
+      manual: s.manual,
+      toggleManual: (e) => this.setState({ manual: e.target.checked }),
+      hasScore: r.ok, noScore: !r.ok,
+      points: r.ok ? r.points : '',
+      usedResult: r.ok ? 'regnet som ' + r.used : '',
+      eventTitle: current ? (s.gender === 'G' ? 'Gutter ' : 'Jenter ') + s.age + ' · ' + current.name : '',
+      steps: r.ok ? r.steps.map((t) => ({ text: t })) : [],
+      detail: r.ok ? r.detail : '',
+      emptyText: r.error || '',
+      thousandResult: current ? this.thousand(current) : '',
+    };
+  }
+}
+</script>
+</body>
+</html>
