@@ -20,28 +20,28 @@ Slå opp i `sources/tyrving/tyrving-2014-gutter.pdf` / `-jenter.pdf`. Regn ut po
 
 | Klasse | Øvelse | Utstyr | Resultat | Fasit | Rad i regnearket | OK? |
 |---|---|---|---|---|---|---|
-| G15 | javelin | 0,6kg | 57.20 m | 1052 | Gutter 15 år rad 36 || ✅ |
-| G10 | ball_throw | 150g | 43.20 m | 928 | Gutter 10 år rad 22 || ✅ |
-| J14 | shot_put | 3kg | 8.64 m | 870 | Jenter 14 år rad 32 || ✅ |
-| J17 | sprint_100m | — | 13.86 s | 798 | Jenter 17 år rad 8 || ✅ |
-| J15 | long_jump | — | 4.82 m | 886 | Jenter 15 år rad 30 || ✅ |
-| J17 | steeplechase_3000m | 76,2cm | 12:50.0 | 860 | Jenter 17 år rad 28 || ✅ (nettside: fasit mangler, håndregnet 860) |
-| G13 | discus | 0,75kg | 44.00 m | 1052 | Gutter 13 år rad 26 || ✅ |
-| J13 | middle_600m | — | 1:52.2 | 755 | Jenter 13 år rad 11 || ✅ |
-| J12 | high_jump | — | 1.58 m | 1105 | Jenter 12 år rad 17 || ✅ |
-| G19 | steeplechase_3000m | 91,4cm | 8:46.5 | 1157 | Gutter 19 år rad 32 || ✅ |
-| J14 | discus | 0,75kg | 34.20 m | 886 | Jenter 14 år rad 33 || ✅ |
-| J18 | racewalk_1000m | — | 4:01.2 | 1187 | Jenter 18 år rad 20 || ✅ |
+| G15 | javelin | 0,6kg | 57.20 m | 1052 | Gutter 15 år rad 36 | ✅ |
+| G10 | ball_throw | 150g | 43.20 m | 928 | Gutter 10 år rad 22 | ✅ |
+| J14 | shot_put | 3kg | 8.64 m | 870 | Jenter 14 år rad 32 | ✅ |
+| J17 | sprint_100m | — | 13.86 s | 798 | Jenter 17 år rad 8 | ✅ |
+| J15 | long_jump | — | 4.82 m | 886 | Jenter 15 år rad 30 | ✅ |
+| J17 | steeplechase_3000m | 76,2cm | 12:50.0 | 860 | Jenter 17 år rad 28 | ✅ (nettside: fasit mangler, håndregnet 860) |
+| G13 | discus | 0,75kg | 44.00 m | 1052 | Gutter 13 år rad 26 | ✅ |
+| J13 | middle_600m | — | 1:52.2 | 755 | Jenter 13 år rad 11 | ✅ |
+| J12 | high_jump | — | 1.58 m | 1105 | Jenter 12 år rad 17 | ✅ |
+| G19 | steeplechase_3000m | 91,4cm | 8:46.5 | 1157 | Gutter 19 år rad 32 | ✅ |
+| J14 | discus | 0,75kg | 34.20 m | 886 | Jenter 14 år rad 33 | ✅ |
+| J18 | racewalk_1000m | — | 4:01.2 | 1187 | Jenter 18 år rad 20 | ✅ |
 
 **De tre rettede radene** (her gjelder PDF-en, ikke regnearket):
 
 | Klasse | Øvelse | Utstyr | Resultat | Fasit | OK? |
 |---|---|---|---|---|---|
-| G19 | distance_2000m | — | 6:11.8 | 847 || ✅ |
-| J17 | shot_put | 3kg | 10.08 m | 848 (PDF: 80 % = 10.08 → 848) || ✅ |
-| J17 | shot_put | 3kg | 13.86 m | 1037 || ✅ |
-| J15 | javelin | 0,5kg | 30.40 m | 810 (PDF: 80 % = 30.40 → 810) || ✅ |
-| J15 | javelin | 0,5kg | 41.80 m | 1049 || ✅ |
+| G19 | distance_2000m | — | 6:11.8 | 847 | ✅ |
+| J17 | shot_put | 3kg | 10.08 m | 848 (PDF: 80 % = 10.08 → 848) | ✅ |
+| J17 | shot_put | 3kg | 13.86 m | 1037 | ✅ |
+| J15 | javelin | 0,5kg | 30.40 m | 810 (PDF: 80 % = 30.40 → 810) | ✅ |
+| J15 | javelin | 0,5kg | 41.80 m | 1049 | ✅ |
 
 ## Kvalitetssikring mot Rjukan IL sin Tyrvingkalkulator (Code, 2026-09-26)
 
