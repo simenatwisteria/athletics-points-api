@@ -11,11 +11,13 @@ from athletics_scoring.models import (
 )
 from athletics_scoring.registry import Registry
 from athletics_scoring.tyrving import TyrvingCalculator
+from athletics_scoring.wa_combined_events import CombinedEventsCalculator
 
 __version__ = "0.1.0"
 
 __all__ = [
     "CombinedEventInput",
+    "CombinedEventsCalculator",
     "CombinedScoreResult",
     "EventInfo",
     "Gender",
@@ -32,4 +34,5 @@ def default_registry() -> Registry:
     """Registry med alle poengsystemene pakken har i dag."""
     registry = Registry()
     registry.register(TyrvingCalculator())
+    registry.register(CombinedEventsCalculator())
     return registry
