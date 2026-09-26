@@ -103,6 +103,10 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   `sources/` er byte-identiske med Simens nedlasting samme dag. PDF-ene har ukjent opphav, men identisk innhold, og
   brukes videre av koden fordi de kan leses uten LibreOffice. Ingen tall endres. NFIFs gjeldende `.xls` avviker
   fra tabellen på to rader (G19 2000 m, J17 kule).
+- **2026-09-26** — **Rimelig område per øvelse** (`InputSpec.plausible_min/max`, `ScoreResult.within_plausible_range`):
+  0,6–3,0 × 1000p-nivået for tid og 0,2–1,6 × for distanse. Det er brukerhjelp, ikke regel: frontenden viser ikke
+  poeng utenfor området, fordi resultatet trolig er halvveis tastet inn. Motoren beregner poeng uansett. Kom fra
+  tastatur-skissen, der sifre fylles inn fra høyre (1-0-9 = 1,09 s gir 2711 poeng underveis).
 - **2026-09-26** — **Regeltolkningen er låst (AP-007).** Tillegg for manuell tid gjelder etter distanse, også for hekk.
   Løp fra 600 m og oppover får ingen tillegg. Manuell tid på 40 m avvises. Resultat 0 eller et manglende resultat
   avvises, mens negativ poengsum for et gyldig resultat gir 0.

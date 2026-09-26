@@ -59,6 +59,10 @@ class InputSpec:
     """Tiden oppgis naturlig som minutter og sekunder (lange løp)."""
     manual_timing_allowed: bool
     """Regelverket har tillegg for manuell tid på øvelsen."""
+    plausible_min: float
+    plausible_max: float
+    """Rimelig område for resultatet (sekunder eller meter). Brukerhjelp, ikke en regel: utenfor
+    området er resultatet trolig ufullstendig eller feiltastet, men poeng beregnes likevel."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,6 +93,8 @@ class ScoreResult:
     calculation_detail: str
     calculation_steps: tuple[CalculationStep, ...] = field(default_factory=tuple)
     implement: str | None = None
+    within_plausible_range: bool = True
+    """Om resultatet er innenfor øvelsens rimelige område (se ``InputSpec``)."""
 
 
 @dataclass(frozen=True, slots=True)

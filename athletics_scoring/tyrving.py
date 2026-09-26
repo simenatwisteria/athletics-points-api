@@ -19,7 +19,7 @@ import json
 import math
 import re
 from collections.abc import Mapping
-from decimal import ROUND_DOWN, Decimal
+from decimal import ROUND_CEILING, ROUND_DOWN, ROUND_FLOOR, Decimal
 from functools import cached_property
 from importlib import resources
 from typing import Any, ClassVar
@@ -59,6 +59,12 @@ MANUAL_TIMING_ADDITION = {
 EIGHTY_PERCENT = Decimal("0.8")
 # Mangekamp regnes med Tyrving under 15 år; fra 15 år gjelder WA-tabellene (BESLUTNINGER kap. 3).
 COMBINED_MAX_AGE = 14
+# Rimelig område som andel av 1000p-nivået (beslutning 2026-09-26). Brukerhjelp, ikke regel:
+# en frontend viser ikke poeng utenfor området, fordi resultatet trolig er halvveis tastet inn.
+PLAUSIBLE_RANGE = {
+    "time": (Decimal("0.6"), Decimal("3.0")),
+    "distance": (Decimal("0.2"), Decimal("1.6")),
+}
 
 
 def _dec(value: float | int) -> Decimal:
@@ -75,16 +81,34 @@ def _distance(event_id: str) -> int | None:
     return int(match.group(1)) if match else None
 
 
+def _resolution(entry: dict[str, Any]) -> Decimal:
+    return (
+        Decimal("0.1") if entry["measure"] == "time" and entry["scale"] == 10 else Decimal("0.01")
+    )
+
+
+def _plausible_range(entry: dict[str, Any]) -> tuple[Decimal, Decimal]:
+    """Rimelig område: nedre grense rundet opp, øvre rundet ned til øvelsens oppløsning."""
+    low, high = PLAUSIBLE_RANGE[entry["measure"]]
+    h1000 = _dec(entry["params"]["h1000"])
+    resolution = _resolution(entry)
+    lower = (h1000 * low / resolution).to_integral_value(rounding=ROUND_CEILING) * resolution
+    upper = (h1000 * high / resolution).to_integral_value(rounding=ROUND_FLOOR) * resolution
+    return lower, upper
+
+
 def _input_spec(entry: dict[str, Any]) -> InputSpec:
-    if entry["measure"] == "distance":
-        return InputSpec("distance", 0.01, uses_minutes=False, manual_timing_allowed=False)
-    long_race = entry["scale"] == 10
+    lower, upper = _plausible_range(entry)
+    long_race = entry["measure"] == "time" and entry["scale"] == 10
     return InputSpec(
-        "time",
-        0.1 if long_race else 0.01,
+        entry["measure"],
+        float(_resolution(entry)),
         uses_minutes=long_race,
-        manual_timing_allowed=not long_race
+        manual_timing_allowed=entry["measure"] == "time"
+        and not long_race
         and _distance(entry["event_id"]) in MANUAL_TIMING_ADDITION,
+        plausible_min=float(lower),
+        plausible_max=float(upper),
     )
 
 
@@ -232,6 +256,7 @@ class TyrvingCalculator(ScoringEngine):
             )
 
         points = max(0, math.floor(points_raw))
+        lower, upper = _plausible_range(entry)
         steps.append(CalculationStep("points_raw", float(points_raw), "før nedrunding"))
         steps.append(CalculationStep("points", float(points), "rundet ned, minst 0 (R3)"))
         return ScoreResult(
@@ -248,6 +273,7 @@ class TyrvingCalculator(ScoringEngine):
             calculation_detail=f"{detail} → {points}",
             calculation_steps=tuple(steps),
             implement=entry["implement"],
+            within_plausible_range=lower <= value <= upper,
         )
 
     def calculate_combined(

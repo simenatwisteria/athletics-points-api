@@ -195,3 +195,46 @@ def test_combined_rejects_invalid_input() -> None:
     twice = [CombinedEventInput("long_jump", Result(distance_meters=5.0))] * 2
     with pytest.raises(InvalidCombinedEventError, match="long_jump"):
         calculator.calculate_combined(Gender.MALE, "13", twice)
+
+
+# --- Rimelig område (brukerhjelp, beslutning 2026-09-26) ------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("event_id", "gender", "age", "expected"),
+    [
+        ("sprint_60m", Gender.MALE, "15", (4.53, 22.65)),
+        ("shot_put", Gender.MALE, "15", (3.06, 24.48)),
+        ("middle_800m", Gender.MALE, "15", (74.4, 372.0)),
+        ("hurdles_60m", Gender.FEMALE, "13", (6.06, 30.3)),
+    ],
+)
+def test_plausible_range(event_id: str, gender: Gender, age: str, expected: Any) -> None:
+    spec = _info(event_id, gender, age).input
+    assert (spec.plausible_min, spec.plausible_max) == pytest.approx(expected)
+
+
+def test_plausible_range_contains_1000_level_for_all_events() -> None:
+    for info in calculator.list_events():
+        h1000 = calculator.get_parameters(
+            info.event_id, info.gender, info.age_class, info.implement
+        )["h1000"]
+        assert info.input.plausible_min < h1000 < info.input.plausible_max, info
+
+
+def test_score_flags_results_outside_plausible_range() -> None:
+    def score(seconds: float) -> Any:
+        return calculator.calculate(
+            "hurdles_60m",
+            Gender.FEMALE,
+            "13",
+            Result(time_seconds=seconds),
+            implement="76,2cm/7,5m",
+        )
+
+    halfway = score(1.09)  # «1-0-9» underveis til 10,90
+    assert not halfway.within_plausible_range
+    assert halfway.points == 2711  # poeng beregnes likevel; flagget er brukerhjelp
+    assert score(10.9).within_plausible_range
+    assert score(10.9).points == 848
+    assert not score(31.0).within_plausible_range
