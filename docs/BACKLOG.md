@@ -74,8 +74,15 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   Motoren summerer fritt valgte øvelser. For at frontenden skal kunne tilby «Femkamp J13» osv., trengs NFIFs
   oversikt over hvilke mangekamper (og øvelser) som gjelder for hvilke klasser under 15 år. Legges inn som data.
 
-- **Klikkbar skisse av kalkulator og mangekamp** *(2026-09-26)*
-  Laget som Artifact for å avklare brukergrensesnittet før API-formen låses (AP-018).
+- **Klikkbar skisse, versjon 2** *(2026-09-26, til AP-018)*
+  Skissen har en startside med alle tabellene (Tyrving, WA, WA mangekamp, Serietabellen, WMA, masters
+  mangekamp), valg mellom norsk og engelsk, og et kompakt iOS-skjema med nedtrekksmenyer for klasse, øvelse og
+  utstyr. Det gir tre krav til API-et:
+  1. `GET /systems` må gi navn og beskrivelse på norsk og engelsk, gruppe (ungdom/senior/masters), om tabellen
+     er klar, klassetype (alder/klasse/masters), klasseliste og om mangekamp støttes.
+  2. Øvelsesnavn må finnes på norsk og engelsk (en felles øvelseskatalog), og kategorien (løp, hekk, kappgang,
+     hopp, kast) brukes til å gruppere menyene.
+  3. Tall formateres etter språk (komma på norsk, punktum på engelsk). Poengberegningen påvirkes ikke.
 
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
