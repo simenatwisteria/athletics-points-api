@@ -17,7 +17,12 @@ def _engine(system_: str, version_: str) -> ScoringEngine:
         version = version_
 
         def calculate(
-            self, event_id: str, gender: Gender, age_class: str, result: Result
+            self,
+            event_id: str,
+            gender: Gender,
+            age_class: str,
+            result: Result,
+            implement: str | None = None,
         ) -> ScoreResult:
             raise NotImplementedError
 
@@ -26,7 +31,9 @@ def _engine(system_: str, version_: str) -> ScoringEngine:
         ) -> list[EventInfo]:
             return []
 
-        def get_parameters(self, event_id: str, gender: Gender, age_class: str) -> Parameters:
+        def get_parameters(
+            self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
+        ) -> Parameters:
             return {}
 
     return Dummy()

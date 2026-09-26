@@ -14,8 +14,17 @@ class ScoringEngine(ABC):
 
     @abstractmethod
     def calculate(
-        self, event_id: str, gender: Gender, age_class: str, result: Result
-    ) -> ScoreResult: ...
+        self,
+        event_id: str,
+        gender: Gender,
+        age_class: str,
+        result: Result,
+        implement: str | None = None,
+    ) -> ScoreResult:
+        """Poeng for ``result``.
+
+        ``implement`` skiller varianter av samme øvelse, f.eks. hekkehøyde.
+        """
 
     @abstractmethod
     def list_events(
@@ -23,7 +32,9 @@ class ScoringEngine(ABC):
     ) -> list[EventInfo]: ...
 
     @abstractmethod
-    def get_parameters(self, event_id: str, gender: Gender, age_class: str) -> Parameters: ...
+    def get_parameters(
+        self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
+    ) -> Parameters: ...
 
     def reverse(
         self, event_id: str, gender: Gender, age_class: str, target_points: int

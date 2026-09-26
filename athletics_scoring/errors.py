@@ -15,3 +15,19 @@ class UnknownVersionError(ScoringError, LookupError):
 
 class DuplicateEngineError(ScoringError, ValueError):
     """En motor for samme (system, versjon) er allerede registrert."""
+
+
+class UnknownEventError(ScoringError, LookupError):
+    """Øvelsen finnes ikke for dette kjønnet og denne klassen."""
+
+
+class AmbiguousEventError(ScoringError, LookupError):
+    """Øvelsen finnes med flere utstyrsvarianter; ``implement`` må oppgis."""
+
+
+class InvalidResultError(ScoringError, ValueError):
+    """Resultatet mangler, er 0 eller har feil type for øvelsen."""
+
+
+class UnsupportedManualTimingError(ScoringError, ValueError):
+    """Regelverket har ikke tillegg for manuell tid på denne øvelsen."""

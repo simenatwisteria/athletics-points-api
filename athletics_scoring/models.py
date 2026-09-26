@@ -56,6 +56,7 @@ class EventInfo:
     gender: Gender
     age_class: str
     formula_type: str
+    implement: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,3 +73,4 @@ class ScoreResult:
     formula_type: str
     calculation_detail: str
     calculation_steps: tuple[CalculationStep, ...] = field(default_factory=tuple)
+    implement: str | None = None

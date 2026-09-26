@@ -28,7 +28,7 @@ hvorfor i notatet, og har stoppet.
 | 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | **Ferdig** 2026-09-26 — fasiten er låst | `ferdig/AP-005-review-tyrving-fixtures.md` |
 | 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | **Ferdig** (29 caser, 3 åpne spørsmål) | `ferdig/AP-006-tyrving-regeltolkning.md` |
 | 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Ferdig** 2026-09-26 — regeltolkningen er låst | `ferdig/AP-007-review-regeltolkning.md` |
-| 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | Ny | — |
+| 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | **Ferdig** 2026-09-26 | `ferdig/AP-008-tyrving-calculator.md` |
 | 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | Ny | — |
 
 ## Next — WA, WMA og masters (WA før masters og mangekamp)
