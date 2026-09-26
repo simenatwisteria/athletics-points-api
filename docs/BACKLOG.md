@@ -54,7 +54,7 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
 | 18 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
-| 19 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch/oppslag for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, sjekk av minfriidrett.no | Ny | — |
+| 19 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md` | Ny — venter på svar om hvor tolkningen skal ligge | — |
 | 20 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-020 | Ny | — |
 | 21 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
 | 22 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
