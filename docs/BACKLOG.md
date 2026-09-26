@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-030**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-031**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -43,6 +43,7 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 12 | AP-013 | Last ned WMA Appendix B og Age Factors 2023 til `sources/wma/` | 🧑 | — | **Ferdig** 2026-09-26 | `sources/README.md` |
 | 13 | AP-015 | Last ned NFIF masters mangekamp- og serietabeller til `sources/masters/` | 🧑 | — | **Ferdig** 2026-09-26 | `sources/README.md` |
 | 14 | AP-027 | Kildesporing: `source_documents` i parameter-JSON og `ref` (BV-nummer eller kilde) i beregningsstegene, også Tyrving. Test at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` (B-24) | 🤖 | AP-001 | **Ferdig** 2026-09-26 | `ferdig/AP-027-kildesporing.md` |
+| 14b | AP-030 | Fyll inn `document_url` for Tyrving-DOC-ene og `.xls` i `meta.source_documents` fra lenkene i `sources/README.md` (lagt inn 2026-09-26). PDF-ene og `.xlsx` beholder `null`. Kjør `extract_tyrving_params.py` på nytt og vis at bare `meta` endres | 🤖 | AP-027 | Ny | — |
 | 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | Klar | `active/AP-012-wa-combined-events.md` |
 | 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | Klar | `active/AP-016-masters-mangekamp.md` |
 | 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
@@ -96,12 +97,6 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
      hopp, kast) brukes til å gruppere menyene.
   3. Tall formateres etter språk (komma på norsk, punktum på engelsk). Poengberegningen påvirkes ikke.
 
-- **Direktelenker til Tyrving-dokumentene mangler** *(AP-027, 2026-09-26)*
-  `meta.source_documents` har `document_url: null` for alle fem Tyrving-filene, fordi `sources/README.md` bare
-  oppgir originalt filnavn for DOC-ene, ikke URL-en. Simen bør føre inn nedlastingslenkene til
-  `tyrvingtabellen-gutter-2014.doc` og `-jenter-2014.doc` i `sources/README.md`; da fylles de inn i
-  `SOURCE_DOCUMENTS` i `scripts/extract_tyrving_params.py`.
-
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
@@ -153,3 +148,4 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   bekrefter internasjonale tabeller fra 15 år og gir NFIFs egne koeffisienter (BV-021, BV-023).
 - **2026-09-26** — Oppgavemalen oppdatert etter Anthropics råd for Opus 5.5 og Claude Code (les først, kontrolltall,
   stoppregler, bevis i sluttrapporten). Oppgavefiler skrevet for AP-027, AP-012, AP-016, AP-014 og AP-028.
+- **2026-09-26** — AP-027 gjennomgått av Cowork: godkjent. Innboks-funnet om manglende lenker løst ved at lenkene er ført inn i `sources/README.md`; utfyllingen i JSON er AP-030.

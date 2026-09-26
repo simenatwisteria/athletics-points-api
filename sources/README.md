@@ -26,6 +26,13 @@ NFIF rettet spyd J15 (2018-02-28, se endringsloggen på forsiden i `.xls`), sist
 inntastede resultater. Formlene er ellers identiske med `.xls`. Den brukes fortsatt som strukturkilde for
 ekstraksjon og oracle; avvikene er dokumentert i `docs/KILDEAVVIK.md`.
 
+Nedlastingslenker (NFIF-siden: https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/):
+
+- `tyrving-2014-gutter.doc`: https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-gutter-2014.doc
+- `tyrving-2014-jenter.doc`: https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-jenter-2014.doc
+- `tyrving-2014.xls`: https://www.friidrett.no/siteassets/arrangement/poengtabell-tyrvingtabellen.xls
+- PDF-ene og `tyrving-2014-redigerbar.xlsx` har ingen offisiell nedlastingslenke (se over).
+
 | Fil | Originalt filnavn | SHA-256 | Brukes til |
 |---|---|---|---|
 | `tyrving-2014-redigerbar.xlsx` | `poengtabell-tyrvingtabellen - redigerbar.xlsx` | `713ef97f36f3194d235e4d5d85e136278f92aeb98365d5cfb593ff75ec8550df` | Strukturkilde (eldre kopi, se NB): 20 ark (G/J 10–19) med levende formler. Parameterekstraksjon og LibreOffice-oracle. |
