@@ -25,7 +25,7 @@ hvorfor i notatet, og har stoppet.
 | 2 | AP-002 | Tyrving: parameterekstraksjon Excel → `data/tyrving_parameters_2014.json` (560 kombinasjoner) + test mot Excel-celler | 🤖 | AP-001 | **Ferdig** (PDF vinner, 3 rader rettet — `KILDEAVVIK.md`) | `ferdig/AP-002-tyrving-parametre.md` |
 | 3 | AP-003 | Installer LibreOffice (`brew install --cask libreoffice`) så `soffice` finnes i PATH | 🧑 | — | **Ferdig** (LibreOffice 26.8.0.3, 2026-09-25) | — |
 | 4 | AP-004 | Tyrving: oracle-skript `scripts/oracle_tyrving.py` — rekalkulerer regnearket med LibreOffice headless og skriver `tests/fixtures/tyrving_cases.json` (2472 caser) | 🤖 | AP-002, AP-003 | **Ferdig** | `ferdig/AP-004-tyrving-oracle.md` |
-| 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | **Klar** — stikkprøve + 1 spørsmål | `active/AP-005-review-tyrving-fixtures.md` |
+| 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | **Ferdig** 2026-09-26 — fasiten er låst | `ferdig/AP-005-review-tyrving-fixtures.md` |
 | 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | **Ferdig** (29 caser, 3 åpne spørsmål) | `ferdig/AP-006-tyrving-regeltolkning.md` |
 | 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Klar** — 3 tolkninger + 3 spørsmål | `active/AP-007-review-regeltolkning.md` |
 | 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | Ny | — |
@@ -74,11 +74,6 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
 
-- **Motorens avrunding: eksakt eller regneark?** *(AP-004, avgjøres i AP-005)*
-  2471 av 2472 caser er like med eksakt desimalregning. Den siste (J11 høyde u.t. 0,06 m) er en flyttallsfeil i
-  regnearket, merket `float_edge` i fasiten. Anbefaling: motoren regner eksakt (`Decimal`) og har denne ene casen
-  som dokumentert unntak.
-
 - **Regnearket stryker ikke hundredeler i lange løp** *(AP-006)*
   Regelteksten sier at hundredeler skal strykes (R2), men regnearket regner `(D*60+E)*10` rett fram. Motoren skal
   følge regelteksten (case R2-01 – R2-03). Fasiten fra oracle bruker bare tideler i lange løp, så den er ikke
@@ -101,4 +96,8 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   `sources/` er byte-identiske med Simens nedlasting samme dag. PDF-ene har ukjent opphav, men identisk innhold, og
   brukes videre av koden fordi de kan leses uten LibreOffice. Ingen tall endres. NFIFs gjeldende `.xls` avviker
   fra tabellen på to rader (G19 2000 m, J17 kule).
+- **2026-09-26** — **Tyrving-fasiten er låst (AP-005).** Kvalitetssikret mot Rjukan IL sin Tyrvingkalkulator: 2419 av
+  2432 sammenlignbare caser er identiske, og resten er forklart av feil på nettsiden. **Motoren regner eksakt**
+  (desimal), fordi regelteksten sier at alle desimaler beholdes. Flyttallskanten testes mot `points_if_exact`.
+  **Hundredeler strykes i løp over 500 m**, slik regelteksten sier.
 - **2026-09-25** — Masters mangekamp: NFIF-tabellen er fasit (lookup), WA × WMA brukes bare til kryssverifisering. Det er NFIF som publiserer tabellen som faktisk brukes.

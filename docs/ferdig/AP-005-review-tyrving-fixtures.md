@@ -1,6 +1,6 @@
 # AP-005: Review av Tyrving-fasiten
 
-**Status:** Klar
+**Status:** Ferdig — fasiten er låst 2026-09-26
 **Opprettet:** 2026-09-25 (Code, etter AP-004)
 **Eier:** 🧑 Simen
 **Avhenger av:** AP-004
@@ -74,17 +74,21 @@ Parameterfeil på nettsiden (Word-dokumentet og fasiten er enige):
 Nettsiden har de samme verdiene som Word-dokumentet på alle tre radene der NFIFs regneark avviker (G19 2000 m, J17 kule
 3 kg, J15 spyd). Den regner også flyttallskanten eksakt (12). Begge deler støtter valgene som er gjort.
 
-## Spørsmål du må svare på
+## Spørsmål og svar
 
 1. **Flyttallskanten** (`docs/KILDEAVVIK.md`): J11 høyde u.t. 0,06 m gir 11 i regnearket og 12 eksakt. Skal
    motoren regne eksakt (desimal, i tråd med PDF-regelen) og ha denne ene casen som dokumentert unntak?
    *Code anbefaler eksakt regning:* det er regelen NFIF har skrevet, og det gjør motoren uavhengig av
    flyttallsdetaljer i regneark.
+   **Svar (Simen, 2026-09-26): eksakt regning.** Motoren bruker desimalaritmetikk. Casen med `float_edge` testes mot
+   `points_if_exact` (12), ikke `points` (11). Rjukan-kalkulatoren gir også 12.
 2. **Resultatoppløsning:** fasiten bruker hundredeler til og med 500 m og tideler over. Hvordan motoren skal
    behandle hundredeler i lange løp, er AP-006/AP-007.
+   **Svar (Simen, 2026-09-26): regelteksten følges.** Hundredeler strykes (avrundes ikke) i løp over 500 m, som i
+   R2-01 – R2-03 i `tests/fixtures/tyrving_rules.json`. Fasiten bruker bare tideler i lange løp og berøres ikke.
 
 ## Akseptansekriterier
 
 - [x] Stikkprøven stemmer med PDF-en (kontrollert mot Rjukan-kalkulatoren 2026-09-26, se over)
-- [ ] Spørsmål 1 besvart
-- [ ] Status i `docs/BACKLOG.md` satt til `Ferdig`, med dato: fasiten er låst
+- [x] Spørsmål 1 besvart
+- [x] Status i `docs/BACKLOG.md` satt til `Ferdig`, med dato: fasiten er låst
