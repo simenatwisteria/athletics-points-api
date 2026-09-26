@@ -29,5 +29,9 @@ class InvalidResultError(ScoringError, ValueError):
     """Resultatet mangler, er 0 eller har feil type for øvelsen."""
 
 
+class InvalidCombinedEventError(ScoringError, ValueError):
+    """Mangekampen er tom, har samme øvelse to ganger, eller gjelder feil klasse."""
+
+
 class UnsupportedManualTimingError(ScoringError, ValueError):
     """Regelverket har ikke tillegg for manuell tid på denne øvelsen."""

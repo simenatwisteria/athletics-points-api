@@ -3,6 +3,7 @@
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from enum import StrEnum
+from typing import Literal
 
 type Parameters = Mapping[str, float]
 """Parametre for én (øvelse, kjønn, klasse), f.eks. ``{"points_1000": 7.55, "quotient": 2.7}``."""
@@ -48,6 +49,19 @@ class CalculationStep:
 
 
 @dataclass(frozen=True, slots=True)
+class InputSpec:
+    """Hvordan et resultat for øvelsen skal tastes inn. Styrer inndatafeltet i en frontend."""
+
+    measure: Literal["time", "distance"]
+    resolution: float
+    """Minste enhet som teller: 0.01 (hundredeler/centimeter) eller 0.1 (tideler)."""
+    uses_minutes: bool
+    """Tiden oppgis naturlig som minutter og sekunder (lange løp)."""
+    manual_timing_allowed: bool
+    """Regelverket har tillegg for manuell tid på øvelsen."""
+
+
+@dataclass(frozen=True, slots=True)
 class EventInfo:
     """En øvelse slik et poengsystem tilbyr den for et gitt kjønn og en klasse."""
 
@@ -56,6 +70,7 @@ class EventInfo:
     gender: Gender
     age_class: str
     formula_type: str
+    input: InputSpec
     implement: str | None = None
 
 
@@ -74,3 +89,24 @@ class ScoreResult:
     calculation_detail: str
     calculation_steps: tuple[CalculationStep, ...] = field(default_factory=tuple)
     implement: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class CombinedEventInput:
+    """Én øvelse i en mangekamp."""
+
+    event_id: str
+    result: Result
+    implement: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class CombinedScoreResult:
+    """Mangekamp: poeng per øvelse og summen."""
+
+    total: int
+    scoring_system: str
+    version: str
+    gender: Gender
+    age_class: str
+    events: tuple[ScoreResult, ...]

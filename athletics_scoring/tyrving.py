@@ -27,14 +27,18 @@ from typing import Any, ClassVar
 from athletics_scoring.engine import ScoringEngine
 from athletics_scoring.errors import (
     AmbiguousEventError,
+    InvalidCombinedEventError,
     InvalidResultError,
     UnknownEventError,
     UnsupportedManualTimingError,
 )
 from athletics_scoring.models import (
     CalculationStep,
+    CombinedEventInput,
+    CombinedScoreResult,
     EventInfo,
     Gender,
+    InputSpec,
     Parameters,
     Result,
     ScoreResult,
@@ -53,6 +57,8 @@ MANUAL_TIMING_ADDITION = {
     400: Decimal("0.14"),
 }
 EIGHTY_PERCENT = Decimal("0.8")
+# Mangekamp regnes med Tyrving under 15 år; fra 15 år gjelder WA-tabellene (BESLUTNINGER kap. 3).
+COMBINED_MAX_AGE = 14
 
 
 def _dec(value: float | int) -> Decimal:
@@ -62,6 +68,24 @@ def _dec(value: float | int) -> Decimal:
 
 def _fmt(value: Decimal) -> str:
     return format(value.normalize(), "f").replace(".", ",")
+
+
+def _distance(event_id: str) -> int | None:
+    match = re.search(r"_(\d+)m$", event_id)
+    return int(match.group(1)) if match else None
+
+
+def _input_spec(entry: dict[str, Any]) -> InputSpec:
+    if entry["measure"] == "distance":
+        return InputSpec("distance", 0.01, uses_minutes=False, manual_timing_allowed=False)
+    long_race = entry["scale"] == 10
+    return InputSpec(
+        "time",
+        0.1 if long_race else 0.01,
+        uses_minutes=long_race,
+        manual_timing_allowed=not long_race
+        and _distance(entry["event_id"]) in MANUAL_TIMING_ADDITION,
+    )
 
 
 class TyrvingCalculator(ScoringEngine):
@@ -122,6 +146,7 @@ class TyrvingCalculator(ScoringEngine):
                 gender=Gender(e["gender"]),
                 age_class=str(e["age"]),
                 formula_type=e["formula_type"],
+                input=_input_spec(e),
                 implement=e["implement"],
             )
             for e in self._entries
@@ -157,7 +182,7 @@ class TyrvingCalculator(ScoringEngine):
             raise InvalidResultError("Resultatet må være større enn 0")
 
         if result.manual_timing and entry["scale"] == 100:
-            distance = int(re.search(r"_(\d+)m$", entry["event_id"]).group(1))  # type: ignore[union-attr]
+            distance = _distance(entry["event_id"])
             if distance not in MANUAL_TIMING_ADDITION:
                 raise UnsupportedManualTimingError(
                     f"Regelverket har ikke tillegg for manuell tid på {entry['name']}"
@@ -223,6 +248,38 @@ class TyrvingCalculator(ScoringEngine):
             calculation_detail=f"{detail} → {points}",
             calculation_steps=tuple(steps),
             implement=entry["implement"],
+        )
+
+    def calculate_combined(
+        self, gender: Gender, age_class: str, events: list[CombinedEventInput]
+    ) -> CombinedScoreResult:
+        """Mangekamp under 15 år: summen av Tyrving-poengene for hver øvelse.
+
+        Øvelsene velges fritt. Hvilke faste mangekamper som finnes per klasse, er data som kommer
+        senere (AP-009, venter på oversikt fra NFIF).
+        """
+        if not events:
+            raise InvalidCombinedEventError("Mangekampen må ha minst én øvelse")
+        if age_class.isdigit() and int(age_class) > COMBINED_MAX_AGE:
+            raise InvalidCombinedEventError(
+                f"Mangekamp fra 15 år regnes med World Athletics-tabellene, "
+                f"ikke Tyrving ({age_class} år)"
+            )
+        keys = [(e.event_id, e.implement) for e in events]
+        duplicates = sorted({k[0] for k in keys if keys.count(k) > 1})
+        if duplicates:
+            raise InvalidCombinedEventError(f"Samme øvelse flere ganger: {', '.join(duplicates)}")
+        scores = tuple(
+            self.calculate(e.event_id, gender, age_class, e.result, implement=e.implement)
+            for e in events
+        )
+        return CombinedScoreResult(
+            total=sum(s.points for s in scores),
+            scoring_system=self.system,
+            version=self.version,
+            gender=gender,
+            age_class=age_class,
+            events=scores,
         )
 
     @staticmethod

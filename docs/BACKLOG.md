@@ -29,7 +29,7 @@ hvorfor i notatet, og har stoppet.
 | 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | **Ferdig** (29 caser, 3 åpne spørsmål) | `ferdig/AP-006-tyrving-regeltolkning.md` |
 | 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Ferdig** 2026-09-26 — regeltolkningen er låst | `ferdig/AP-007-review-regeltolkning.md` |
 | 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | **Ferdig** 2026-09-26 | `ferdig/AP-008-tyrving-calculator.md` |
-| 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | Ny | — |
+| 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | **Ferdig** 2026-09-26 (generell summering) | `ferdig/AP-009-tyrving-mangekamp.md` |
 
 ## Next — WA, WMA og masters (WA før masters og mangekamp)
 
@@ -69,6 +69,13 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   Sist lagret av Simen 2024-06-28, har inntastede resultater og mangler NFIFs retting fra 2018. Simen bør laste ned
   gjeldende regneark fra friidrett.no og erstatte den, eller rette opprinnelsen i `sources/README.md` (agenten
   endrer ikke `sources/`). Parametrene og fasiten påvirkes ikke, fordi PDF-en vinner.
+
+- **Faste mangekamper per klasse mangler** *(AP-009, forslag til 🧑-oppgave)*
+  Motoren summerer fritt valgte øvelser. For at frontenden skal kunne tilby «Femkamp J13» osv., trengs NFIFs
+  oversikt over hvilke mangekamper (og øvelser) som gjelder for hvilke klasser under 15 år. Legges inn som data.
+
+- **Klikkbar skisse av kalkulator og mangekamp** *(2026-09-26)*
+  Laget som Artifact for å avklare brukergrensesnittet før API-formen låses (AP-018).
 
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub

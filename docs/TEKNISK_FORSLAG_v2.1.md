@@ -316,34 +316,40 @@ class Result:
     distance_meters: float | None = None
     manual_timing: bool = False
 
+
 @dataclass
 class CalculationStep:
     """Ett steg i beregningen, for strukturert respons (B-6)."""
-    label: str           # "hundredths_of_seconds"
-    value: float         # 1130
-    formula: str         # "time_seconds × 100"
+
+    label: str  # "hundredths_of_seconds"
+    value: float  # 1130
+    formula: str  # "time_seconds × 100"
+
 
 @dataclass
 class ScoreResult:
     points: int
-    scoring_system: str          # "tyrving" | "serietabell" | ...
-    version: str                 # "2014" | "2024" | ...
+    scoring_system: str  # "tyrving" | "serietabell" | ...
+    version: str  # "2014" | "2024" | ...
     event_id: str
     event_name: str
     gender: str
-    age_class: str               # "19" (Tyrving) | "senior" | "M40" ...
+    age_class: str  # "19" (Tyrving) | "senior" | "M40" ...
     result_used: float
     parameters: dict
     formula_type: str
-    calculation_detail: str      # lesbar streng
+    calculation_detail: str  # lesbar streng
     calculation_steps: list[CalculationStep]  # strukturert (B-6)
+
 
 # engine.py
 class ScoringEngine(ABC):
-    version: str                 # settes av underklasse
+    version: str  # settes av underklasse
 
     @abstractmethod
-    def calculate(self, event_id: str, gender: str, age_class: str, result: Result) -> ScoreResult: ...
+    def calculate(
+        self, event_id: str, gender: str, age_class: str, result: Result
+    ) -> ScoreResult: ...
 
     @abstractmethod
     def list_events(self, gender: str | None, age_class: str | None) -> list[EventInfo]: ...
@@ -352,12 +358,16 @@ class ScoringEngine(ABC):
     def get_parameters(self, event_id: str, gender: str, age_class: str) -> dict: ...
 
     # Valgfri: kan implementeres av engines som støtter reverse (B-8)
-    def reverse(self, event_id: str, gender: str, age_class: str, target_points: int) -> Result | None:
+    def reverse(
+        self, event_id: str, gender: str, age_class: str, target_points: int
+    ) -> Result | None:
         raise NotImplementedError
+
 
 # registry.py
 class Registry:
     """Mapper (scoring_system, version) → ScoringEngine."""
+
     def get(self, scoring_system: str, version: str | None = None) -> ScoringEngine:
         # Hvis version=None, returner nyeste registrerte versjon for systemet
         ...

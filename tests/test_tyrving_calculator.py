@@ -8,11 +8,12 @@ import pytest
 
 from athletics_scoring.errors import (
     AmbiguousEventError,
+    InvalidCombinedEventError,
     InvalidResultError,
     UnknownEventError,
     UnsupportedManualTimingError,
 )
-from athletics_scoring.models import Gender, Result
+from athletics_scoring.models import CombinedEventInput, Gender, Result
 from athletics_scoring.tyrving import TyrvingCalculator
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -124,3 +125,73 @@ def test_registry_integration() -> None:
     registry = Registry()
     registry.register(calculator)
     assert registry.get("tyrving") is calculator
+
+
+# --- AP-009: inndata-metadata og mangekamp under 15 år -------------------------------------------
+
+
+def _info(event_id: str, gender: Gender, age: str) -> Any:
+    return next(e for e in calculator.list_events(gender, age) if e.event_id == event_id)
+
+
+def test_input_spec() -> None:
+    sprint = _info("sprint_100m", Gender.MALE, "15").input
+    assert (sprint.measure, sprint.resolution, sprint.uses_minutes) == ("time", 0.01, False)
+    assert sprint.manual_timing_allowed
+    assert not _info("sprint_40m", Gender.MALE, "10").input.manual_timing_allowed
+    assert _info("hurdles_400m", Gender.MALE, "19").input.manual_timing_allowed
+    middle = _info("middle_800m", Gender.MALE, "15").input
+    assert (middle.resolution, middle.uses_minutes, middle.manual_timing_allowed) == (
+        0.1,
+        True,
+        False,
+    )
+    jump = _info("long_jump", Gender.FEMALE, "15").input
+    assert (jump.measure, jump.resolution, jump.manual_timing_allowed) == ("distance", 0.01, False)
+
+
+def test_input_spec_matches_calculator_behaviour() -> None:
+    """Der metadata sier at manuell tid er lov, må kalkulatoren godta det, og omvendt."""
+    for info in calculator.list_events():
+        if info.input.measure != "time" or info.input.uses_minutes:
+            continue
+        result = Result(time_seconds=60.0, manual_timing=True)
+        if info.input.manual_timing_allowed:
+            calculator.calculate(
+                info.event_id, info.gender, info.age_class, result, implement=info.implement
+            )
+        else:
+            with pytest.raises(UnsupportedManualTimingError):
+                calculator.calculate(
+                    info.event_id, info.gender, info.age_class, result, implement=info.implement
+                )
+
+
+def test_combined_sums_event_points() -> None:
+    events = [
+        CombinedEventInput("hurdles_60m", Result(time_seconds=10.5), implement="76,2cm/7,5m"),
+        CombinedEventInput("high_jump", Result(distance_meters=1.52)),
+        CombinedEventInput("shot_put", Result(distance_meters=11.2), implement="2kg"),
+        CombinedEventInput("long_jump", Result(distance_meters=5.0)),
+        CombinedEventInput("middle_600m", Result(time_minutes=1, time_seconds=42.0)),
+    ]
+    combined = calculator.calculate_combined(Gender.FEMALE, "13", events)
+    single = [
+        calculator.calculate(e.event_id, Gender.FEMALE, "13", e.result, e.implement).points
+        for e in events
+    ]
+    assert [s.points for s in combined.events] == single
+    assert combined.total == sum(single)
+    assert combined.scoring_system == "tyrving"
+
+
+def test_combined_rejects_invalid_input() -> None:
+    with pytest.raises(InvalidCombinedEventError):
+        calculator.calculate_combined(Gender.MALE, "13", [])
+    with pytest.raises(InvalidCombinedEventError, match="World Athletics"):
+        calculator.calculate_combined(
+            Gender.MALE, "15", [CombinedEventInput("long_jump", Result(distance_meters=6.0))]
+        )
+    twice = [CombinedEventInput("long_jump", Result(distance_meters=5.0))] * 2
+    with pytest.raises(InvalidCombinedEventError, match="long_jump"):
+        calculator.calculate_combined(Gender.MALE, "13", twice)
