@@ -1,6 +1,6 @@
 # AP-016: Masters mangekamp (WMA Appendix B, NFIF-tabellen som fasit)
 
-**Status:** Klar
+**Status:** Blokkert 2026-09-26 (se «Blokkert» nederst)
 **Opprettet:** 2026-09-26 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-012, AP-013, AP-015
@@ -116,6 +116,54 @@ Alt annet avgjør du selv innenfor løsningsretningen, og skriver valget i slutt
 - [ ] Ingen endringer i `sources/` eller låste `tests/fixtures/`
 - [ ] Midlertidige filer og hjelpeskript fra underveis er fjernet
 - [ ] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
+
+## Blokkert (Code, 2026-09-26)
+
+Stoppregel: «et ark eller en klasse gir avvik mot metoden som ikke er 60 m-manuell».
+
+**Hva som er gjort:** Et midlertidig skript regnet hele metoden på alle klassekolonnene i alle ark:
+faktorer fra Appendix B s. 4–5, håndtid +0,24/+0,14 s før faktoren, «løp opp, hopp og kast ned», og
+poeng fra `CombinedEventsCalculator` («senior»). Det ga **null avvik på 431 467 caser**. Unntakene er
+de to avvikene under og 60 m-manuell-arkene, som ikke var med. Kontrolltallene i oppgavefila stemmer.
+Hekkeoppslaget er avklart av arkene: menn 35–45 110 m (99 cm), 50–65 100 m (91/84 cm), 70–100 80 m
+(76/68 cm), alle med «Short Hurdles»-faktoren i 110 m hekk-tabellen. Kvinner 35 100 m (84 cm), 40–100
+80 m (76/68 cm), med «Short Hurdles» i 100 m hekk-tabellen. Kvinner 100m-m har ingen W100-kolonne.
+
+Utkastet til `scripts/oracle_masters_combined_events.py` er committet. Det leser alle blokkene,
+inkludert hekkearkene med flere tabeller side om side og redskap per klasse. Det stopper med vilje på
+de ødelagte cellene. Fixture, parameterfil og motor er ikke laget.
+
+**Avvik 1 — 80 m hekk, manuell tid.** Arkene `80-110m HK-m` (menn, blokk M–T, M70–M100) og
+`80-100mHK-m` (kvinner, blokk A–M, W40–W95; W100 har ingen avvik i de radene som finnes) gir flere poeng
+enn metoden. Med +0,20 s i stedet for +0,24 s blir det null avvik, akkurat som på 60 m og 60 m hekk
+(KA i `KILDEAVVIK.md`). Manuelle 100 og 110 m hekk og 100/200/400 m følger +0,24/+0,14.
+
+| Ark | Klasse | Manuell tid | Arket | Metoden (+0,24) |
+|---|---|---|---|---|
+| `80-100mHK-m` | W40 | 10,8 | 1199 | 1192 |
+| `80-110m HK-m` | M70 | 11,2 | 1206 | 1199 |
+| `80-110m HK-m` | M75 | 12,0 | 1200 | 1194 |
+
+**Avvik 2 — menn `200m`, M95 og M100.** Tekstcellene i kolonne N–P fra rad 983 er forskjøvet. Siste
+siffer i én kolonne står først i neste kolonne, skilt med to mellomrom:
+
+| Rad | Poeng | N (M90) | O (M95) | P (M100) | Riktig lesning |
+|---|---|---|---|---|---|
+| 983 | 200 | 51.60 | `1.00.0` | `2  1.14.72` | M95 1.00.02, M100 1.14.72 |
+| 984 | 199 | 51.63 | `1.00.0` | `6  1.14.77` | M95 1.00.06, M100 1.14.77 |
+| 1163 | 20 | `1.00.0` | `5  1.09.8` | `6  1.26.96` | M90 1.00.05, M95 1.09.86, M100 1.26.96 |
+
+200 celler i P og 20 i O kan ikke leses som tid. 82 celler i O (M95) er avkortede tider som gir
+feil poeng (rad 984: «1.00.0» gir 200, arket sier 199; reparert 1.00.06 gir 199). Reparert lesning gir
+riktige poeng i alle kontrollerte eksempler.
+
+**Forslag til Simen:**
+1. 80 m hekk manuell: legg inn en KA som utvider «Manuell tid på 60 m og 60 m hekk» til 80 m hekk. Da
+   hoppes blokkene over i fasiten, og motoren følger +0,24 s (BV-024). Alternativet er at NFIF bruker
+   +0,20 s under 100 m med vilje. Det bør i så fall inn i e-posten til NFIF (AP-026).
+2. 200 m M90–M100: bestem om oracle-skriptet skal (a) hoppe over de ødelagte cellene og registrere dem
+   i `meta`, eller (b) reparere den forskjøvne teksten. (b) er en tolkning av kilden. (a) gir ingen
+   gjetting.
 
 ## Sluttrapport (fylles av Code)
 
