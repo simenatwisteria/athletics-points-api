@@ -9,7 +9,7 @@ friidrett.no. DOC-filene i `sources/` er byte-identiske med det Simen lastet ned
 opphav, men gir identiske tabeller, inkludert skrivefeilene (`tests/test_tyrving_doc.py`). Koden leser PDF-ene
 fordi det ikke krever LibreOffice. Der det står «PDF» under, gjelder det også DOC.
 
-**Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene i PDF-en. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
+**Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene. Utkast: `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
 
 ## Tyrving 2014
 
