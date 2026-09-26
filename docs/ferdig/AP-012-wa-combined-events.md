@@ -1,6 +1,6 @@
 # AP-012: WA Combined Events (mangekamptabellen)
 
-**Status:** Klar
+**Status:** Ferdig 2026-09-26
 **Opprettet:** 2026-09-26 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-001, AP-013, AP-015, AP-027
@@ -129,22 +129,74 @@ Alt annet avgjør du selv innenfor løsningsretningen, og skriver valget i slutt
 
 ## Akseptansekriterier
 
-- [ ] Kontrolltallene over er egne testcaser og er grønne
-- [ ] Oracle-fixturen dekker alle seniorkolonnene som er nevnt, og testen mot den har null avvik
-- [ ] Manuell tid 60 m gir 1170 (BV-024), ikke 1187
-- [ ] `calculation_steps` har `ref` til BV-numre og kildenøkkel, og testen fra AP-027 er grønn
-- [ ] Motoren er registrert, og `list_events` gir tilleggsøvelsene bare for riktige klasser
-- [ ] Fixture-fila er ny og ulåst. Sluttrapporten lister 10 caser spredt over øvelser og skala som Simen kan
+- [x] Kontrolltallene over er egne testcaser og er grønne
+- [x] Oracle-fixturen dekker alle seniorkolonnene som er nevnt, og testen mot den har null avvik
+- [x] Manuell tid 60 m gir 1170 (BV-024), ikke 1187
+- [x] `calculation_steps` har `ref` til BV-numre og kildenøkkel, og testen fra AP-027 er grønn
+- [x] Motoren er registrert, og `list_events` gir tilleggsøvelsene bare for riktige klasser
+- [x] Fixture-fila er ny og ulåst. Sluttrapporten lister 10 caser spredt over øvelser og skala som Simen kan
       stikkprøve mot kilden før den låses
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
-- [ ] Ingen endringer i `sources/` eller låste `tests/fixtures/`
-- [ ] Midlertidige filer og hjelpeskript fra underveis er fjernet
-- [ ] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
+- [x] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
+- [x] Ingen endringer i `sources/` eller låste `tests/fixtures/`
+- [x] Midlertidige filer og hjelpeskript fra underveis er fjernet
+- [x] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:**
+- **Gjort:** (commit `599ae97`)
+  - `scripts/extract_wa_combined_events_params.py` → `athletics_scoring/data/wa_combined_events_2001.json`
+    (36 øvelser: menn 16, kvinner 15 + 1500 m, NFIFs 4 tilleggsøvelser). Konstantene står i skriptet med
+    sidehenvisning. Skriptet sjekker SHA-256 mot `sources/SHA256SUMS` og at hver a/b/c står ordrett i teksten på
+    Appendix B s. 2 og i tabellen i UM-reglementet §16.5. `--check` som for Tyrving.
+  - `scripts/oracle_wa_combined_events.py` → `tests/fixtures/wa_combined_events_cases.json` (ny, ulåst,
+    `meta.locked: false`). Leser kolonne B («Sr») med `openpyxl`, finner oppsettet (poeng i A eller resultat i
+    A) automatisk, og feiler hvis arbeidsboka får ark som verken er i bruk eller eksplisitt utelatt. Importerer
+    ikke `athletics_scoring`.
+  - `athletics_scoring/wa_combined_events.py`: `CombinedEventsCalculator` (`wa_combined_events`, `2001`),
+    registrert i `default_registry()`. `calculate`, `calculate_combined`, `list_events`, `get_parameters`,
+    `sources`, `age_classes`.
+  - `tests/test_wa_combined_events.py`: 47 tester (kontrolltall, hele fixturen, reproduserbarhet av fixture og
+    parametre, BV-024/BV-025, sporbarhet, klasser, feil, mangekamp).
 - **Bevis:**
+  - Radtelling: menn 15 051, kvinner 13 929 automatisk/teknisk, 1 502 manuell — nøyaktig som i oppgavefila.
+    Totalt 30 482 caser, **null avvik**.
+  - Alle 15 kontrolltall stemmer, også 60 m manuell 6,0 = 1170 og kvinner 1500 m 4:34,99 = 1000. I tillegg
+    Appendix B-eksemplene høyde K 1,50 = 621, 400 m M 66,09 = 230, kule K 12,34 = 684.
+  - Tider over ett minutt står som `2.12.79` (min.sek.hundredeler) i arkene; parseren leser `m.ss.cc` og
+    `ss.cc`, og feiler på alt annet.
+  - `pytest -q` 152 passed, `ruff check .` og `mypy athletics_scoring` grønne. `git diff` viser ingen endringer
+    i `sources/` eller i de låste Tyrving-fixturene.
+- **Stikkprøve for Simen** (fil, ark, rad → forventet poeng i kolonne A/B):
+
+  | Kjønn | Ark | Rad | Resultat i arket | Poeng |
+  |---|---|---|---|---|
+  | M | Diskos | 947 | 19.23 | 258 |
+  | M | Lengde | 575 | 2.83 | 47 |
+  | M | 200m | 7 | 19.07 | 1197 |
+  | M | 400m | 905 | 1.03.61 | 299 |
+  | M | 100m-m (manuell) | 4 | 9.3 | 1213 |
+  | F | Vektkast | 471 | 16.01 | 734 |
+  | F | 800m | 301 | 2.14.31 | 903 |
+  | F | 100m | 380 | 14.54 | 522 |
+  | F | Høyde | 24 | 1.78 | 953 |
+  | F | 60mHK | 220 | 9.85 | 740 |
+
 - **Valg tatt underveis:**
-- **Avvik fra oppgavefila:**
-- **Funn som bør bli egne oppgaver:**
+  - `age_class` er `"senior"`, `"G15"`–`"G17"` eller `"J15"`–`"J17"`; klassen må passe kjønnet. Andre klasser
+    avvises med `UnknownEventError`. Standardøvelsene gjelder alle klasser, tilleggsøvelsene bare sine.
+  - `implement` ignoreres: tabellen er lik uansett redskap (BV-021). `EventInfo.implement` er `None`.
+  - Nye `event_id`-er: `weight_throw` (vektkast). NFIFs 800 m inne for G15/16 bruker `middle_800m`, og 100 m
+    hekk G15/16 bruker `hurdles_100m`, samme id som kvinnenes øvelser (skilt på kjønn).
+  - Manuell tid over 400 m godtas, men gir tillegg 0 og et steg med `ref="BV-024"`. `manual_timing_allowed` i
+    `InputSpec` er likevel `False` for disse, fordi feltet betyr «regelverket har tillegg».
+  - Rimelig område: samme andeler som Tyrving (0,6–3,0 × og 0,2–1,6 × resultatet for 1000 poeng), regnet
+    fra formelen. Brukerhjelp, påvirker ikke poeng.
+  - Rå poeng vises avkortet til fire desimaler i `calculation_detail`, så visningen aldri runder opp til et
+    heltall motoren ikke gir.
+  - `source` per øvelse i parameter-JSON har `ref` (kildenøkkel eller BV-nummer) og `location` (side/paragraf).
+    Kvinner 1500 m har `ref="BV-022"`, fordi IAAF-boka ikke ligger i repoet (B-23).
+  - Fixture-fila er gruppert per ark med én case per linje (`[rad, resultat i arket, result, poeng]`), 1,75 MB
+    i stedet for 10 MB med én dict per case.
+- **Avvik fra oppgavefila:** Ingen.
+- **Funn som bør bli egne oppgaver:** Skrevet i Innboks: låsing av fixturen (🧑), og at kvinner 100 m hekk
+  senior mangler fasit i NFIF-arkene.

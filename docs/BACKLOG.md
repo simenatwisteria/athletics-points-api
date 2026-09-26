@@ -44,7 +44,7 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 13 | AP-015 | Last ned NFIF masters mangekamp- og serietabeller til `sources/masters/` | 🧑 | — | **Ferdig** 2026-09-26 | `sources/README.md` |
 | 14 | AP-027 | Kildesporing: `source_documents` i parameter-JSON og `ref` (BV-nummer eller kilde) i beregningsstegene, også Tyrving. Test at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` (B-24) | 🤖 | AP-001 | **Ferdig** 2026-09-26 | `ferdig/AP-027-kildesporing.md` |
 | 14b | AP-030 | Fyll inn `document_url` for Tyrving-DOC-ene og `.xls` i `meta.source_documents` fra lenkene i `sources/README.md` (lagt inn 2026-09-26). PDF-ene og `.xlsx` beholder `null`. Kjør `extract_tyrving_params.py` på nytt og vis at bare `meta` endres | 🤖 | AP-027 | **Ferdig** 2026-09-26 (`.xls` lagt til som sjette dokument) | `ferdig/AP-030-document-url.md` |
-| 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | Klar | `active/AP-012-wa-combined-events.md` |
+| 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | **Ferdig** 2026-09-26 (null avvik mot 30 482 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-012-wa-combined-events.md` |
 | 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | Klar | `active/AP-016-masters-mangekamp.md` |
 | 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
 | 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
@@ -96,6 +96,14 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   2. Øvelsesnavn må finnes på norsk og engelsk (en felles øvelseskatalog), og kategorien (løp, hekk, kappgang,
      hopp, kast) brukes til å gruppere menyene.
   3. Tall formateres etter språk (komma på norsk, punktum på engelsk). Poengberegningen påvirkes ikke.
+
+- **Lås `tests/fixtures/wa_combined_events_cases.json`** *(AP-012, forslag til 🧑-oppgave)*
+  Fixture-fila er ny og ulåst (`meta.locked: false`). Sluttrapporten i `ferdig/AP-012-wa-combined-events.md`
+  lister 10 caser til stikkprøve mot NFIF-arkene.
+
+- **Kvinner 100 m hekk senior har ingen fasit i NFIF-arkene** *(AP-012)*
+  `80-100mHK` starter på W40, så øvelsen er bare dekket av formelen og Appendix B-parametrene. Et par caser fra
+  IAAF-boka (ikke i repoet) ville gitt en uavhengig kontroll.
 
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
