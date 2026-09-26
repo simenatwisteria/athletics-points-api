@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-026**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-030**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -31,20 +31,22 @@ hvorfor i notatet, og har stoppet.
 | 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | **Ferdig** 2026-09-26 | `ferdig/AP-008-tyrving-calculator.md` |
 | 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | **Ferdig** 2026-09-26 (generell summering) | `ferdig/AP-009-tyrving-mangekamp.md` |
 
-## Next — WA, WMA og masters (WA før masters og mangekamp)
+## Next — kildesporing, mangekamp og masters (rekkefølge besluttet 2026-09-26, B-22)
+
+Combined Events avhenger ikke av WA Scoring 2025. Parametrene står i WMA Appendix B, og fasiten er seniorkolonnen
+i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
-| 10 | AP-010 | Last ned WA Scoring Tables 2025 og Combined Events-konstanter til `sources/wa/` (se `sources/wa/README.md`) | 🧑 | — | Ny | — |
-| 11 | AP-011 | WA Scoring 2025: ekstraksjon, oracle, kalkulator. Fixtures krever Simens review før kalkulatoren regnes som ferdig | 🤖 | AP-001, AP-010 | Ny | — |
-| 12 | AP-012 | WA Combined Events: femkamp, sjukamp, tikamp | 🤖 | AP-011 | Ny | — |
-| 13 | AP-013 | Last ned WMA Age Factors 2023 til `sources/wma/` (se `sources/wma/README.md`) | 🧑 | — | Ny | — |
-| 14 | AP-014 | WMA Age Grading 2023: ekstraksjon, oracle, kalkulator. Fixtures krever Simens review | 🤖 | AP-001, AP-013 | Ny | — |
-| 15 | AP-015 | Last ned NFIF masters mangekamptabell menn + kvinner til `sources/masters/` (se `sources/masters/README.md`) | 🧑 | — | Ny | — |
-| 16 | AP-016 | Masters mangekamp (NFIF): tabell-lookup som primær, WA × WMA-faktor som kryssverifisering | 🤖 | AP-012, AP-014, AP-015 | Ny | — |
-| 17 | AP-017 | Loop-oppsett: `.claude/commands/loop.md` og `scripts/loop.sh` som jobber seg gjennom denne backlogen, med stoppbetingelser (blokkert, ingen framdrift, alt ferdig, maks runder) | 🤖 | — | **Ferdig** | `ferdig/AP-017-loop.md` |
-
-AP-017 ble tatt tidlig (2026-09-25) fordi den ikke har avhengigheter og alle andre 🤖-oppgaver ventet på Simen.
+| 10 | AP-026 | Send e-posten til NFIF (Tyrving-avvik, serietabellen og masters-serien): `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`. Oppdater «Status overfor NFIF» i `KILDEAVVIK.md` | 🧑 | — | Ny — utkast ligger i Gmail | — |
+| 11 | AP-010 | Last ned WA Combined Events og Scoring Tables 2025 | 🧑 | — | **Ferdig** 2026-09-26 — lastet ned, men ikke sjekket inn (B-23), se `sources/wa/README.md` | — |
+| 12 | AP-013 | Last ned WMA Appendix B og Age Factors 2023 til `sources/wma/` | 🧑 | — | **Ferdig** 2026-09-26 | `sources/README.md` |
+| 13 | AP-015 | Last ned NFIF masters mangekamp- og serietabeller til `sources/masters/` | 🧑 | — | **Ferdig** 2026-09-26 | `sources/README.md` |
+| 14 | AP-027 | Kildesporing: `source_documents` i parameter-JSON og `ref` (BV-nummer eller kilde) i beregningsstegene, også Tyrving. Test at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` (B-24) | 🤖 | AP-001 | Klar | `active/AP-027-kildesporing.md` |
+| 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | Klar | `active/AP-012-wa-combined-events.md` |
+| 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | Klar | `active/AP-016-masters-mangekamp.md` |
+| 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
+| 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
 
 ## API og frontend — rekkefølge besluttet 2026-09-26
 
@@ -53,31 +55,27 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
-| 18 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
-| 19 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md` | Ny — venter på svar om hvor tolkningen skal ligge | — |
-| 20 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-020 | Ny | — |
-| 21 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
-| 22 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
-| 23 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
+| 19 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
+| 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md` | Ny — venter på svar om hvor tolkningen skal ligge | — |
+| 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-020 | Ny | — |
+| 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
+| 23 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
+| 24 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
 
 ## Later — ikke i loop
 
 | ID | Oppgave | Status | Notat |
 |---|---|---|---|
 | AP-018 | FastAPI-wrapper, deploy på Railway, frontend på Vercel | **Erstattet** 2026-09-26 | Delt opp i AP-020–AP-025 (se «API og frontend» over). |
-| AP-019 | Serietabellen / Seriepoeng (Lagserien) | Ny | B-17. Flyttet bak WA fordi masters og mangekamp avhenger av WA (ANALYSE 2026-09-06, B-21-forslag). |
+| AP-019 | Serietabellen / Seriepoeng (Lagserien), senior og masters | Venter på NFIF (AP-026) | B-26. Ingen offisiell fil. Kalkulatoren på minfriidrettsstatistikk.info avviker fra alle kjente tabeller (`docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md`). Reserveløsning: tilpasse parametre med tillatelse. |
+| AP-029 | Seriepoeng som egen funksjon i frontenden (senior, uten alder), med lenke til kilden | Ny | B-26. Avhenger av AP-019. |
+| AP-011 | WA Scoring Tables 2025: parametre tilpasses fra PDF-tabellen (`a·(x+b)²+c`), verifisering mot alle rader | Ny — flyttet hit 2026-09-26 | Eget system, ikke mangekamp. Krever vurdering av WA sitt forbehold mot kopiering før publisering (B-23). |
 
 ---
 
 ## Innboks — funn fra Claude Code, ikke prioritert
 
 Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
-
-- **Meld avvikene i Tyrving-filene til NFIF** *(AP-002, forslag til 🧑-oppgave)*
-  To feil i regnearket (G19 2000 m, J17 kule) og tre skrivefeil i PDF-en, dokumentert i `docs/KILDEAVVIK.md`.
-  Spyd J15 skal ikke meldes: NFIF rettet den i `.xls` 2018-02-28, og `.xlsx` i `sources/` er en eldre kopi. Utkast til e-post er gitt
-  Simen i chat 2026-09-25. Oppdater «Status overfor NFIF» i `KILDEAVVIK.md` når svaret kommer. Sier NFIF at
-  regnearket er riktig, må regelen «PDF vinner» revurderes for den raden, og data og fasit må genereres på nytt.
 
 - **`sources/tyrving/tyrving-2014-redigerbar.xlsx` er ikke NFIFs gjeldende fil** *(verifisert 2026-09-25)*
   Sist lagret av Simen 2024-06-28, har inntastede resultater og mangler NFIFs retting fra 2018. Simen bør laste ned
@@ -101,11 +99,6 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
-
-- **Regnearket stryker ikke hundredeler i lange løp** *(AP-006)*
-  Regelteksten sier at hundredeler skal strykes (R2), men regnearket regner `(D*60+E)*10` rett fram. Motoren skal
-  følge regelteksten (case R2-01 – R2-03). Fasiten fra oracle bruker bare tideler i lange løp, så den er ikke
-  berørt. Bør med i meldingen til NFIF som en merknad.
 
 ---
 
@@ -136,3 +129,21 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   (desimal), fordi regelteksten sier at alle desimaler beholdes. Flyttallskanten testes mot `points_if_exact`.
   **Hundredeler strykes i løp over 500 m**, slik regelteksten sier.
 - **2026-09-25** — Masters mangekamp: NFIF-tabellen er fasit (lookup), WA × WMA brukes bare til kryssverifisering. Det er NFIF som publiserer tabellen som faktisk brukes.
+- **2026-09-26** — **Ny rekkefølge etter Tyrving (B-22):** kildesporing → WA Combined Events → masters mangekamp →
+  WMA Age Grading → serietabeller → WA Scoring 2025. Combined Events trenger ikke WA 2025: parametrene står i WMA
+  Appendix B, og seniorkolonnen i NFIFs masters-tabeller er fasit. Erstatter B-21-forslaget. AP-011 flyttet til Later.
+- **2026-09-26** — **Kildefiler (B-23):** NFIF- og WMA-filer lagt i `sources/` (Cowork på vegne av Simen, AP-013 og
+  AP-015). WA-PDF-ene sjekkes ikke inn fordi de har forbehold mot kopiering.
+- **2026-09-26** — **Masters mangekamp (B-25):** Beslutningen fra 2026-09-25 står, NFIF-tabellen er fasit. Motoren
+  regner etter WMA Appendix B og skal gi null avvik. Stikkprøver stemmer eksakt.
+- **2026-09-26** — **Serietabellen (B-26):** Ingen offisiell kilde. Stikkprøver (265 resultater) viser at
+  kalkulatoren avviker fra mangekamptabellen, masters-tabellene og WA 2025. Venter på NFIF (AP-026).
+- **2026-09-26** — Innboks tømt for «Meld avvikene til NFIF» og «hundredeler i lange løp». Begge er med i den samlede
+  e-posten (AP-026).
+- **2026-09-26** — **Beregningsvalg samlet i `docs/BEREGNINGSVALG.md`** (BV-numre vises i `calculation_steps`).
+  Åpne spørsmål undersøkt av Cowork: slegge og vektkast stemmer med Appendix B; NFIFs masters-ark bruker +0,20 s
+  på 60 m manuell mot +0,24 s i IAAF og WMA (vi følger +0,24, BV-024, `KILDEAVVIK.md`); Age Factors-PDF-en har
+  ingen standarder, så AP-014 leverer aldersjustert resultat uten prosent (BV-041); UM-reglementet §16.5
+  bekrefter internasjonale tabeller fra 15 år og gir NFIFs egne koeffisienter (BV-021, BV-023).
+- **2026-09-26** — Oppgavemalen oppdatert etter Anthropics råd for Opus 5.5 og Claude Code (les først, kontrolltall,
+  stoppregler, bevis i sluttrapporten). Oppgavefiler skrevet for AP-027, AP-012, AP-016, AP-014 og AP-028.

@@ -1,7 +1,7 @@
 # Teknisk løsningsforslag v2.1: Athletics Points Calculator API
 
 **Dato:** 17. april 2026
-**Versjon:** 2.1 — Utvidet scope etter undersøkelse av NFIFs poengtabeller
+**Versjon:** 2.1 — Utvidet scope etter undersøkelse av NFIFs poengtabeller (rettelser 26.09.2026, se kap. 0.1)
 **Erstatter:** `TEKNISK_FORSLAG_v2.md` (v2.0 fra 6. april 2026)
 **Besluttet grunnlag:** `BESLUTNINGER.md`
 **Stack:** Python (scoring-pakke) → FastAPI → React | Deploy: Railway + Vercel
@@ -19,6 +19,15 @@ v2.1 er en tilleggsversjon, ikke en omskriving. All arkitektur, alle formler og 
 5. **Registry-laget** får eksplisitt støtte for kombinasjonen `(scoring_system, version, gender, age_class, event_id)` — tidligere var bare `(scoring_system, event_id, gender, age)`.
 
 Alt annet — scoring-pakke-først-prinsippet, formler for Tyrving, teststrategi, deploy — er uendret fra v2.0.
+
+### 0.1 Rettelser 26.09.2026
+
+Etter gjennomgang av de offisielle dokumentene (`kilder/KILDER.md`) er følgende rettet. Bakgrunn i `docs/PLAN_FLERE_POENGSYSTEMER.md`, oppgaver i `docs/BACKLOG.md`, beslutningene i B-22 til B-26.
+
+1. **Seniormangekamp bruker Combined Events-tabellen (2001)**, ikke WA Scoring Tables 2025. Tabellen i 1.3 og kap. 3.2 er rettet.
+2. **Masters mangekamp** ganger *resultatet* med aldersfaktoren. Poengene ganges ikke. Kap. 3.4.2 er skrevet om (WMA Appendix B).
+3. **Serietabellen** har ingen offisiell NFIF-fil. Formelen er ukjent, og stikkprøver viser at den avviker fra alle kjente tabeller. Kap. 3.4.1 er markert som uavklart.
+4. **Rekkefølge:** Combined Events → masters mangekamp → Age Grading → serietabeller → WA Scoring 2025 (B-22).
 
 ---
 
@@ -39,14 +48,14 @@ Etter undersøkelsen mot NFIFs side *Poengtabeller* er scopet utvidet. Nedenfor 
 | Fase | System | Bruksområde | Datakilde | Status |
 |------|--------|-------------|-----------|--------|
 | **MVP** | Tyrvingtabellen | Ungdom 10–19 (individuelt og mangekamp u/15) | 2014-regneark (NFIF) | Parametre tilgjengelig |
-| Fase 2 | Serietabellen / Seriepoeng | Lagserien (klubbserie, senior) | NFIFs serieregler + Excel | Tilgjengelig hos forbundet |
-| Fase 3 | World Athletics Scoring | Internasjonalt + seniormangekamp (femkamp/sjukamp/tikamp på UM/NM/Nordisk) | WA 2025 PDF-er | Godt dokumentert |
-| Fase 3 | Combined Events (WA) | Mangekampsummering, senior | WA Combined Events tables | Godt dokumentert |
-| Fase 4 | Masters Mangekamptabell | Masters (veteran) mangekamp | NFIF Excel-filer (menn/kvinner, basert på WMA 2023) | Tilgjengelig hos forbundet |
-| Fase 4 | Masters Serietabell | Masters klubbserie | NFIFs serieregler for masters | Tilgjengelig hos forbundet |
-| Fase 4 | WMA Age Grading | Masters individuelt (aldersjustering) | WMA 2023 Age Factors | Godt dokumentert |
+| Fase 1 | Combined Events (WA) | Mangekamp fra 15 år, junior, senior (UM/NM/Nordisk) | IAAF Scoring Tables for Combined Events 2001 + formler i WMA Appendix B | Godt dokumentert |
+| Fase 2 | Masters Mangekamptabell | Masters mangekamp | WMA Appendix B 2023 (metode) + NFIF-regneark (fasit) | Godt dokumentert |
+| Fase 3 | WMA Age Grading | Masters individuelt (aldersjustering) | WMA 2023 Age Factors (ettårige faktorer) | Godt dokumentert |
+| Fase 4 | Serietabellen / Seriepoeng | Lagserien (klubbserie, senior) | **Ingen offisiell fil.** Bare kalkulator på minfriidrettsstatistikk.info | Venter på NFIF |
+| Fase 4 | Masters Serietabell | Masters klubbserie | NFIF-regneark (bare øvelser utenfor mangekamptabellen) | Oppbygging uavklart |
+| Fase 5 | World Athletics Scoring 2025 | Sammenligning på tvers av øvelser | WA Scoring Tables of Athletics 2025 (PDF, ingen publisert formel) | Krever tilpassing av parametre |
 
-**Viktig avklaring:** Tyrvingtabellen brukes **ikke** for mangekamp på seniornivå (femkamp/sjukamp/tikamp). Der brukes World Athletics Scoring Tables. Tyrving brukes for ungdomsindividuelle øvelser 10–19 år, samt mangekamp for ungdom under 15. Serietabellen er et helt separat nasjonalt system for klubbserien og er ikke avledet av Tyrving eller WA.
+**Viktig avklaring:** Tyrvingtabellen brukes **ikke** for mangekamp på seniornivå (femkamp/sjukamp/tikamp). Der brukes Combined Events-tabellen (2001). Tyrving brukes for ungdomsindividuelle øvelser 10–19 år, samt mangekamp for ungdom under 15. Serietabellen er et helt separat nasjonalt system for klubbserien og er ikke avledet av Tyrving eller WA.
 
 ---
 
@@ -70,17 +79,21 @@ Etter undersøkelsen mot NFIFs side *Poengtabeller* er scopet utvidet. Nedenfor 
 
 Uendret fra v2.0 kap. 3. Formlene (enkel kvotient for løp/hopp, tre-intervall for kast/stav), avrundingsregler og manuell-tidtaking-påslag gjelder som før.
 
-### 3.2 World Athletics Scoring (fase 3)
+### 3.2 World Athletics – to separate systemer *(rettet 26.09.2026)*
 
-Uendret fra v2.0. Formelen `poeng = A × |resultat – B|^C` (løpsøvelser har omvendt fortegn), med tabellbaserte A/B/C-konstanter per øvelse og kjønn. Versjon 2025 er gjeldende. Oppdateres hvert 3.–4. år — versjonert i kontrakten (B-5).
+**3.2a Combined Events (fase 1).** `P = a·(b−T)^c` (løp, sekunder), `P = a·(M−b)^c` (hopp, cm), `P = a·(D−b)^c` (kast, m). Poengene avkortes til heltall. Parametrene for alle øvelser står i WMA Appendix B s. 2 og gir samme poeng som IAAF-tabellen fra 2001 (opptrykk 2016). WA har ikke endret tabellen med 2025-oppdateringen. Versjon i kontrakten: `wa_combined_events@2001`.
 
-### 3.3 WMA Age Grading (fase 4)
+**3.2b WA Scoring Tables of Athletics (fase 5).** Et eget system (Spiriev, revidert 2025) for å sammenligne resultater på tvers av øvelser. Formelen er ikke publisert. Parametrene må tilpasses fra PDF-tabellen (antatt `a·(x+b)²+c` per øvelse) og verifiseres mot alle rader. PDF-en har forbehold mot kopiering, så dette må vurderes juridisk før publisering.
+
+### 3.3 WMA Age Grading (fase 3)
 
 Uendret fra v2.0. Formel: `age_graded_result = resultat × aldersfaktor(alder, kjønn, øvelse)` og `age_graded_performance = age_graded_result / åpen_rekord`. Aldersfaktorer fra WMA 2023 er datakilden, og de samme faktorene ligger til grunn for den norske Masters Mangekamptabellen.
 
 ### 3.4 Nye systemer i v2.1
 
-#### 3.4.1 Serietabellen / Seriepoeng (fase 2)
+#### 3.4.1 Serietabellen / Seriepoeng (fase 4, uavklart)
+
+> **26.09.2026:** Ingen offisiell NFIF-fil finnes. Formelen under er bare en antakelse. Stikkprøver i kalkulatoren på minfriidrettsstatistikk.info viser at tabellen verken er Combined Events, seniorkolonnen i masters-tabellene eller WA Scoring 2025, og at den ikke passer en enkel potensformel. Se `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` og B-26.
 
 Norsk nasjonalt system for klubbserien (Lagserien). Bruker senior-implement: kule 7,26 kg (menn) / 4 kg (kvinner), diskos 2,0 kg / 1,0 kg, slegge 7,26 kg / 4 kg, spyd 800 g / 600 g, hekkehøyder etter seniorstandard. Verdikalibreringen er norsk — tabellen er **ikke** en underliggende World Athletics-tabell.
 
@@ -94,19 +107,22 @@ Kast:  tre-intervall (F1/F2/F3), samme logikk som Tyrving
 
 Parametersett lastes fra egen JSON-fil: `serietabell_parameters.json`. Implementert som `SerietabellCalculator` som arver `ScoringEngine`.
 
-#### 3.4.2 Masters Mangekamptabell (fase 4)
+#### 3.4.2 Masters Mangekamptabell (fase 2)
 
-Egne Excel-filer fra NFIF for menn og kvinner, basert på WMA-aldersfaktorer fra 01.01.2023. Er i praksis en mangekamptabell der WA Scoring-verdien multipliseres med aldersfaktor før summering. Kan reimplementeres analytisk som:
+Egne Excel-filer fra NFIF for menn og kvinner, basert på WMA-aldersfaktorer fra 01.01.2023. *(Rettet 26.09.2026.)* Metoden står i WMA Rulebook Appendix B (2023):
 
 ```
-poeng_master = wma_age_grading(resultat, alder, kjønn, øvelse) × referanse_1000
+1. Håndtid ≤ 400 m korrigeres: +0,24 s (50–300 m), +0,14 s (400 m)
+2. AFP = resultat × aldersfaktor(kjønn, 5-årsklasse, øvelse)   # fire desimaler
+3. Avrunding: løp opp til 0,01 s; hopp/kast ned til 1 cm
+4. poeng = trunc(CombinedEvents(AFP))
 ```
 
-Alternativt leses som tabell-lookup (kopi av Excel). **Beslutning utsatt til fase 4** — begge varianter lar seg implementere uten arkitekturendring.
+Kontrollert mot NFIF-regnearkene. M35 200 m: 19,44 × 0,9791 = 19,034, rundet opp til 19,04, gir 1200 poeng. M50 kule (6 kg): 18,70 × 1,1551 = 21,60 gir 1200 poeng. Aldersfaktorene tar allerede hensyn til lettere redskaper. **Besluttet (B-25):** NFIF-tabellen er fasit. Motoren regner etter Appendix B og skal gi null avvik mot tabellen.
 
 #### 3.4.3 Masters Serietabell (fase 4)
 
-Egen NFIF-tabell for klubbserie på masters-nivå. Kombinerer Serietabellens struktur med aldersfaktorer. Implementeres som egen `ScoringEngine` med egen parameter-JSON. Samme patent som 3.4.2: formelen kan være analytisk (serietabell + aldersfaktor) eller tabell-lookup.
+Egen NFIF-tabell for klubbserie på masters-nivå. *(26.09.2026: NFIF-arkene dekker bare langhekk, 800 m og lengre, hinder, kappgang, høyde og lengde uten tilløp og tresteg. Seniorkolonnen er ikke lik senior-serietabellen, for eksempel 800 m 1.39,87 = 1200 i arket mot 1246 i kalkulatoren. Hypotesen er at øvrige øvelser bruker masters-mangekamptabellen. Dette må bekreftes av NFIF.)* Implementeres som egen `ScoringEngine` med egen parameter-JSON. Samme patent som 3.4.2: formelen kan være analytisk (serietabell + aldersfaktor) eller tabell-lookup.
 
 ---
 

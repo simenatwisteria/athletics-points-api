@@ -1,17 +1,23 @@
-# Utkast: e-post til NFIF om avvik i Tyrvingtabellen 2014
+# Utkast: e-post til NFIF om avvik i Tyrvingtabellen 2014 og serietabellen
 
-**Status:** utkast, ikke sendt
+**Status:** utkast, lagt i Gmail som utkast 26.09.2026, ikke sendt (AP-026)
 **Til:** friidrett@friidrett.no (Statistikk- og rekordutvalget, jf. forsiden i regnearket)
-**Grunnlag:** `docs/KILDEAVVIK.md`. Poengtallene for regnearket er regnet ut i LibreOffice på NFIFs egen fil.
+**Grunnlag:** `docs/KILDEAVVIK.md` (Tyrving) og `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` (serietabellen). Poengtallene for regnearket er regnet ut i LibreOffice på NFIFs egen fil.
+**Historikk:** Slått sammen 26.09.2026 med det separate utkastet om serietabellen.
 
 ---
 
-**Emne:** Avvik i Tyrvingtabellen 2014 — regnearket, Word-dokumentene og Tyrvingkalkulatoren
+**Emne:** Avvik i Tyrvingtabellen 2014 og spørsmål om serietabellen
 
 Hei,
 
-Jeg holder på å lage en åpen poengkalkulator for norsk friidrett. I den forbindelse har jeg sammenlignet alle 560
-kombinasjoner av øvelse, kjønn og alder i Tyrvingtabellen (2014-utgaven), slik den ligger på friidrett.no per
+Dette er Simen fra minfriidrett.no. Jeg bygger en poengtjeneste som minfriidrett.no skal kobles til, slik at
+resultatene kan få poeng etter hvert som de kommer inn. I arbeidet har jeg gått gjennom poengtabellene på
+friidrett.no og funnet noen avvik og uklarheter som jeg håper dere kan hjelpe med.
+
+**1. Tyrvingtabellen 2014**
+
+Jeg har sammenlignet alle 560 kombinasjoner av øvelse, kjønn og alder slik tabellen ligger på friidrett.no per
 25.09.2026:
 
 - regnearket poengtabell-tyrvingtabellen.xls (sist oppdatert 28.02.2018)
@@ -85,14 +91,31 @@ egne. Noen kan være bevisste tillegg etter nyere utstyrsregler, men da mangler 
 
 Jeg har ikke kontaktet Rjukan IL, men sender gjerne oversikten til dem også hvis dere ønsker det.
 
+**2. Serietabellen**
+
+«Serietabellen for utregning» på siden Poengtabeller lenker til kalkulatoren på minfriidrettsstatistikk.info. Jeg
+finner ingen offisiell tabell eller formel hos dere, og de gamle lenkene til serietabellen.xls fungerer ikke.
+Kalkulatoren gir heller ikke samme poeng som seniorkolonnen i serietabellene for masters. For eksempel gir 800 m
+menn 1.39,87 1200 poeng i masters-tabellen og 1246 i kalkulatoren.
+
+**3. Mangekamptabellen for masters, manuell tid på 60 m**
+
+I arkene for manuell tid på 60 m og 60 m hekk legges det til 0,20 s. IAAF-tabellen for mangekamp og WMA Appendix
+B bruker 0,24 s. Eksempel: 60 m menn 6,0 manuelt gir 1187 poeng i arket og 1170 i IAAF-tabellen. Resten av
+tabellen stemmer med WMA-metoden.
+
 **Spørsmål til dere**
 
-Kan dere bekrefte at det er Word-dokumentene som er riktige, og i så fall rette regnearket? Er det regnearket som er
-riktig, må Word-dokumentene rettes, og da justerer jeg beregningen min etter det. Inntil jeg hører fra dere, bruker
-jeg Word-dokumentene som fasit.
+1. Tyrving: Kan dere bekrefte at det er Word-dokumentene som er riktige, og i så fall rette regnearket? Er det
+   regnearket som er riktig, må Word-dokumentene rettes, og da justerer jeg beregningen min etter det. Inntil jeg
+   hører fra dere, bruker jeg Word-dokumentene som fasit. Hvis noen av variantene i kalkulatoren gjelder i dag,
+   setter jeg pris på å få vite hvilke utstyrsregler som er gjeldende.
+2. Serietabellen: Finnes det en offisiell serietabell for senior, som fil eller formel? Hvilken utgave gjelder?
+3. Masters: Beregnes seriepoeng med masters-mangekamptabellen for øvelsene som står der, og med serietabellene for
+   masters for resten?
+4. Masters mangekamp: Er 0,20 s for manuell tid på 60 m bevisst, eller skal det være 0,24 s som hos IAAF og WMA?
 
-Jeg sender gjerne en detaljert oversikt med cellereferanser. Hvis noen av variantene i kalkulatoren gjelder i dag,
-setter jeg pris på å få vite hvilke utstyrsregler som er gjeldende.
+Jeg sender gjerne en detaljert oversikt med cellereferanser og testresultater.
 
 Vennlig hilsen
 Simen Armond

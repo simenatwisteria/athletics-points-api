@@ -7,6 +7,8 @@ verifiseres først; FastAPI og React kommer senere.
 - Oppgaver og status: `docs/BACKLOG.md` (eneste oppgaveliste), oppgavefiler i `docs/active/`
 - Hvorfor: `docs/BESLUTNINGER.md`, `docs/ANALYSE_2026-09-06.md` · Hvordan: `docs/TEKNISK_FORSLAG_v2.1.md`
 - Kildefiler og sjekksummer: `sources/README.md` · Kjente feil i kildene (offisiell tabell vinner): `docs/KILDEAVVIK.md`
+- Valg vi har tatt i beregningene (BV-numre, vises i `calculation_steps`): `docs/BEREGNINGSVALG.md`. Et valg som
+  påvirker poeng og ikke står der, skrives under «Innboks» i backloggen.
 
 ## Uforanderlige regler
 

@@ -9,7 +9,7 @@ friidrett.no. DOC-filene i `sources/` er byte-identiske med det Simen lastet ned
 opphav, men gir identiske tabeller, inkludert skrivefeilene (`tests/test_tyrving_doc.py`). Koden leser PDF-ene
 fordi det ikke krever LibreOffice. Der det står «PDF» under, gjelder det også DOC.
 
-**Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene. Utkast: `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`. *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
+**Status overfor NFIF:** ikke meldt ennå. Skal meldes: avvik 1 og 2, merknaden om hundredeler og skrivefeilene. Utkast: `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`, samlet med spørsmålene om serietabellen og lagt i Gmail 26.09.2026 (AP-026). *(Oppdater med dato og svar når avvikene er sendt til forbundet.)*
 
 ## Tyrving 2014
 
@@ -102,3 +102,23 @@ Parameterekstraksjonen og oracle-en bruker fortsatt `.xlsx` som strukturkilde. �
 fjernet én retting, men krever LibreOffice-konvertering i ekstraksjonen. Avgjøres av Simen.
 
 `.xls` deler avvik 1 og 2 og er derfor ikke en uavhengig kontroll for dem.
+
+## WA Combined Events og masters mangekamp
+
+Kontrollert 2026-09-26 (Cowork): seniorkolonnen («Sr») i `sources/masters/nfif-masters-mangekamp-*.xls*` er
+nøyaktig lik formlene i `sources/wma/wma-2023-appendix-b-combined-events.pdf` s. 2 for alle automatiske tider og
+tekniske øvelser, også slegge og vektkast. Kvinner 1500 m stemmer med IAAF-bokas parametre for kvinners tikamp.
+Eneste avvik:
+
+### Manuell tid på 60 m og 60 m hekk
+
+| Kilde | Tillegg for manuell tid på 60 m og 60 m hekk | Eksempel: menn 60 m 6,0 manuell |
+|---|---|---|
+| IAAF Scoring Tables for Combined Events, s. 23 og tabellen for manuell tid på 60 m s. 166 | +0,24 s («events below 400 metres») | 1170 poeng |
+| WMA Appendix B s. 1 | +0,24 s («50 through 300 meters») | 1170 poeng |
+| NFIF masters-ark `60m-m`, `60m HK-m` (menn), `60m-m`, `60mHK-m` (kvinner), seniorkolonnen | +0,20 s (alle 287 rader) | 1187 poeng |
+
+Manuell tid på 100, 200, 400 m og 100/110 m hekk stemmer i alle kildene (+0,24 / +0,14 s).
+
+**Valg:** BV-024. Vi følger de to primærkildene (+0,24 s). De fire «-m»-arkene for 60 m brukes ikke som fasit.
+**Status overfor NFIF:** tatt med i e-posten (`docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`).

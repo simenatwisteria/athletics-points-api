@@ -1,7 +1,7 @@
 # Beslutninger og oppsummert løsning
 
 **Prosjekt:** Athletics Points Calculator API
-**Dato:** 17. april 2026
+**Dato:** 17. april 2026 (oppdatert 26. september 2026)
 **Status:** Løsning besluttet — klar for bygging
 **Teknisk referanse:** `TEKNISK_FORSLAG_v2.1.md` (formler, endepunkter, prosjektstruktur)
 
@@ -77,15 +77,15 @@ MVP dekker Tyrvingtabellen (2014, alder 10–19, ~530 parameterkombinasjoner, 43
 
 Undersøkelse mot NFIFs offisielle side *Poengtabeller* (friidrett.no/arrangement/arrangementshjelp/poengtabeller/) bekrefter at norsk friidrett bruker *flere* forskjellige poengsystemer avhengig av konteksten. Dette er viktig for scope-prioriteringen videre:
 
-**Femkamp, sjukamp, tikamp for seniorer (inkludert UM, NM, Nordisk):** World Athletics Scoring Tables (2025-utgave, oppdateres hvert 3.–4. år). Tyrving brukes *ikke* for mangekamp på seniornivå.
+**Femkamp, sjukamp, tikamp for seniorer (inkludert UM, NM, Nordisk):** IAAF/WA Scoring Tables for **Combined Events** (2001-utgaven, opptrykk 2016). Formlene er `a·(b−T)^c` for løp, `a·(M−b)^c` for hopp (cm) og `a·(D−b)^c` for kast (m), og poengene avkortes til heltall. Tyrving brukes *ikke* for mangekamp på seniornivå. *(Rettet 26.09.2026. Det sto tidligere «World Athletics Scoring Tables (2025-utgave)». 2025-tabellene er et eget system som WA selv sier ikke berører mangekamp.)*
 
 **Mangekamp for ungdom under 15:** Tyrvingtabellen. Fra 15 år og oppover brukes de internasjonale tabellene.
 
-**Klubbrangering i Lagserien:** En egen norsk **Serietabell / Seriepoeng**. Dette er et nasjonalt eget system, uavhengig av Tyrving og WA, implementert på `minfriidrettsstatistikk.info`. Bruker senior-implement (kule 7,26 kg, diskos 2,0 kg, slegge 7,26 kg, spyd 800 g m.m.). Gjelder for senior.
+**Klubbrangering i Lagserien:** En egen norsk **Serietabell / Seriepoeng**. Dette er et nasjonalt eget system, uavhengig av Tyrving og WA, implementert på `minfriidrettsstatistikk.info`. Bruker senior-implement (kule 7,26 kg, diskos 2,0 kg, slegge 7,26 kg, spyd 800 g m.m.). Gjelder for senior. *(26.09.2026: NFIF har ingen nedlastbar fil eller formel. Stikkprøver i kalkulatoren viser at tabellen ikke er lik mangekamptabellen, masters-tabellenes seniorkolonne eller WA Scoring 2025. Se `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md`.)*
 
-**Masters mangekamp:** En norsk **Mangekamptabell for masters** (egne Excel-filer for menn og kvinner på friidrett.no), basert på WMAs nye aldersfaktorer fra 01.01.2023.
+**Masters mangekamp:** En norsk **Mangekamptabell for masters** (egne Excel-filer for menn og kvinner på friidrett.no), basert på WMAs nye aldersfaktorer fra 01.01.2023. Metoden står i WMA Rulebook Appendix B: *resultatet* ganges med aldersfaktoren, avrundes (løp opp, hopp og kast ned), og slås så opp i Combined Events-tabellen. NFIF-regnearkene er oppslagstabeller laget med denne metoden.
 
-**Masters klubbserien:** En egen **Serietabell for masters**.
+**Masters klubbserien:** En egen **Serietabell for masters**. NFIF-regnearkene dekker bare øvelser som ikke finnes i mangekamptabellen, og seniorkolonnen deres er ikke lik senior-serietabellen. Oppbyggingen må bekreftes av NFIF.
 
 **Masters individuelt:** WMA Age Grading med 2023-aldersfaktorer.
 
@@ -100,9 +100,32 @@ Opprinnelig plan dekket Tyrving (MVP) + WA Scoring + WMA (senere). Dette er nå 
 
 Begrunnelse: om målet er "én åpen, norsk poengtjeneste" er det ikke forsvarlig å stoppe ved Tyrving + WA + WMA. Klubbene trenger Serietabellen, og masters-miljøet har tre parallelle tabeller, ikke én.
 
-### B-18. Tyrving beholdes som MVP — ingen omprioritering
+### B-18. Tyrving beholdes som MVP — ingen omprioritering *(prioriteringen av Serietabellen er erstattet av B-22)*
 
 Selv om Serietabellen er bredere brukt, er Tyrvingtabellen det som har rensket datagrunnlag (Excel med formler + DOC-utdrag) og er klart avgrenset. Derfor fortsetter MVP som før. Serietabellen prioriteres som første fase etter MVP, foran WA Scoring.
+
+
+*B-19 til B-21 er forslag i `docs/ANALYSE_2026-09-06.md`, vedtatt i beslutningsloggen i `docs/BACKLOG.md` (én klone, fasit fra kildefiler, WA foran Serietabellen). B-24 erstatter B-21 for rekkefølgen.*
+
+### B-22. Ny rekkefølge etter MVP (26.09.2026)
+
+Etter at de offisielle kildene er gått gjennom (`kilder/KILDER.md`), er rekkefølgen etter Tyrving: **(0) kildesporing → (1) WA Combined Events → (2) masters mangekamp → (3) WMA Age Grading → (4) serietabell senior og masters → (5) WA Scoring Tables 2025.** Begrunnelse: 1–3 er fullt dokumentert i offisielle kilder og kan verifiseres uten avvik. Serietabellen har ingen offisiell kilde og venter på svar fra NFIF. Erstatter prioriteringen i B-18 og B-21.
+
+### B-23. Kildefiler: NFIF og WMA i `sources/`, WA utenfor repoet
+
+NFIF- og WMA-filene legges i `sources/` med SHA-256 i `sources/SHA256SUMS`, slik som Tyrving. WA-PDF-ene sjekkes ikke inn, fordi de har forbehold mot kopiering og repoet er offentlig. De ligger i Cowork-mappen `kilder/world-athletics/` og brukes lokalt til verifisering. Parametrene for Combined Events hentes fra WMA Appendix B, og fasiten fra seniorkolonnen i NFIF-tabellene. Cowork-mappen `kilder/KILDER.md` har full kildeliste med NFIF-sidene filene er lenket fra.
+
+### B-24. Alle beregninger viser til en offisiell kilde
+
+Hver parameterfil får en `sources`-blokk (`official_page`, `document_url`, `local_copy`, `sha256`, `retrieved`, `section`). API-et returnerer `source_ref` i `calculation_steps`, og frontend viser en lenke til NFIF-siden. Dette gjelder også Tyrving. Utvider B-6 og B-10.
+
+### B-25. Masters mangekamp: NFIF-tabellen er fasit, motoren regner etter WMA Appendix B
+
+Beslutningen fra 2026-09-25 står: NFIF-tabellen er fasit. Motoren regner analytisk etter WMA Appendix B (resultat × aldersfaktor → avrunding → Combined Events), og testen krever null avvik mot hele NFIF-tabellen. Hvis noe avviker, vinner NFIF-tabellen for den øvelsen, og avviket føres i `docs/KILDEAVVIK.md`. Stikkprøver 26.09.2026 stemmer eksakt (M35 200 m og M50 kule).
+
+### B-26. Serietabellen avventer NFIF, og blir en egen funksjon
+
+Vi implementerer ikke Serietabellen før vi har en offisiell kilde (henvendelse til NFIF, se `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`). Reserveløsningen er å tilpasse parametre fra kalkulatoren på minfriidrettsstatistikk.info, med tillatelse fra dem som drifter den, og merke kilden som «ikke offisiell». Når motorene for Combined Events og masters er bygget, kjøres en utvidet sammenligning mot kalkulatoren. Serietabell-beregning skal senere vises som en egen funksjon på siden vår.
 
 ---
 
@@ -130,7 +153,7 @@ Railway + Vercel satt opp, GitHub Actions CI/CD med automatiske tester ved PR og
 
 ### Fase 5+: Utvidelser (utenfor MVP)
 
-World Athletics Scoring + Combined Events (2 uker). Deretter reverse-beregning (`/api/v1/reverse`, B-8). Deretter WMA Age Grading (1 uke). API-nøkler og historisk logging legges til når konkret behov oppstår.
+Rekkefølgen er erstattet av B-22. Oppgavene står i `docs/BACKLOG.md`, og bakgrunnen i `docs/PLAN_FLERE_POENGSYSTEMER.md`: kildesporing (fase 0) → WA Combined Events → masters mangekamp → WMA Age Grading → serietabeller (når NFIF har svart) → WA Scoring 2025. Reverse-beregning (`/api/v1/reverse`, B-8) kommer etter Combined Events. API-nøkler og historisk logging legges til når konkret behov oppstår.
 
 ---
 
@@ -155,3 +178,4 @@ Hver av disse kan legges til senere uten å rive opp kjernen. Det er hele poenge
 |------|---------|
 | 2026-04-17 | Initial beslutningslogg. v2 lagt til grunn, med fire justeringer (B-5, B-6, B-7, B-8). Alle åpne punkter fra v2 kap. 13 avgjort. |
 | 2026-04-17 | Scope utvidet etter undersøkelse av NFIFs offisielle poengtabeller (kap. 3): Serietabellen/Seriepoeng, Masters Mangekamptabell og Masters Serietabell lagt til som egne poengsystemer (B-17). Tyrving beholdes som MVP, Serietabellen blir første post-MVP-leveranse foran WA Scoring (B-18). Teknisk forslag oppdatert til v2.1 med utvidet arkitektur, nye scoring-systemer og revidert roadmap. |
+| 2026-09-26 | Offisielle kilder lastet ned (NFIF og WMA i `sources/`, WA bare i Cowork-mappen `kilder/`). Kap. 3 rettet: seniormangekamp bruker Combined Events-tabellen (2001), ikke WA Scoring 2025. Masters-metoden beskrevet (WMA Appendix B). Serietabellen har ingen offisiell kilde og avviker fra alle kjente tabeller. Nye beslutninger B-22 til B-26: ny rekkefølge, kildefiler (WA utenfor repoet), kildesporing i API-et, masters-mangekamp regnes etter Appendix B med NFIF-tabellen som fasit, serietabellen avventer NFIF. |
