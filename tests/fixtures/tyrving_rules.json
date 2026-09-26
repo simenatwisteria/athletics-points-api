@@ -9,7 +9,11 @@
    "tolkning": "følger ikke ordrett av teksten; Code har valgt en lesning som Simen må godkjenne (AP-007)",
    "regneark": "står ikke i regelteksten, men regnearket gjør det slik"
   },
-  "review": "AP-007 — ikke låst før Simen har godkjent"
+  "review": "Godkjent av Simen 2026-09-26 (AP-007). Låst: agenten endrer ikke fila.",
+  "error_codes": {
+   "invalid_result": "resultat 0, negativt eller av feil type for øvelsen",
+   "manual_timing_unsupported": "manuell tid på en øvelse regelteksten ikke har tillegg for (40 m)"
+  }
  },
  "rules": {
   "R1": "Ved manuelle tider må det gjøres følgende tillegg før tabellen benyttes: 100m, 110m og 200m påplusses 0,24s; 60m, 80m og 300m påplusses 0,20s; 400m påplusses 0,14s.",
@@ -24,7 +28,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "100 m manuelt: +0,24 s",
-   "input": {"event_id": "sprint_100m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 11.7}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_100m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 11.7
+    },
+    "manual_timing": true
+   },
    "effective_result": 11.94,
    "calculation": "11,70 + 0,24 = 11,94; 1000 + (1195 − 1194) × 1,7 = 1001,7",
    "points": 1001
@@ -34,7 +47,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "60 m manuelt: +0,20 s",
-   "input": {"event_id": "sprint_60m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 7.4}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_60m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 7.4
+    },
+    "manual_timing": true
+   },
    "effective_result": 7.6,
    "calculation": "7,40 + 0,20 = 7,60; 1000 + (755 − 760) × 2,7 = 986,5",
    "points": 986
@@ -44,7 +66,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "80 m manuelt: +0,20 s",
-   "input": {"event_id": "sprint_80m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 9.8}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_80m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 9.8
+    },
+    "manual_timing": true
+   },
    "effective_result": 10.0,
    "calculation": "9,80 + 0,20 = 10,00; 1000 + (980 − 1000) × 2,2 = 956",
    "points": 956
@@ -54,7 +85,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "200 m manuelt: +0,24 s",
-   "input": {"event_id": "sprint_200m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 24.0}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_200m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 24.0
+    },
+    "manual_timing": true
+   },
    "effective_result": 24.24,
    "calculation": "24,00 + 0,24 = 24,24; 1000 + (2400 − 2424) × 0,85 = 979,6",
    "points": 979
@@ -64,7 +104,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "300 m manuelt: +0,20 s",
-   "input": {"event_id": "sprint_300m", "gender": "F", "age": 15, "implement": null, "result": {"time_seconds": 42.5}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_300m",
+    "gender": "F",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 42.5
+    },
+    "manual_timing": true
+   },
    "effective_result": 42.7,
    "calculation": "42,50 + 0,20 = 42,70; 1000 + (4250 − 4270) × 0,5 = 990",
    "points": 990
@@ -74,7 +123,16 @@
    "rule": "R1",
    "interpretation": "direkte",
    "note": "400 m manuelt: +0,14 s",
-   "input": {"event_id": "sprint_400m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 54.2}, "manual_timing": true},
+   "input": {
+    "event_id": "sprint_400m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 54.2
+    },
+    "manual_timing": true
+   },
    "effective_result": 54.34,
    "calculation": "54,20 + 0,14 = 54,34; 1000 + (5430 − 5434) × 0,4 = 998,4",
    "points": 998
@@ -84,57 +142,117 @@
    "rule": "R1",
    "interpretation": "tolkning",
    "note": "110 m hekk manuelt: +0,24 s. «110m» i regelteksten kan bare være hekk, så tilleggene gjelder etter distanse, også for hekk.",
-   "input": {"event_id": "hurdles_110m", "gender": "M", "age": 17, "implement": "91,4cm/9,14m", "result": {"time_seconds": 15.1}, "manual_timing": true},
+   "input": {
+    "event_id": "hurdles_110m",
+    "gender": "M",
+    "age": 17,
+    "implement": "91,4cm/9,14m",
+    "result": {
+     "time_seconds": 15.1
+    },
+    "manual_timing": true
+   },
    "effective_result": 15.34,
    "calculation": "15,10 + 0,24 = 15,34; 1000 + (1530 − 1534) × 1,0 = 996",
-   "points": 996
+   "points": 996,
+   "approved": "Simen 2026-09-26"
   },
   {
    "id": "R1-08",
    "rule": "R1",
    "interpretation": "tolkning",
    "note": "100 m hekk manuelt: +0,24 s (samme lesning som R1-07)",
-   "input": {"event_id": "hurdles_100m", "gender": "M", "age": 15, "implement": "84,0cm/8,5m", "result": {"time_seconds": 14.0}, "manual_timing": true},
+   "input": {
+    "event_id": "hurdles_100m",
+    "gender": "M",
+    "age": 15,
+    "implement": "84,0cm/8,5m",
+    "result": {
+     "time_seconds": 14.0
+    },
+    "manual_timing": true
+   },
    "effective_result": 14.24,
    "calculation": "14,00 + 0,24 = 14,24; 1000 + (1400 − 1424) × 1,1 = 973,6",
-   "points": 973
+   "points": 973,
+   "approved": "Simen 2026-09-26"
   },
   {
    "id": "R1-09",
    "rule": "R1",
    "interpretation": "tolkning",
    "note": "300 m hekk manuelt: +0,20 s (samme lesning som R1-07)",
-   "input": {"event_id": "hurdles_300m", "gender": "M", "age": 15, "implement": "76,2cm/35m", "result": {"time_seconds": 43.0}, "manual_timing": true},
+   "input": {
+    "event_id": "hurdles_300m",
+    "gender": "M",
+    "age": 15,
+    "implement": "76,2cm/35m",
+    "result": {
+     "time_seconds": 43.0
+    },
+    "manual_timing": true
+   },
    "effective_result": 43.2,
    "calculation": "43,00 + 0,20 = 43,20; 1000 + (4300 − 4320) × 0,46 = 990,8",
-   "points": 990
+   "points": 990,
+   "approved": "Simen 2026-09-26"
   },
   {
    "id": "R1-10",
    "rule": "R1",
    "interpretation": "tolkning",
    "note": "400 m hekk manuelt: +0,14 s (samme lesning som R1-07)",
-   "input": {"event_id": "hurdles_400m", "gender": "M", "age": 19, "implement": "91,4cm/35m", "result": {"time_seconds": 55.5}, "manual_timing": true},
+   "input": {
+    "event_id": "hurdles_400m",
+    "gender": "M",
+    "age": 19,
+    "implement": "91,4cm/35m",
+    "result": {
+     "time_seconds": 55.5
+    },
+    "manual_timing": true
+   },
    "effective_result": 55.64,
    "calculation": "55,50 + 0,14 = 55,64; 1000 + (5550 − 5564) × 0,34 = 995,24",
-   "points": 995
+   "points": 995,
+   "approved": "Simen 2026-09-26"
   },
   {
    "id": "R1-11",
    "rule": "R1",
    "interpretation": "tolkning",
    "note": "800 m manuelt: ingen tillegg. Regelteksten lister tillegg bare til og med 400 m, og lengre løp regnes i tideler.",
-   "input": {"event_id": "middle_800m", "gender": "M", "age": 15, "implement": null, "result": {"time_minutes": 2, "time_seconds": 5.3}, "manual_timing": true},
+   "input": {
+    "event_id": "middle_800m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_minutes": 2,
+     "time_seconds": 5.3
+    },
+    "manual_timing": true
+   },
    "effective_result": 125.3,
    "calculation": "ingen tillegg; 1000 + (1240 − 1253) × 1,8 = 976,6",
-   "points": 976
+   "points": 976,
+   "approved": "Simen 2026-09-26"
   },
   {
    "id": "R1-12",
    "rule": "R1",
    "interpretation": "direkte",
    "note": "Automatisk tid får ikke tillegg",
-   "input": {"event_id": "sprint_100m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 11.7}, "manual_timing": false},
+   "input": {
+    "event_id": "sprint_100m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 11.7
+    },
+    "manual_timing": false
+   },
    "effective_result": 11.7,
    "calculation": "1000 + (1195 − 1170) × 1,7 = 1042,5",
    "points": 1042
@@ -144,7 +262,17 @@
    "rule": "R2",
    "interpretation": "direkte",
    "note": "800 m: hundredeler strykes (ikke avrundes). 2:04.56 regnes som 2:04.5.",
-   "input": {"event_id": "middle_800m", "gender": "M", "age": 15, "implement": null, "result": {"time_minutes": 2, "time_seconds": 4.56}, "manual_timing": false},
+   "input": {
+    "event_id": "middle_800m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_minutes": 2,
+     "time_seconds": 4.56
+    },
+    "manual_timing": false
+   },
    "effective_result": 124.5,
    "calculation": "2:04.56 → 2:04.5 = 124,5 s; 1000 + (1240 − 1245) × 1,8 = 991. (Avrundet til 2:04.6 ville gitt 989.)",
    "points": 991
@@ -154,7 +282,17 @@
    "rule": "R2",
    "interpretation": "direkte",
    "note": "1500 m: hundredeler strykes, også ,99",
-   "input": {"event_id": "middle_1500m", "gender": "M", "age": 15, "implement": null, "result": {"time_minutes": 4, "time_seconds": 20.99}, "manual_timing": false},
+   "input": {
+    "event_id": "middle_1500m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_minutes": 4,
+     "time_seconds": 20.99
+    },
+    "manual_timing": false
+   },
    "effective_result": 260.9,
    "calculation": "4:20.99 → 4:20.9 = 260,9 s; 1000 + (2600 − 2609) × 0,7 = 993,7",
    "points": 993
@@ -164,7 +302,17 @@
    "rule": "R2",
    "interpretation": "direkte",
    "note": "Kappgang 1000 m er et lengre løp: tideler, hundredeler strykes",
-   "input": {"event_id": "racewalk_1000m", "gender": "M", "age": 15, "implement": null, "result": {"time_minutes": 4, "time_seconds": 25.47}, "manual_timing": false},
+   "input": {
+    "event_id": "racewalk_1000m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_minutes": 4,
+     "time_seconds": 25.47
+    },
+    "manual_timing": false
+   },
    "effective_result": 265.4,
    "calculation": "4:25.47 → 4:25.4 = 265,4 s; 1000 + (2620 − 2654) × 0,7 = 976,2",
    "points": 976
@@ -174,7 +322,16 @@
    "rule": "R2",
    "interpretation": "direkte",
    "note": "400 m (≤ 500 m): hundredeler beholdes",
-   "input": {"event_id": "sprint_400m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 54.99}, "manual_timing": false},
+   "input": {
+    "event_id": "sprint_400m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 54.99
+    },
+    "manual_timing": false
+   },
    "effective_result": 54.99,
    "calculation": "1000 + (5430 − 5499) × 0,4 = 972,4",
    "points": 972
@@ -184,7 +341,17 @@
    "rule": "R2",
    "interpretation": "direkte",
    "note": "1500 m hinder er et lengre løp: tideler",
-   "input": {"event_id": "steeplechase_1500m", "gender": "M", "age": 15, "implement": "76,2cm", "result": {"time_minutes": 4, "time_seconds": 50.08}, "manual_timing": false},
+   "input": {
+    "event_id": "steeplechase_1500m",
+    "gender": "M",
+    "age": 15,
+    "implement": "76,2cm",
+    "result": {
+     "time_minutes": 4,
+     "time_seconds": 50.08
+    },
+    "manual_timing": false
+   },
    "effective_result": 290.0,
    "calculation": "4:50.08 → 4:50.0 = 290,0 s; 1000 + (2880 − 2900) × 0,55 = 989",
    "points": 989
@@ -194,7 +361,16 @@
    "rule": "R3",
    "interpretation": "direkte",
    "note": "Poengsummen rundes ned, ikke til nærmeste: 928,6 gir 928",
-   "input": {"event_id": "sprint_100m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 12.37}, "manual_timing": false},
+   "input": {
+    "event_id": "sprint_100m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 12.37
+    },
+    "manual_timing": false
+   },
    "effective_result": 12.37,
    "calculation": "1000 + (1195 − 1237) × 1,7 = 928,6",
    "points": 928
@@ -204,7 +380,16 @@
    "rule": "R3",
    "interpretation": "direkte",
    "note": "Alle desimaler beholdes og rundes ned: 997,9 gir 997, ikke 998",
-   "input": {"event_id": "long_jump", "gender": "F", "age": 15, "implement": null, "result": {"distance_meters": 5.35}, "manual_timing": false},
+   "input": {
+    "event_id": "long_jump",
+    "gender": "F",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 5.35
+    },
+    "manual_timing": false
+   },
    "effective_result": 5.35,
    "calculation": "1000 − (536 − 535) × 2,1 = 997,9",
    "points": 997
@@ -214,7 +399,16 @@
    "rule": "R3",
    "interpretation": "regneark",
    "note": "Negativ poengsum blir 0. Regelteksten sier ingenting; regnearket har IF(P<0,0,…).",
-   "input": {"event_id": "sprint_60m", "gender": "M", "age": 15, "implement": null, "result": {"time_seconds": 12.0}, "manual_timing": false},
+   "input": {
+    "event_id": "sprint_60m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 12.0
+    },
+    "manual_timing": false
+   },
    "effective_result": 12.0,
    "calculation": "1000 + (755 − 1200) × 2,7 = −201,5 → 0",
    "points": 0
@@ -224,7 +418,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Kule over 1000p-nivået: første multiplikator (0,3)",
-   "input": {"event_id": "shot_put", "gender": "M", "age": 15, "implement": "4kg", "result": {"distance_meters": 16.0}, "manual_timing": false},
+   "input": {
+    "event_id": "shot_put",
+    "gender": "M",
+    "age": 15,
+    "implement": "4kg",
+    "result": {
+     "distance_meters": 16.0
+    },
+    "manual_timing": false
+   },
    "effective_result": 16.0,
    "calculation": "1000 + (1600 − 1530) × 0,3 = 1021",
    "points": 1021
@@ -234,7 +437,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Kule på 1000p-nivået",
-   "input": {"event_id": "shot_put", "gender": "M", "age": 15, "implement": "4kg", "result": {"distance_meters": 15.3}, "manual_timing": false},
+   "input": {
+    "event_id": "shot_put",
+    "gender": "M",
+    "age": 15,
+    "implement": "4kg",
+    "result": {
+     "distance_meters": 15.3
+    },
+    "manual_timing": false
+   },
    "effective_result": 15.3,
    "calculation": "1000",
    "points": 1000
@@ -244,7 +456,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Kule mellom 80 % og 1000p-nivået: andre multiplikator (0,6)",
-   "input": {"event_id": "shot_put", "gender": "M", "age": 15, "implement": "4kg", "result": {"distance_meters": 13.0}, "manual_timing": false},
+   "input": {
+    "event_id": "shot_put",
+    "gender": "M",
+    "age": 15,
+    "implement": "4kg",
+    "result": {
+     "distance_meters": 13.0
+    },
+    "manual_timing": false
+   },
    "effective_result": 13.0,
    "calculation": "1000 − (1530 − 1300) × 0,6 = 862",
    "points": 862
@@ -254,7 +475,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Kule nøyaktig på 80 %-nivået: PDF-en oppgir 12,24 m → 816 poeng",
-   "input": {"event_id": "shot_put", "gender": "M", "age": 15, "implement": "4kg", "result": {"distance_meters": 12.24}, "manual_timing": false},
+   "input": {
+    "event_id": "shot_put",
+    "gender": "M",
+    "age": 15,
+    "implement": "4kg",
+    "result": {
+     "distance_meters": 12.24
+    },
+    "manual_timing": false
+   },
    "effective_result": 12.24,
    "calculation": "1000 − (1530 − 1224) × 0,6 = 816,4",
    "points": 816
@@ -264,7 +494,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Kule under 80 %: andre multiplikator ned til 80 %, tredje (1,2) under",
-   "input": {"event_id": "shot_put", "gender": "M", "age": 15, "implement": "4kg", "result": {"distance_meters": 10.0}, "manual_timing": false},
+   "input": {
+    "event_id": "shot_put",
+    "gender": "M",
+    "age": 15,
+    "implement": "4kg",
+    "result": {
+     "distance_meters": 10.0
+    },
+    "manual_timing": false
+   },
    "effective_result": 10.0,
    "calculation": "1000 − ((1530 − 1224) × 0,6 + (1224 − 1000) × 1,2) = 1000 − (183,6 + 268,8) = 547,6",
    "points": 547
@@ -274,7 +513,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Stav over 1000p-nivået: første multiplikator (1,7)",
-   "input": {"event_id": "pole_vault", "gender": "M", "age": 15, "implement": null, "result": {"distance_meters": 3.8}, "manual_timing": false},
+   "input": {
+    "event_id": "pole_vault",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 3.8
+    },
+    "manual_timing": false
+   },
    "effective_result": 3.8,
    "calculation": "1000 + (380 − 350) × 1,7 = 1051",
    "points": 1051
@@ -284,7 +532,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Stav mellom 80 % og 1000p-nivået: andre multiplikator (3,5)",
-   "input": {"event_id": "pole_vault", "gender": "M", "age": 15, "implement": null, "result": {"distance_meters": 3.0}, "manual_timing": false},
+   "input": {
+    "event_id": "pole_vault",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 3.0
+    },
+    "manual_timing": false
+   },
    "effective_result": 3.0,
    "calculation": "1000 − (350 − 300) × 3,5 = 825",
    "points": 825
@@ -294,7 +551,16 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Stav under 80 %: tredje multiplikator (7) under 2,80 m",
-   "input": {"event_id": "pole_vault", "gender": "M", "age": 15, "implement": null, "result": {"distance_meters": 2.5}, "manual_timing": false},
+   "input": {
+    "event_id": "pole_vault",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 2.5
+    },
+    "manual_timing": false
+   },
    "effective_result": 2.5,
    "calculation": "1000 − ((350 − 280) × 3,5 + (280 − 250) × 7) = 1000 − (245 + 210) = 545",
    "points": 545
@@ -304,30 +570,95 @@
    "rule": "R4",
    "interpretation": "direkte",
    "note": "Høyde er ikke kast eller stav: enkel multiplikator også under 80 %",
-   "input": {"event_id": "high_jump", "gender": "M", "age": 15, "implement": null, "result": {"distance_meters": 1.3}, "manual_timing": false},
+   "input": {
+    "event_id": "high_jump",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 1.3
+    },
+    "manual_timing": false
+   },
    "effective_result": 1.3,
    "calculation": "1000 − (180 − 130) × 7 = 650",
    "points": 650
   }
  ],
- "open_questions": [
+ "decided_questions": [
   {
    "id": "Q-01",
    "rule": "R1",
    "question": "40 m med manuell tid: regelteksten har ingen tillegg for 40 m. Skal motoren avvise manuell tid på 40 m, bruke 0,20 s som for 60 m, eller beregne uten tillegg?",
-   "code_suggestion": "Avvise med tydelig feilmelding — det er det eneste som ikke gjetter."
+   "code_suggestion": "Avvise med tydelig feilmelding — det er det eneste som ikke gjetter.",
+   "decision": "Avvis med feilmelding (Simen 2026-09-26). Case E-01."
   },
   {
    "id": "Q-02",
    "rule": "R5",
    "question": "Resultat 0 eller manglende resultat: regnearket gir 0 poeng. Skal motoren gjøre det samme, eller avvise input?",
-   "code_suggestion": "Avvise: et API som gir 0 poeng for manglende input skjuler feil hos klienten."
+   "code_suggestion": "Avvise: et API som gir 0 poeng for manglende input skjuler feil hos klienten.",
+   "decision": "Avvis input (Simen 2026-09-26). Case E-02 og E-03. Negativ poengsum for et gyldig resultat gir fortsatt 0 (R3-03)."
   },
   {
    "id": "Q-03",
    "rule": "R3",
    "question": "Eksakt desimalregning eller regnearkets flyttall? Se float_edge i docs/KILDEAVVIK.md (også spørsmål 1 i AP-005).",
-   "code_suggestion": "Eksakt desimalregning, i tråd med «alle desimaler beholdes»."
+   "code_suggestion": "Eksakt desimalregning, i tråd med «alle desimaler beholdes».",
+   "decision": "Eksakt desimalregning (Simen 2026-09-26, AP-005)."
+  }
+ ],
+ "error_cases": [
+  {
+   "id": "E-01",
+   "rule": "R1",
+   "decision": "Q-01",
+   "note": "40 m med manuell tid: regelteksten har ikke noe tillegg, så motoren avviser",
+   "input": {
+    "event_id": "sprint_40m",
+    "gender": "M",
+    "age": 10,
+    "implement": null,
+    "result": {
+     "time_seconds": 6.4
+    },
+    "manual_timing": true
+   },
+   "error": "manual_timing_unsupported"
+  },
+  {
+   "id": "E-02",
+   "rule": "R5",
+   "decision": "Q-02",
+   "note": "Tid 0 avvises (regnearket gir 0 poeng)",
+   "input": {
+    "event_id": "sprint_60m",
+    "gender": "M",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "time_seconds": 0.0
+    },
+    "manual_timing": false
+   },
+   "error": "invalid_result"
+  },
+  {
+   "id": "E-03",
+   "rule": "R5",
+   "decision": "Q-02",
+   "note": "Lengde 0 avvises (regnearket gir 0 poeng)",
+   "input": {
+    "event_id": "long_jump",
+    "gender": "F",
+    "age": 15,
+    "implement": null,
+    "result": {
+     "distance_meters": 0.0
+    },
+    "manual_timing": false
+   },
+   "error": "invalid_result"
   }
  ]
 }

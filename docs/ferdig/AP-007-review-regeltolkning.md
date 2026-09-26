@@ -1,6 +1,6 @@
 # AP-007: Review av regeltolkningen for Tyrving
 
-**Status:** Klar
+**Status:** Ferdig — regeltolkningen er låst 2026-09-26
 **Opprettet:** 2026-09-25 (Code, etter AP-006)
 **Eier:** 🧑 Simen
 **Avhenger av:** AP-006
@@ -30,6 +30,6 @@ Resten (`"interpretation": "direkte"`) står ordrett i regelteksten. Se særlig 
 
 ## Akseptansekriterier
 
-- [ ] Tolkningene i tabellen over godkjent eller endret
-- [ ] Q-01 – Q-03 besvart (svarene skrives inn i `open_questions` eller gjøres om til caser av Code)
-- [ ] Status i `docs/BACKLOG.md` satt til `Ferdig`, med dato: regeltolkningen er låst
+- [x] Tolkningene i tabellen over godkjent eller endret (Simen 2026-09-26: alle godkjent)
+- [x] Q-01 – Q-03 besvart: 40 m manuelt avvises, resultat 0 avvises, eksakt regning (`decided_questions` og `error_cases`)
+- [x] Status i `docs/BACKLOG.md` satt til `Ferdig`, med dato: regeltolkningen er låst

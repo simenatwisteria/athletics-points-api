@@ -27,7 +27,9 @@ def entries() -> dict[tuple[Any, ...], dict[str, Any]]:
 
 
 def test_case_ids_are_unique(rules: dict[str, Any]) -> None:
-    ids = [c["id"] for c in rules["cases"]] + [q["id"] for q in rules["open_questions"]]
+    ids = [c["id"] for c in rules["cases"] + rules["error_cases"]] + [
+        q["id"] for q in rules["decided_questions"]
+    ]
     assert len(ids) == len(set(ids))
 
 
@@ -41,7 +43,7 @@ def test_every_case_is_documented(rules: dict[str, Any]) -> None:
 
 
 def test_every_rule_has_cases(rules: dict[str, Any]) -> None:
-    covered = {c["rule"] for c in rules["cases"]} | {q["rule"] for q in rules["open_questions"]}
+    covered = {c["rule"] for c in rules["cases"] + rules["error_cases"]}
     assert covered == set(rules["rules"])
 
 
@@ -59,3 +61,9 @@ def test_inputs_exist_and_match_measure(
         else:
             assert fields in ({"time_seconds"}, {"time_minutes", "time_seconds"}), case["id"]
         assert isinstance(given["manual_timing"], bool), case["id"]
+
+
+def test_questions_are_decided(rules: dict[str, Any]) -> None:
+    assert all(q["decision"] for q in rules["decided_questions"])
+    codes = set(rules["meta"]["error_codes"])
+    assert all(c["error"] in codes for c in rules["error_cases"])

@@ -27,7 +27,7 @@ hvorfor i notatet, og har stoppet.
 | 4 | AP-004 | Tyrving: oracle-skript `scripts/oracle_tyrving.py` — rekalkulerer regnearket med LibreOffice headless og skriver `tests/fixtures/tyrving_cases.json` (2472 caser) | 🤖 | AP-002, AP-003 | **Ferdig** | `ferdig/AP-004-tyrving-oracle.md` |
 | 5 | AP-005 | **Review** Tyrving-fixtures: stikkprøve 10–20 caser mot PDF-tabellen, godkjenn og lås | 🧑 | AP-004 | **Ferdig** 2026-09-26 — fasiten er låst | `ferdig/AP-005-review-tyrving-fixtures.md` |
 | 6 | AP-006 | Tyrving: regeltolkning fra DOC/PDF (80 %-grense, manuell tidtaking, avrunding) som eksplisitte testcaser i `tests/fixtures/tyrving_rules.json` med kildehenvisning per case | 🤖 | AP-001 | **Ferdig** (29 caser, 3 åpne spørsmål) | `ferdig/AP-006-tyrving-regeltolkning.md` |
-| 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Klar** — 3 tolkninger + 3 spørsmål | `active/AP-007-review-regeltolkning.md` |
+| 7 | AP-007 | **Review** regeltolkningen i AP-006 mot DOC/PDF, godkjenn og lås | 🧑 | AP-006 | **Ferdig** 2026-09-26 — regeltolkningen er låst | `ferdig/AP-007-review-regeltolkning.md` |
 | 8 | AP-008 | Tyrving: `TyrvingCalculator` (simple_quotient, three_interval, edge cases) grønn mot låste fixtures | 🤖 | AP-002, AP-005, AP-007 | Ny | — |
 | 9 | AP-009 | Tyrving: mangekamp u/15 (summering av Tyrving-poeng) | 🤖 | AP-008 | Ny | — |
 
@@ -96,6 +96,9 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   `sources/` er byte-identiske med Simens nedlasting samme dag. PDF-ene har ukjent opphav, men identisk innhold, og
   brukes videre av koden fordi de kan leses uten LibreOffice. Ingen tall endres. NFIFs gjeldende `.xls` avviker
   fra tabellen på to rader (G19 2000 m, J17 kule).
+- **2026-09-26** — **Regeltolkningen er låst (AP-007).** Tillegg for manuell tid gjelder etter distanse, også for hekk.
+  Løp fra 600 m og oppover får ingen tillegg. Manuell tid på 40 m avvises. Resultat 0 eller et manglende resultat
+  avvises, mens negativ poengsum for et gyldig resultat gir 0.
 - **2026-09-26** — **Tyrving-fasiten er låst (AP-005).** Kvalitetssikret mot Rjukan IL sin Tyrvingkalkulator: 2419 av
   2432 sammenlignbare caser er identiske, og resten er forklart av feil på nettsiden. **Motoren regner eksakt**
   (desimal), fordi regelteksten sier at alle desimaler beholdes. Flyttallskanten testes mot `points_if_exact`.
