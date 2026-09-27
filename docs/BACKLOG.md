@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-037**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-038**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -63,7 +63,8 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md`, `docs/INTEGRASJON-5KAMP.md` | **Ferdig** 2026-09-27 (`docs/api/openapi.yaml` + README, eksemplene kontrollert mot motorene; venter på godkjenning i AP-036) | `ferdig/AP-020-api-kontrakt.md` | — |
 | 20b | AP-036 | **Godkjenn API-kontrakten** fra AP-020 | 🧑 | AP-020 | **Ferdig** 2026-09-27 — godkjent av Simen etter Coworks gjennomgang. `auto` bruker klassealder | — |
 | 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7), katalogdata og `ImplementMismatchError` | 🤖 | AP-036 | **Ferdig** 2026-09-27 (alle endepunkter, `/interpret` svarer 501; `uvicorn athletics_api.main:app`) | `ferdig/AP-021-api-implementasjon.md` |
-| 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
+| 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | **Ferdig** 2026-09-27 — https://api-production-d67d.up.railway.app (Railway-prosjekt `athletics-points-api`, tjeneste `api`). Kontrolltallene stemmer på nett | — |
+| 22b | AP-037 | Flytt Railway-oppsettet inn i repoet (`railway.json`: bygg `python -m venv /app/venv && /app/venv/bin/pip install --no-cache-dir ".[api]"`, start `/app/venv/bin/python -m uvicorn athletics_api.main:app --host 0.0.0.0 --port $PORT`, helsesjekk `/api/v1/health`). I dag ligger det bare i Railway-innstillingene. Beskriv miljøvariablene i README | 🤖 | AP-022 | Ny | — |
 | 23 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
 | 24 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
 
@@ -182,3 +183,10 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
   `ImplementMismatchError` som underklasse, og klassealder.
 - **2026-09-27** — **5KAMP 5K-012 merget og testet** (Simen). 5KAMP regner femkamp-poeng lokalt fra stevnet
   2026-10-03 (B-28). Tidene regnes som elektroniske (BV-026).
+- **2026-09-27** — **API-et er på nett** (AP-022): https://api-production-d67d.up.railway.app/api/v1, eget Railway-prosjekt
+  `athletics-points-api` (B-2), deploy ved push til `main`. Miljøvariabler: `TRUST_PROXY=1`,
+  `CORS_ALLOWED_ORIGINS=https://5kamp.minfriidrett.no`, `RATE_LIMIT_PER_MINUTE=600`, `RAILPACK_PYTHON_VERSION=3.13`.
+  Bygget lager en egen venv, fordi `pip install` uten venv la pakkene utenfor stien Railway kjører fra
+  («uvicorn: command not found»). Kontrollert på nett: 200 m 23,79 = 712 med `immutable` og CORS for 5KAMP, Tyrving
+  G15 800 m = 991 med BV-011, `auto` 16 år = G16 712, masters M50 100 m 13,12 = 681, annet opphav får ikke CORS,
+  `/interpret` 501.

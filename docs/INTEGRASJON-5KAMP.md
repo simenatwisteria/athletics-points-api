@@ -70,3 +70,8 @@ resultatet som tall. Senere kan tolkningen i API-et (B-27) ta imot teksten direk
 
 Claude Code i 5KAMP trenger ikke tilgang til dette repoet. Den trenger oppgavefila, URL-en til API-et og
 OpenAPI-spesifikasjonen (`docs/api/openapi.yaml` herfra, kopiert inn i oppgavefila eller lenket fra GitHub).
+
+## Status 2026-09-27
+
+API-et er på nett: `https://api-production-d67d.up.railway.app/api/v1` (AP-022). CORS er åpnet for
+`https://5kamp.minfriidrett.no`. Koblingen fra 5KAMP kan skrives som oppgave etter stevnet 2026-10-03.
