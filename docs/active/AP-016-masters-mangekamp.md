@@ -1,6 +1,6 @@
 # AP-016: Masters mangekamp (WMA Appendix B, NFIF-tabellen som fasit)
 
-**Status:** Blokkert 2026-09-26 (se «Blokkert» nederst)
+**Status:** Klar (blokkeringen er avgjort, se «Avgjørelse» nederst)
 **Opprettet:** 2026-09-26 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-012, AP-013, AP-015
@@ -164,6 +164,22 @@ riktige poeng i alle kontrollerte eksempler.
 2. 200 m M90–M100: bestem om oracle-skriptet skal (a) hoppe over de ødelagte cellene og registrere dem
    i `meta`, eller (b) reparere den forskjøvne teksten. (b) er en tolkning av kilden. (a) gir ingen
    gjetting.
+
+## Avgjørelse (Cowork, 2026-09-26, gjelder til Simen sier noe annet)
+
+1. **80 m hekk manuell:** Forslag 1 er valgt. Blokkene med +0,20 s hoppes over i fasiten, og motoren bruker
+   +0,24 s (BV-024, `KILDEAVVIK.md`). Utelatelsen skal stå i fixturens `meta` med ark, blokk og klasser.
+2. **200 m M90–M100:** Alternativ (a). Oracle-skriptet hopper over cellene som ikke kan leses som tid, og de 82
+   avkortede M95-cellene. Alle skal listes i `meta` med rad, kolonne og råtekst. Ingen reparasjon (BV-035).
+   Avgjør selv hvordan du kjenner igjen de avkortede cellene (f.eks. `m.ss.c` med bare ett siffer etter siste
+   punktum der kolonnen ellers har hundredeler), og skriv regelen i sluttrapporten.
+3. **Hekkeoppslaget** er avklart av Code og kan brukes som beskrevet under «Blokkert».
+
+4. **Kvinner 100 m hekk senior** (Innboks fra AP-012): NFIF-arkene har ingen seniorkolonne for øvelsen. Legg til
+   tre kontrolltall fra IAAF-boka s. 104 i `tests/test_wa_combined_events.py`: 12,00 = 1280, 12,50 = 1201,
+   13,50 = 1050 (Cowork har sjekket at formelen gir det samme). Tabellen dekkes også indirekte av W35-kolonnen.
+
+Fortsett fra utkastet til `scripts/oracle_masters_combined_events.py`. Resten av oppgaven er uendret.
 
 ## Sluttrapport (fylles av Code)
 

@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-031**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-032**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -45,7 +45,8 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 14 | AP-027 | Kildesporing: `source_documents` i parameter-JSON og `ref` (BV-nummer eller kilde) i beregningsstegene, også Tyrving. Test at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` (B-24) | 🤖 | AP-001 | **Ferdig** 2026-09-26 | `ferdig/AP-027-kildesporing.md` |
 | 14b | AP-030 | Fyll inn `document_url` for Tyrving-DOC-ene og `.xls` i `meta.source_documents` fra lenkene i `sources/README.md` (lagt inn 2026-09-26). PDF-ene og `.xlsx` beholder `null`. Kjør `extract_tyrving_params.py` på nytt og vis at bare `meta` endres | 🤖 | AP-027 | **Ferdig** 2026-09-26 (`.xls` lagt til som sjette dokument) | `ferdig/AP-030-document-url.md` |
 | 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | **Ferdig** 2026-09-26 (null avvik mot 30 482 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-012-wa-combined-events.md` |
-| 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | **Blokkert** 2026-09-26 — to kildeavvik i NFIF-arkene, Simen avgjør (BV-035). Metoden gir null avvik på 431 467 caser, men ikke på disse: (1) **80 m hekk manuell** (`80-110m HK-m` M70–M100, `80-100mHK-m` W40–W95): arket bruker +0,20 s, ikke +0,24 s. Eksempler: W40 10,8 → arket 1199, metoden 1192; M70 11,2 → 1206/1199; M75 12,0 → 1200/1194. Med +0,20 s blir det null avvik. (2) **Menn `200m`, M95/M100 (kolonne O–P, rad 983–1182)**: ødelagte tekstceller der siste siffer har forskjøvet seg til neste kolonne, f.eks. O983 «1.00.0» og P983 «2  1.14.72» (= 1.00.02 og 1.14.72). 220 celler kan ikke leses, og 82 M95-celler er avkortet («1.00.0» gir 200 i stedet for 199). Reparert tid stemmer med metoden. Detaljer og forslag i oppgavefila | `active/AP-016-masters-mangekamp.md` |
+| 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | Klar — blokkering avgjort 2026-09-26 (se oppgavefila) | `active/AP-016-masters-mangekamp.md` |
+| 16b | AP-031 | **Review** WA Combined Events-fasit: stikkprøve de 10 casene i sluttrapporten til AP-012 (`ferdig/AP-012-wa-combined-events.md`) mot NFIF-arket, godkjenn og lås `tests/fixtures/wa_combined_events_cases.json` | 🧑 | AP-012 | Ny | — |
 | 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
 | 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
 
@@ -96,14 +97,6 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   2. Øvelsesnavn må finnes på norsk og engelsk (en felles øvelseskatalog), og kategorien (løp, hekk, kappgang,
      hopp, kast) brukes til å gruppere menyene.
   3. Tall formateres etter språk (komma på norsk, punktum på engelsk). Poengberegningen påvirkes ikke.
-
-- **Lås `tests/fixtures/wa_combined_events_cases.json`** *(AP-012, forslag til 🧑-oppgave)*
-  Fixture-fila er ny og ulåst (`meta.locked: false`). Sluttrapporten i `ferdig/AP-012-wa-combined-events.md`
-  lister 10 caser til stikkprøve mot NFIF-arkene.
-
-- **Kvinner 100 m hekk senior har ingen fasit i NFIF-arkene** *(AP-012)*
-  `80-100mHK` starter på W40, så øvelsen er bare dekket av formelen og Appendix B-parametrene. Et par caser fra
-  IAAF-boka (ikke i repoet) ville gitt en uavhengig kontroll.
 
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
@@ -157,3 +150,5 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
 - **2026-09-26** — Oppgavemalen oppdatert etter Anthropics råd for Opus 5.5 og Claude Code (les først, kontrolltall,
   stoppregler, bevis i sluttrapporten). Oppgavefiler skrevet for AP-027, AP-012, AP-016, AP-014 og AP-028.
 - **2026-09-26** — AP-027 gjennomgått av Cowork: godkjent. Innboks-funnet om manglende lenker løst ved at lenkene er ført inn i `sources/README.md`; utfyllingen i JSON er AP-030.
+- **2026-09-26** — **AP-016 avblokkert.** 80 m hekk manuell følger +0,24 s som 60 m (BV-024, anbefalt av Cowork). Forskjøvne celler i menn 200 m M90–M100 hoppes over i fasiten, ikke reparert (BV-035). Begge ført i `KILDEAVVIK.md` og tatt med i e-posten til NFIF.
+- **2026-09-26** — AP-012 gjennomgått av Cowork: godkjent (30 482 caser, null avvik). Innboks tømt: låsing av fixturen er AP-031 (🧑), og kontrolltall for kvinner 100 m hekk senior fra IAAF-boka er lagt til AP-016.

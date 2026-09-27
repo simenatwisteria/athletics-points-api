@@ -110,7 +110,7 @@ nøyaktig lik formlene i `sources/wma/wma-2023-appendix-b-combined-events.pdf` s
 tekniske øvelser, også slegge og vektkast. Kvinner 1500 m stemmer med IAAF-bokas parametre for kvinners tikamp.
 Eneste avvik:
 
-### Manuell tid på 60 m og 60 m hekk
+### Manuell tid på 60 m, 60 m hekk og 80 m hekk
 
 | Kilde | Tillegg for manuell tid på 60 m og 60 m hekk | Eksempel: menn 60 m 6,0 manuell |
 |---|---|---|
@@ -118,7 +118,22 @@ Eneste avvik:
 | WMA Appendix B s. 1 | +0,24 s («50 through 300 meters») | 1170 poeng |
 | NFIF masters-ark `60m-m`, `60m HK-m` (menn), `60m-m`, `60mHK-m` (kvinner), seniorkolonnen | +0,20 s (alle 287 rader) | 1187 poeng |
 
+Samme mønster på 80 m hekk manuell (funnet av Code i AP-016, 2026-09-26): `80-110m HK-m` (menn M70–M100) og
+`80-100mHK-m` (kvinner W40–W95) bruker +0,20 s. Eksempel W40 10,8: arket 1199, +0,24 s gir 1192.
+
 Manuell tid på 100, 200, 400 m og 100/110 m hekk stemmer i alle kildene (+0,24 / +0,14 s).
 
-**Valg:** BV-024. Vi følger de to primærkildene (+0,24 s). De fire «-m»-arkene for 60 m brukes ikke som fasit.
+**Valg:** BV-024. Vi følger de to primærkildene (+0,24 s). «-m»-blokkene for 60 m, 60 m hekk og 80 m hekk brukes
+ikke som fasit (Cowork, 2026-09-26, gjelder til Simen sier noe annet).
 **Status overfor NFIF:** tatt med i e-posten (`docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`).
+
+### Forskjøvne celler i menn `200m`, M90–M100
+
+Funnet av Code i AP-016 (2026-09-26). I `sources/masters/nfif-masters-mangekamp-menn.xlsx`, ark `200m`, fra rad 983,
+er tekstcellene i kolonne N–P forskjøvet: siste siffer i én kolonne står først i neste, skilt med to mellomrom
+(rad 983: O = `1.00.0`, P = `2  1.14.72`, som betyr M95 1.00.02 og M100 1.14.72). 220 celler kan ikke leses som
+tid, og 82 celler i M95 er avkortet og gir feil poeng.
+
+**Valg:** Cellene hoppes over i fasiten og listes i fixturens `meta` (Cowork, 2026-09-26, gjelder til Simen sier noe annet). Vi reparerer ikke
+teksten, fordi det ville vært å tolke kilden. Motoren regner uansett etter metoden, og de øvrige cellene i
+samme ark gir null avvik. **Status overfor NFIF:** tatt med i e-posten.

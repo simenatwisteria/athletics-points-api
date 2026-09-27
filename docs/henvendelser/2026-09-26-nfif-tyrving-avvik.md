@@ -98,11 +98,15 @@ finner ingen offisiell tabell eller formel hos dere, og de gamle lenkene til ser
 Kalkulatoren gir heller ikke samme poeng som seniorkolonnen i serietabellene for masters. For eksempel gir 800 m
 menn 1.39,87 1200 poeng i masters-tabellen og 1246 i kalkulatoren.
 
-**3. Mangekamptabellen for masters, manuell tid på 60 m**
+**3. Mangekamptabellen for masters**
 
-I arkene for manuell tid på 60 m og 60 m hekk legges det til 0,20 s. IAAF-tabellen for mangekamp og WMA Appendix
-B bruker 0,24 s. Eksempel: 60 m menn 6,0 manuelt gir 1187 poeng i arket og 1170 i IAAF-tabellen. Resten av
-tabellen stemmer med WMA-metoden.
+Jeg har kontrollert alle klassekolonnene mot WMA-metoden (over 430 000 verdier), og tabellen stemmer, med to
+unntak:
+
+- I arkene for manuell tid på 60 m, 60 m hekk og 80 m hekk legges det til 0,20 s. IAAF-tabellen for mangekamp og
+  WMA Appendix B bruker 0,24 s. Eksempel: 60 m menn 6,0 manuelt gir 1187 poeng i arket og 1170 i IAAF-tabellen.
+- I arket «200m» for menn er cellene for M90–M100 forskjøvet fra rad 983. Siste siffer i én kolonne står først i
+  neste (rad 983: «1.00.0» og «2  1.14.72», som skal være 1.00.02 og 1.14.72).
 
 **Spørsmål til dere**
 
@@ -113,7 +117,8 @@ tabellen stemmer med WMA-metoden.
 2. Serietabellen: Finnes det en offisiell serietabell for senior, som fil eller formel? Hvilken utgave gjelder?
 3. Masters: Beregnes seriepoeng med masters-mangekamptabellen for øvelsene som står der, og med serietabellene for
    masters for resten?
-4. Masters mangekamp: Er 0,20 s for manuell tid på 60 m bevisst, eller skal det være 0,24 s som hos IAAF og WMA?
+4. Masters mangekamp: Er 0,20 s for manuell tid under 100 m bevisst, eller skal det være 0,24 s som hos IAAF og
+   WMA?
 
 Jeg sender gjerne en detaljert oversikt med cellereferanser og testresultater.
 
