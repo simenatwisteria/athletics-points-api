@@ -8,7 +8,7 @@ oppgave, eller ingen, og avslutt.
    alle avhengigheter er `Ferdig`. Finnes ingen, avslutt med `LOOP-STATUS: ingen-oppgave`.
 3. Sett oppgaven til `Under arbeid` og les oppgavefila i `docs/active/` hvis den finnes.
 4. Implementer. Hold deg innenfor oppgaven. Funn utenfor scope skrives under «Innboks».
-5. Verifiser: `pytest -q && ruff check . && mypy athletics_scoring` skal være grønt.
+5. Verifiser: `pytest -q && ruff check . && mypy athletics_scoring athletics_api` skal være grønt.
 6. Commit med `AP-XXX: <kort beskrivelse>`. Ikke push.
 7. Oppdater backloggen: status `Ferdig`, flytt oppgavefila til `docs/ferdig/`, fyll ut sluttrapporten. Commit.
 8. Avslutt med `LOOP-STATUS: fremgang`.

@@ -1511,7 +1511,7 @@ components:
         - UnknownVersionError → 422 `unknown_version`
         - UnknownEventError → 422 `unknown_event` (ukjent øvelse, klasse eller kombinasjon)
         - AmbiguousEventError → 422 `ambiguous_implement`
-        - UnknownEventError på grunn av feil utstyr → 422 `implement_mismatch`
+        - ImplementMismatchError (underklasse av UnknownEventError, feil utstyr) → 422 `implement_mismatch`
         - InvalidResultError → 422 `invalid_result`
         - UnsupportedManualTimingError → 422 `unsupported_manual_timing`
         - InvalidCombinedEventError → 422 `invalid_combined_event`

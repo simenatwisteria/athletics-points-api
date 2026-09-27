@@ -91,7 +91,7 @@ forventede verdier eller lag spesialtilfeller for testene.
 
 - [ ] Kontrolltallene over er egne testcaser og er grønne
 - [ ] [oppgavespesifikt, med kommando Code kan kjøre]
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
+- [ ] `pytest -q && ruff check . && mypy athletics_scoring athletics_api` er grønt
 - [ ] Ingen endringer i `sources/` eller låste `tests/fixtures/`
 - [ ] Midlertidige filer og hjelpeskript fra underveis er fjernet
 - [ ] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler

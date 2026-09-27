@@ -22,6 +22,7 @@ from typing import Any, ClassVar
 
 from athletics_scoring.engine import ScoringEngine
 from athletics_scoring.errors import (
+    ImplementMismatchError,
     InvalidResultError,
     UnknownEventError,
     UnsupportedManualTimingError,
@@ -129,7 +130,7 @@ class WmaAgeGradingCalculator(ScoringEngine):
     @staticmethod
     def _check_implement(entry: dict[str, Any], implement: str | None) -> None:
         if implement is not None:
-            raise UnknownEventError(
+            raise ImplementMismatchError(
                 f"{entry['name']}: faktorene i WMA Age Grading gjelder redskapet for alderen, "
                 f"og tar ikke imot redskap ({implement!r})"
             )

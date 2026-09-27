@@ -56,7 +56,7 @@ Alle feil har samme form: `{"error": {"code": "...", "message": "... (norsk)", "
 | `UnknownSystemError` | 422 | `unknown_system` |
 | `UnknownVersionError` | 422 | `unknown_version` |
 | `UnknownEventError` | 422 | `unknown_event` |
-| `UnknownEventError` fordi utstyret ikke er klassens | 422 | `implement_mismatch` |
+| `ImplementMismatchError` (underklasse av `UnknownEventError`): utstyret er ikke klassens | 422 | `implement_mismatch` |
 | `AmbiguousEventError` | 422 | `ambiguous_implement` |
 | `InvalidResultError` | 422 | `invalid_result` |
 | `UnsupportedManualTimingError` | 422 | `unsupported_manual_timing` |

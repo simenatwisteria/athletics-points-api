@@ -251,6 +251,16 @@ class CombinedEventsCalculator(ScoringEngine):
     ) -> Parameters:
         return dict(self._find(event_id, gender, age_class)["params"])
 
+    def points_1000_result(
+        self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
+    ) -> float | None:
+        """Svakeste resultat i hele hundredeler/centimeter som gir minst 1000 poeng: tider rundet
+        ned, lengder rundet opp."""
+        entry = self._find(event_id, gender, age_class)
+        exact = _result_for_1000(entry)
+        rounding = ROUND_FLOOR if entry["measure"] == "time" else ROUND_CEILING
+        return float((exact / CENTIMETRE).to_integral_value(rounding=rounding) * CENTIMETRE)
+
     # --- beregning -----------------------------------------------------------------------------
 
     def calculate(

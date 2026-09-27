@@ -36,6 +36,16 @@ class ScoringEngine(ABC):
         self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
     ) -> Parameters: ...
 
+    def points_1000_result(
+        self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
+    ) -> float | None:
+        """Resultatet (sekunder eller meter) som gir 1000 poeng, som referanse i en frontend.
+
+        ``None`` når motoren ikke har et slikt nivå. Kaster samme feil som ``get_parameters``.
+        """
+        self.get_parameters(event_id, gender, age_class, implement)
+        return None
+
     def sources(self) -> list[dict[str, Any]]:
         """Kildedokumentene motoren bygger på (``meta.source_documents`` i parameterfila).
 

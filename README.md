@@ -24,9 +24,21 @@ Alle parametre ligger som JSON i repoet, og all fasit genereres fra de offisiell
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate   # Python ≥ 3.12
-pip install -e ".[dev]"
-pytest -q && ruff check . && mypy athletics_scoring
+pip install -e ".[dev,api]"
+pytest -q && ruff check . && mypy athletics_scoring athletics_api
 ```
+
+## API
+
+HTTP-API-et (`athletics_api`) følger kontrakten i [`docs/api/openapi.yaml`](docs/api/openapi.yaml). Start:
+
+```bash
+uvicorn athletics_api.main:app --host 0.0.0.0 --port $PORT
+```
+
+Miljøvariabler: `CORS_ALLOWED_ORIGINS` (kommaseparert, standard `https://5kamp.minfriidrett.no`),
+`RATE_LIMIT_PER_MINUTE` (per klient-IP, standard 600, 0 slår av) og `TRUST_PROXY=1` bak en proxy som setter
+`X-Forwarded-For` (Railway).
 
 ## Lisens
 

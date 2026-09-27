@@ -27,6 +27,7 @@ from typing import Any, ClassVar
 from athletics_scoring.engine import ScoringEngine
 from athletics_scoring.errors import (
     AmbiguousEventError,
+    ImplementMismatchError,
     InvalidCombinedEventError,
     InvalidResultError,
     UnknownEventError,
@@ -158,7 +159,7 @@ class TyrvingCalculator(ScoringEngine):
             matching = [e for e in candidates if e["implement"] == wanted]
             if not matching:
                 known = ", ".join(str(e["implement"]) for e in candidates)
-                raise UnknownEventError(
+                raise ImplementMismatchError(
                     f"{event_id} {gender.value}{age} finnes ikke med utstyr {implement!r} "
                     f"(kjente: {known})"
                 )
@@ -194,6 +195,12 @@ class TyrvingCalculator(ScoringEngine):
     ) -> Parameters:
         params: Mapping[str, float] = self._find(event_id, gender, age_class, implement)["params"]
         return dict(params)
+
+    def points_1000_result(
+        self, event_id: str, gender: Gender, age_class: str, implement: str | None = None
+    ) -> float | None:
+        """h1000 fra tabellen."""
+        return float(self._find(event_id, gender, age_class, implement)["params"]["h1000"])
 
     # --- beregning -----------------------------------------------------------------------------
 

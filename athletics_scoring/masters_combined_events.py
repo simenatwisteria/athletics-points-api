@@ -23,7 +23,11 @@ from importlib import resources
 from typing import Any, ClassVar
 
 from athletics_scoring.engine import ScoringEngine
-from athletics_scoring.errors import InvalidCombinedEventError, UnknownEventError
+from athletics_scoring.errors import (
+    ImplementMismatchError,
+    InvalidCombinedEventError,
+    UnknownEventError,
+)
 from athletics_scoring.models import (
     CalculationStep,
     CombinedEventInput,
@@ -130,12 +134,12 @@ class MastersCombinedCalculator(ScoringEngine):
             return
         own = info["implement"]
         if own is None:
-            raise UnknownEventError(
+            raise ImplementMismatchError(
                 f"{entry['name']} har ikke redskap eller hekkehøyde, fikk {implement!r}"
             )
         given = _implement_value(implement)
         if given is None or given != _implement_value(own):
-            raise UnknownEventError(
+            raise ImplementMismatchError(
                 f"{age_class} bruker {own} i {entry['name'].lower()}, ikke {implement!r}. "
                 "Aldersfaktoren gjelder bare klassens redskap (BV-034)"
             )

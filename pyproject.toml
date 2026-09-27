@@ -20,13 +20,19 @@ dev = [
     "mypy>=1.11",
     "openpyxl>=3.1",
     "pdfplumber>=0.11",
+    "httpx>=0.27",
+]
+# HTTP-API-et (athletics_api). athletics_scoring har fortsatt ingen avhengigheter.
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
 ]
 
 [project.urls]
 Repository = "https://github.com/simenatwisteria/athletics-points-api"
 
 [tool.hatch.build.targets.wheel]
-packages = ["athletics_scoring"]
+packages = ["athletics_scoring", "athletics_api"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

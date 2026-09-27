@@ -16,12 +16,12 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Installer
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev,api]"
       - name: pytest
         run: pytest -q
       - name: ruff
         run: ruff check .
       - name: mypy
-        run: mypy athletics_scoring
+        run: mypy athletics_scoring athletics_api
       - name: Sjekksummer for kildefiler
         run: cd sources && sha256sum -c SHA256SUMS

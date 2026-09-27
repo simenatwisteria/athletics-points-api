@@ -21,6 +21,10 @@ class UnknownEventError(ScoringError, LookupError):
     """Øvelsen finnes ikke for dette kjønnet og denne klassen."""
 
 
+class ImplementMismatchError(UnknownEventError):
+    """Øvelsen finnes for klassen, men ikke med oppgitt utstyr. Gir aldri poeng for feil utstyr."""
+
+
 class AmbiguousEventError(ScoringError, LookupError):
     """Øvelsen finnes med flere utstyrsvarianter; ``implement`` må oppgis."""
 

@@ -20,12 +20,12 @@ verifiseres først; FastAPI og React kommer senere.
    i notatet, og **stopp**. Ikke gjett.
 5. Oppgaver med eier 🧑 er Simens. Hopp over dem, ikke gjør dem.
 6. Ikke opprett nye oppgaver i backloggen — skriv funn under «Innboks».
-7. Ingen runtime-avhengigheter i `athletics_scoring`.
+7. Ingen runtime-avhengigheter i `athletics_scoring`. FastAPI hører til `athletics_api` (gruppen `api`).
 
 ## Ferdig-definisjon
 
 ```bash
-pytest -q && ruff check . && mypy athletics_scoring
+pytest -q && ruff check . && mypy athletics_scoring athletics_api
 ```
 
 Alle tre grønne, pluss akseptansekriteriene i oppgavefila.
@@ -43,9 +43,10 @@ Alle tre grønne, pluss akseptansekriteriene i oppgavefila.
 
 ```bash
 python3.13 -m venv .venv && source .venv/bin/activate   # Python ≥ 3.12
-pip install -e ".[dev]"
+pip install -e ".[dev,api]"                              # api = FastAPI/uvicorn for athletics_api
 pytest -q                                                # tester
-ruff check . && mypy athletics_scoring                   # lint + typer
+ruff check . && mypy athletics_scoring athletics_api     # lint + typer
+uvicorn athletics_api.main:app --reload                  # API lokalt, http://127.0.0.1:8000/api/v1/health
 cd sources && shasum -a 256 -c SHA256SUMS                # kildefilene er uendret
 scripts/loop.sh 10                                       # autonom loop, maks 10 runder, pusher aldri
 ```
