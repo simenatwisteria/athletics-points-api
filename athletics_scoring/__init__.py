@@ -1,5 +1,6 @@
 """Åpen, transparent beregningsmotor for norske friidrettspoeng."""
 
+from athletics_scoring.masters_combined_events import MastersCombinedCalculator
 from athletics_scoring.models import (
     CombinedEventInput,
     CombinedScoreResult,
@@ -22,6 +23,7 @@ __all__ = [
     "EventInfo",
     "Gender",
     "InputSpec",
+    "MastersCombinedCalculator",
     "Registry",
     "Result",
     "ScoreResult",
@@ -35,4 +37,5 @@ def default_registry() -> Registry:
     registry = Registry()
     registry.register(TyrvingCalculator())
     registry.register(CombinedEventsCalculator())
+    registry.register(MastersCombinedCalculator())
     return registry

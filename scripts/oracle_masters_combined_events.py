@@ -12,12 +12,15 @@ Arkene har to oppsett:
   gjenkjennes på «Resultat»/«Res.» i nøkkelkolonnen over dataradene
 
 Hekkearkene har flere tabeller side om side, én per hekkedistanse. Redskap og hekkehøyde per
-klasse står i raden «Vekt:»/«Hhøyde» og tas med i hver blokk (BV-034). Arkene for manuell tid på
-60 m og 60 m hekk bruker +0,20 s og er ikke fasit (BV-024, docs/KILDEAVVIK.md).
+klasse står i raden «Vekt:»/«Hhøyde» og tas med i hver blokk (BV-034).
 
-**Utkast (AP-016 blokkert 2026-09-26):** Menns ``200m`` har ødelagte celler i M95/M100 (for eksempel
-«5  1.09.8»), og skriptet stopper der med vilje. Arkene for manuell tid på 80 m hekk avviker fra
-metoden. Begge venter på Simen, se notatet på AP-016 i docs/BACKLOG.md.
+Utelatt (BV-024, BV-035, docs/KILDEAVVIK.md), og listet i ``meta``:
+
+- arkene og blokkene for manuell tid på 60 m, 60 m hekk og 80 m hekk, som bruker +0,20 s
+- celler som ikke kan leses som tid (menn ``200m`` M95/M100, der et siffer er skjøvet inn i neste
+  kolonne, for eksempel «5  1.09.8»)
+- avkortede tider i ark med automatisk tid: tekst med bare ett siffer etter siste punktum
+  («1.00.0»), der arket ellers har hundredeler. Ingen celler repareres.
 
 Importerer ikke athletics_scoring.
 
@@ -128,7 +131,13 @@ SKIPPED: dict[str, dict[str, str]] = {
         "60mHK-m": "+0,20 s i stedet for +0,24 s (BV-024)",
     },
 }
+# Blokker som bevisst ikke brukes: (ark, event_id) → grunn.
+SKIPPED_BLOCKS: dict[str, dict[tuple[str, str], str]] = {
+    "M": {("80-110m HK-m", "hurdles_80m"): "+0,20 s i stedet for +0,24 s (BV-024)"},
+    "F": {("80-100mHK-m", "hurdles_80m"): "+0,20 s i stedet for +0,24 s (BV-024)"},
+}
 TIME_RE = re.compile(r"^(?:(\d+)\.)?(\d{1,2}\.\d{1,2})$")
+TRUNCATED_RE = re.compile(r"^[\d.]*\.\d$")
 FIELD_EVENTS = {"high_jump", "pole_vault", "long_jump", "shot_put", "discus", "javelin", "hammer",
                 "weight_throw"}  # fmt: skip
 IMPLEMENT_LABELS = ("Vekt", "Hhøyde", "HHøyde")
@@ -173,20 +182,42 @@ def _col(letter: str) -> int:
     return column_index_from_string(letter) - 1
 
 
+def _unusable(raw: object, text: str, event_id: str, manual: bool) -> str | None:
+    """Hvorfor en resultatcelle ikke kan brukes som fasit, eller ``None`` hvis den kan (BV-035)."""
+    if event_id in FIELD_EVENTS:
+        return None
+    if TIME_RE.match(text) is None:
+        return "kan ikke leses som tid"
+    if not manual and isinstance(raw, str) and TRUNCATED_RE.match(text):
+        return "avkortet: ett siffer etter siste punktum i ark med hundredeler"
+    return None
+
+
 def read_block(
-    rows: list[tuple[Any, ...]], title: str, block: Block, unit: str | None
+    rows: list[tuple[Any, ...]],
+    title: str,
+    block: Block,
+    unit: str | None,
+    manual: bool,
+    skipped: list[dict[str, Any]],
 ) -> dict[str, list[Any]]:
     """Klasse → [kolonne, redskap, caser] for én blokk.
 
-    Case: ``[radnummer, resultat i arket, result, poeng]``.
+    Case: ``[radnummer, resultat i arket, result, poeng]``. Celler som ikke kan brukes, legges i
+    ``skipped`` med rad, kolonne og råtekst.
     """
     event_id, key_letter, first, last = block
     key = _col(key_letter)
     header = {c: _text(rows[1][c]) for c in range(_col(first), _col(last) + 1)}
-    # Kolonner uten klasse i rad 2 må være tomme (kvinner 100m-m har ingen W100).
+    # Kolonner uten klasse i rad 2 brukes ikke. Har de data, listes de (kvinner 100m-m, kolonne P).
     for c in [c for c, h in header.items() if h is None]:
-        if any(_text(r[c]) is not None for r in rows[3:]):
-            raise ValueError(f"{title} kolonne {get_column_letter(c + 1)}: data uten klasse")
+        filled = [n for n, r in enumerate(rows[3:], start=4) if _text(r[c]) is not None]
+        if filled:
+            skipped.append(
+                {"sheet": title, "rows": f"{filled[0]}–{filled[-1]}", "count": len(filled),
+                 "column": get_column_letter(c + 1), "age_class": None,
+                 "reason": "kolonnen har data, men ingen klasse i rad 2"}
+            )  # fmt: skip
     columns = [c for c, h in header.items() if h is not None]
     if not all(header[c] in AGES for c in columns):
         raise ValueError(f"{title} {first}–{last}: uventede klasser i rad 2: {header}")
@@ -206,6 +237,14 @@ def read_block(
             if number <= 3 or k is None or v is None or not re.match(r"^\d", k):
                 continue
             result_text, points_text = (k, v) if result_first else (v, k)
+            raw = row[key] if result_first else row[c]
+            reason = _unusable(raw, result_text, event_id, manual)
+            if reason is not None:
+                skipped.append(
+                    {"sheet": title, "row": number, "column": get_column_letter(c + 1),
+                     "age_class": header[c], "text": result_text, "reason": reason}
+                )  # fmt: skip
+                continue
             result = _result(result_text, event_id)
             cases.append([number, result_text, result, _points(points_text)])
         if not cases:
@@ -216,6 +255,8 @@ def read_block(
 
 def generate() -> dict[str, Any]:
     blocks: list[dict[str, Any]] = []
+    skipped_blocks: list[dict[str, Any]] = []
+    skipped_cells: list[dict[str, Any]] = []
     for gender, path in SOURCES.items():
         wb = openpyxl.load_workbook(path, data_only=True)
         titles = {ws.title for ws in wb.worksheets} - {"MKTAB"}
@@ -225,7 +266,25 @@ def generate() -> dict[str, Any]:
         for title, (sheet_blocks, manual, unit) in SHEETS[gender].items():
             rows = list(wb[title].iter_rows(values_only=True))
             for block in sheet_blocks:
-                for age, (column, implement, cases) in read_block(rows, title, block, unit).items():
+                reason = SKIPPED_BLOCKS[gender].get((title, block[0]))
+                if reason is not None:
+                    classes = [_text(rows[1][c]) for c in range(_col(block[2]), _col(block[3]) + 1)]
+                    skipped_blocks.append(
+                        {"gender": gender, "sheet": title, "event_id": block[0],
+                         "columns": f"{block[2]}–{block[3]}",
+                         "age_classes": [f"{CLASS_PREFIX[gender]}{a}" for a in classes if a],
+                         "reason": reason}
+                    )  # fmt: skip
+                    continue
+                cells: list[dict[str, Any]] = []
+                read = read_block(rows, title, block, unit, manual, cells)
+                skipped_cells += [
+                    {"gender": gender, **cell,
+                     "age_class": cell["age_class"]
+                     and f"{CLASS_PREFIX[gender]}{cell['age_class']}"}
+                    for cell in cells
+                ]  # fmt: skip
+                for age, (column, implement, cases) in read.items():
                     blocks.append(
                         {
                             "file": str(path.relative_to(ROOT)),
@@ -251,6 +310,9 @@ def generate() -> dict[str, Any]:
                 for p in SOURCES.values()
             },
             "skipped_sheets": {g: dict(s) for g, s in SKIPPED.items()},
+            "skipped_blocks": skipped_blocks,
+            "skipped_cell_count": len(skipped_cells),
+            "skipped_cells": skipped_cells,
             "block_count": len(blocks),
             "case_count": sum(len(b["cases"]) for b in blocks),
             "locked": False,
@@ -265,8 +327,12 @@ def render(data: dict[str, Any]) -> str:
     def compact(value: Any) -> str:
         return json.dumps(value, ensure_ascii=False, separators=(", ", ": "))
 
-    meta = json.dumps(data["meta"], ensure_ascii=False, indent=2).replace("\n", "\n  ")
-    lines = ["{", f'  "meta": {meta},', '  "blocks": [']
+    cells = data["meta"]["skipped_cells"]
+    meta = {**data["meta"], "skipped_cells": "@CELLS@"}
+    text = json.dumps(meta, ensure_ascii=False, indent=2).replace("\n", "\n  ")
+    rows = ",\n".join(f"      {compact(cell)}" for cell in cells)
+    text = text.replace('"@CELLS@"', f"[\n{rows}\n    ]" if cells else "[]")
+    lines = ["{", f'  "meta": {text},', '  "blocks": [']
     for i, block in enumerate(data["blocks"]):
         head = ", ".join(f"{compact(k)}: {compact(v)}" for k, v in block.items() if k != "cases")
         rows = ",\n".join(f"      {compact(case)}" for case in block["cases"])

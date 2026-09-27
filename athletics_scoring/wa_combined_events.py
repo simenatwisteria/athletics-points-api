@@ -130,6 +130,57 @@ def _input_spec(entry: dict[str, Any]) -> InputSpec:
     )
 
 
+def effective_result(
+    entry: dict[str, Any], result: Result, steps: list[CalculationStep]
+) -> Decimal:
+    """Resultatet slik tabellen bruker det: kontrollert, rundet (BV-025) og med tillegg for
+    manuell tid (BV-024). ``entry`` trenger ``event_id`` og ``measure``. Stegene legges i ``steps``.
+    """
+    if entry["measure"] == "distance":
+        if result.distance_meters is None or result.time_seconds is not None:
+            raise InvalidResultError(f"{entry['event_id']} krever distanse (distance_meters)")
+        if result.manual_timing:
+            raise InvalidResultError("manual_timing gjelder bare løp")
+        value = _dec(result.distance_meters)
+        if value <= 0:
+            raise InvalidResultError("Resultatet må være større enn 0")
+        steps.append(CalculationStep("input", float(value), "resultat i meter"))
+        rounded = value.quantize(CENTIMETRE, rounding=ROUND_FLOOR)
+        if rounded != value:
+            steps.append(
+                CalculationStep(
+                    "rounded", float(rounded), "rundet ned til hel centimeter", ref="BV-025"
+                )
+            )
+        return rounded
+
+    if result.time_seconds is None or result.distance_meters is not None:
+        raise InvalidResultError(f"{entry['event_id']} krever tid (time_seconds)")
+    value = _dec(result.time_minutes or 0) * 60 + _dec(result.time_seconds)
+    if value <= 0:
+        raise InvalidResultError("Resultatet må være større enn 0")
+    steps.append(CalculationStep("input", float(value), "tid i sekunder"))
+    rounded = value.quantize(CENTIMETRE, rounding=ROUND_CEILING)
+    if rounded != value:
+        steps.append(
+            CalculationStep("rounded", float(rounded), "rundet opp til hundredeler", ref="BV-025")
+        )
+    if result.manual_timing:
+        addition = _manual_timing_addition(entry["event_id"])
+        rounded += addition
+        steps.append(
+            CalculationStep(
+                "manual_timing_addition",
+                float(addition),
+                "tillegg for manuell tid"
+                if addition
+                else "manuell tid over 400 m får ikke tillegg",
+                ref="BV-024",
+            )
+        )
+    return rounded
+
+
 class CombinedEventsCalculator(ScoringEngine):
     system: ClassVar[str] = "wa_combined_events"
     version: ClassVar[str] = "2001"
@@ -202,56 +253,6 @@ class CombinedEventsCalculator(ScoringEngine):
 
     # --- beregning -----------------------------------------------------------------------------
 
-    @staticmethod
-    def _effective_result(
-        entry: dict[str, Any], result: Result, steps: list[CalculationStep]
-    ) -> Decimal:
-        if entry["measure"] == "distance":
-            if result.distance_meters is None or result.time_seconds is not None:
-                raise InvalidResultError(f"{entry['event_id']} krever distanse (distance_meters)")
-            if result.manual_timing:
-                raise InvalidResultError("manual_timing gjelder bare løp")
-            value = _dec(result.distance_meters)
-            if value <= 0:
-                raise InvalidResultError("Resultatet må være større enn 0")
-            steps.append(CalculationStep("input", float(value), "resultat i meter"))
-            rounded = value.quantize(CENTIMETRE, rounding=ROUND_FLOOR)
-            if rounded != value:
-                steps.append(
-                    CalculationStep(
-                        "rounded", float(rounded), "rundet ned til hel centimeter", ref="BV-025"
-                    )
-                )
-            return rounded
-
-        if result.time_seconds is None or result.distance_meters is not None:
-            raise InvalidResultError(f"{entry['event_id']} krever tid (time_seconds)")
-        value = _dec(result.time_minutes or 0) * 60 + _dec(result.time_seconds)
-        if value <= 0:
-            raise InvalidResultError("Resultatet må være større enn 0")
-        steps.append(CalculationStep("input", float(value), "tid i sekunder"))
-        rounded = value.quantize(CENTIMETRE, rounding=ROUND_CEILING)
-        if rounded != value:
-            steps.append(
-                CalculationStep(
-                    "rounded", float(rounded), "rundet opp til hundredeler", ref="BV-025"
-                )
-            )
-        if result.manual_timing:
-            addition = _manual_timing_addition(entry["event_id"])
-            rounded += addition
-            steps.append(
-                CalculationStep(
-                    "manual_timing_addition",
-                    float(addition),
-                    "tillegg for manuell tid"
-                    if addition
-                    else "manuell tid over 400 m får ikke tillegg",
-                    ref="BV-024",
-                )
-            )
-        return rounded
-
     def calculate(
         self,
         event_id: str,
@@ -263,7 +264,7 @@ class CombinedEventsCalculator(ScoringEngine):
         """Poeng for ``result``. ``implement`` brukes ikke: tabellen er lik uansett redskap."""
         entry = self._find(event_id, gender, age_class)
         steps: list[CalculationStep] = []
-        value = self._effective_result(entry, result, steps)
+        value = effective_result(entry, result, steps)
         a, b, c = (_dec(entry["params"][k]) for k in ("a", "b", "c"))
         unit = entry["unit"]
         measured = value * _unit_factor(entry)

@@ -1,0 +1,1119 @@
+{
+  "meta": {
+    "scoring_system": "masters_combined_events",
+    "version": "2023",
+    "source": "WMA Appendix B 2023 (BV-030) med IAAF/WA Combined Events-tabellen",
+    "source_documents": [
+      {
+        "key": "wma-2023-appendix-b",
+        "title": "WMA Rulebook 2023, Appendix B: Scoring of WMA Combined Events (metode s. 1, aldersfaktorer PDF-side 4–5)",
+        "publisher": "World Masters Athletics (WMA)",
+        "official_page": "https://world-masters-athletics.org/",
+        "document_url": "https://world-masters-athletics.org/wp-content/uploads/2023/02/2023-WMA-Appendix-B.pdf",
+        "local_path": "sources/wma/wma-2023-appendix-b-combined-events.pdf",
+        "sha256": "c3d5baa5fff954c6e7a7686c203a1146111342c351cd6e83e0a3a49c52b20858",
+        "retrieved": "2026-09-26"
+      },
+      {
+        "key": "nfif-masters-mangekamp-menn",
+        "title": "Mangekamptabellen for menn (masters, redskap per klasse i raden «Vekt:»)",
+        "publisher": "Norges Friidrettsforbund (NFIF)",
+        "official_page": "https://www.friidrett.no/aktiviteter/masters/poengberegning/",
+        "document_url": "https://www.friidrett.no/contentassets/d8222e75a783431481bdf30d9fa02720/mangekamptabellen-for-menn.xlsx",
+        "local_path": "sources/masters/nfif-masters-mangekamp-menn.xlsx",
+        "sha256": "1cf6af34f3334c5a0600a1ee9d98992cb5ee1a2d9d093458b4fe1833f2f2d0e1",
+        "retrieved": "2026-09-26"
+      },
+      {
+        "key": "nfif-masters-mangekamp-kvinner",
+        "title": "Mangekamptabellen for kvinner (masters, redskap per klasse i raden «Vekt:»)",
+        "publisher": "Norges Friidrettsforbund (NFIF)",
+        "official_page": "https://www.friidrett.no/aktiviteter/masters/poengberegning/",
+        "document_url": "https://www.friidrett.no/contentassets/d8222e75a783431481bdf30d9fa02720/mangekamptabellen-for-kvinner.xlsm",
+        "local_path": "sources/masters/nfif-masters-mangekamp-kvinner.xlsm",
+        "sha256": "d2c2ce52f8aeeb265dff88740c204a24105265c26e79904643687827a49d75ca",
+        "retrieved": "2026-09-26"
+      }
+    ],
+    "generated_by": "scripts/extract_masters_combined_events_params.py",
+    "entry_count": 35,
+    "age_classes": {
+      "M": [
+        "M35",
+        "M40",
+        "M45",
+        "M50",
+        "M55",
+        "M60",
+        "M65",
+        "M70",
+        "M75",
+        "M80",
+        "M85",
+        "M90",
+        "M95",
+        "M100"
+      ],
+      "F": [
+        "W35",
+        "W40",
+        "W45",
+        "W50",
+        "W55",
+        "W60",
+        "W65",
+        "W70",
+        "W75",
+        "W80",
+        "W85",
+        "W90",
+        "W95",
+        "W100"
+      ]
+    }
+  },
+  "entries": [
+    {
+      "event_id": "sprint_60m",
+      "name": "60 m",
+      "gender": "M",
+      "table_event_id": "sprint_60m",
+      "factor_column": "60m",
+      "classes": {
+        "M35": {"factor": 0.9991, "implement": null},
+        "M40": {"factor": 0.9763, "implement": null},
+        "M45": {"factor": 0.9526, "implement": null},
+        "M50": {"factor": 0.9281, "implement": null},
+        "M55": {"factor": 0.9029, "implement": null},
+        "M60": {"factor": 0.8769, "implement": null},
+        "M65": {"factor": 0.8502, "implement": null},
+        "M70": {"factor": 0.8228, "implement": null},
+        "M75": {"factor": 0.7946, "implement": null},
+        "M80": {"factor": 0.7658, "implement": null},
+        "M85": {"factor": 0.7264, "implement": null},
+        "M90": {"factor": 0.6696, "implement": null},
+        "M95": {"factor": 0.5956, "implement": null},
+        "M100": {"factor": 0.5043, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «60m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_100m",
+      "name": "100 m",
+      "gender": "M",
+      "table_event_id": "sprint_100m",
+      "factor_column": "100m",
+      "classes": {
+        "M35": {"factor": 0.9999, "implement": null},
+        "M40": {"factor": 0.9668, "implement": null},
+        "M45": {"factor": 0.9345, "implement": null},
+        "M50": {"factor": 0.9031, "implement": null},
+        "M55": {"factor": 0.8726, "implement": null},
+        "M60": {"factor": 0.8429, "implement": null},
+        "M65": {"factor": 0.8139, "implement": null},
+        "M70": {"factor": 0.7858, "implement": null},
+        "M75": {"factor": 0.7584, "implement": null},
+        "M80": {"factor": 0.7317, "implement": null},
+        "M85": {"factor": 0.6946, "implement": null},
+        "M90": {"factor": 0.6396, "implement": null},
+        "M95": {"factor": 0.5666, "implement": null},
+        "M100": {"factor": 0.4757, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «100m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_200m",
+      "name": "200 m",
+      "gender": "M",
+      "table_event_id": "sprint_200m",
+      "factor_column": "200m",
+      "classes": {
+        "M35": {"factor": 0.9791, "implement": null},
+        "M40": {"factor": 0.9482, "implement": null},
+        "M45": {"factor": 0.9179, "implement": null},
+        "M50": {"factor": 0.8883, "implement": null},
+        "M55": {"factor": 0.8594, "implement": null},
+        "M60": {"factor": 0.8312, "implement": null},
+        "M65": {"factor": 0.8035, "implement": null},
+        "M70": {"factor": 0.7764, "implement": null},
+        "M75": {"factor": 0.75, "implement": null},
+        "M80": {"factor": 0.717, "implement": null},
+        "M85": {"factor": 0.6669, "implement": null},
+        "M90": {"factor": 0.5998, "implement": null},
+        "M95": {"factor": 0.5156, "implement": null},
+        "M100": {"factor": 0.4142, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «200m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_400m",
+      "name": "400 m",
+      "gender": "M",
+      "table_event_id": "sprint_400m",
+      "factor_column": "400m",
+      "classes": {
+        "M35": {"factor": 0.9824, "implement": null},
+        "M40": {"factor": 0.9513, "implement": null},
+        "M45": {"factor": 0.9208, "implement": null},
+        "M50": {"factor": 0.8909, "implement": null},
+        "M55": {"factor": 0.8616, "implement": null},
+        "M60": {"factor": 0.8329, "implement": null},
+        "M65": {"factor": 0.8047, "implement": null},
+        "M70": {"factor": 0.777, "implement": null},
+        "M75": {"factor": 0.744, "implement": null},
+        "M80": {"factor": 0.697, "implement": null},
+        "M85": {"factor": 0.636, "implement": null},
+        "M90": {"factor": 0.5609, "implement": null},
+        "M95": {"factor": 0.4718, "implement": null},
+        "M100": {"factor": 0.3686, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «400m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "middle_1000m",
+      "name": "1000 m",
+      "gender": "M",
+      "table_event_id": "middle_1000m",
+      "factor_column": "1000m",
+      "classes": {
+        "M35": {"factor": 0.9997, "implement": null},
+        "M40": {"factor": 0.9629, "implement": null},
+        "M45": {"factor": 0.9266, "implement": null},
+        "M50": {"factor": 0.8908, "implement": null},
+        "M55": {"factor": 0.8556, "implement": null},
+        "M60": {"factor": 0.8208, "implement": null},
+        "M65": {"factor": 0.7865, "implement": null},
+        "M70": {"factor": 0.7527, "implement": null},
+        "M75": {"factor": 0.7188, "implement": null},
+        "M80": {"factor": 0.6756, "implement": null},
+        "M85": {"factor": 0.6173, "implement": null},
+        "M90": {"factor": 0.5436, "implement": null},
+        "M95": {"factor": 0.4545, "implement": null},
+        "M100": {"factor": 0.35, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «1000m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "middle_1500m",
+      "name": "1500 m",
+      "gender": "M",
+      "table_event_id": "middle_1500m",
+      "factor_column": "1500m",
+      "classes": {
+        "M35": {"factor": 0.9849, "implement": null},
+        "M40": {"factor": 0.9532, "implement": null},
+        "M45": {"factor": 0.9206, "implement": null},
+        "M50": {"factor": 0.8871, "implement": null},
+        "M55": {"factor": 0.8527, "implement": null},
+        "M60": {"factor": 0.8174, "implement": null},
+        "M65": {"factor": 0.7814, "implement": null},
+        "M70": {"factor": 0.7446, "implement": null},
+        "M75": {"factor": 0.707, "implement": null},
+        "M80": {"factor": 0.6651, "implement": null},
+        "M85": {"factor": 0.6076, "implement": null},
+        "M90": {"factor": 0.5341, "implement": null},
+        "M95": {"factor": 0.4446, "implement": null},
+        "M100": {"factor": 0.339, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «1500m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_60m",
+      "name": "60 m hekk",
+      "gender": "M",
+      "table_event_id": "hurdles_60m",
+      "factor_column": "60m Hurdles",
+      "classes": {
+        "M35": {"factor": 1.0, "implement": "99cm"},
+        "M40": {"factor": 0.9698, "implement": "99cm"},
+        "M45": {"factor": 0.9371, "implement": "99cm"},
+        "M50": {"factor": 0.9132, "implement": "91cm"},
+        "M55": {"factor": 0.8782, "implement": "91cm"},
+        "M60": {"factor": 0.8732, "implement": "84cm"},
+        "M65": {"factor": 0.8351, "implement": "84cm"},
+        "M70": {"factor": 0.8174, "implement": "76cm"},
+        "M75": {"factor": 0.7765, "implement": "76cm"},
+        "M80": {"factor": 0.7249, "implement": "68cm"},
+        "M85": {"factor": 0.656, "implement": "68cm"},
+        "M90": {"factor": 0.5699, "implement": "68cm"},
+        "M95": {"factor": 0.4666, "implement": "68cm"},
+        "M100": {"factor": 0.3461, "implement": "68cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «60m Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_110m",
+      "name": "110 m hekk",
+      "gender": "M",
+      "table_event_id": "hurdles_110m",
+      "factor_column": "Short Hurdles",
+      "classes": {
+        "M35": {"factor": 0.9957, "implement": "99cm"},
+        "M40": {"factor": 0.9609, "implement": "99cm"},
+        "M45": {"factor": 0.9244, "implement": "99cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Short Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_100m",
+      "name": "100 m hekk",
+      "gender": "M",
+      "table_event_id": "hurdles_110m",
+      "factor_column": "Short Hurdles",
+      "classes": {
+        "M50": {"factor": 0.9662, "implement": "91cm"},
+        "M55": {"factor": 0.923, "implement": "91cm"},
+        "M60": {"factor": 0.9457, "implement": "84cm"},
+        "M65": {"factor": 0.8958, "implement": "84cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Short Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_80m",
+      "name": "80 m hekk",
+      "gender": "M",
+      "table_event_id": "hurdles_110m",
+      "factor_column": "Short Hurdles",
+      "classes": {
+        "M70": {"factor": 1.0788, "implement": "76cm"},
+        "M75": {"factor": 1.0111, "implement": "76cm"},
+        "M80": {"factor": 0.9392, "implement": "68cm"},
+        "M85": {"factor": 0.8483, "implement": "68cm"},
+        "M90": {"factor": 0.736, "implement": "68cm"},
+        "M95": {"factor": 0.6025, "implement": "68cm"},
+        "M100": {"factor": 0.4477, "implement": "68cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Short Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "high_jump",
+      "name": "Høyde",
+      "gender": "M",
+      "table_event_id": "high_jump",
+      "factor_column": "High Jump",
+      "classes": {
+        "M35": {"factor": 1.0136, "implement": null},
+        "M40": {"factor": 1.0631, "implement": null},
+        "M45": {"factor": 1.1159, "implement": null},
+        "M50": {"factor": 1.1724, "implement": null},
+        "M55": {"factor": 1.233, "implement": null},
+        "M60": {"factor": 1.2981, "implement": null},
+        "M65": {"factor": 1.3683, "implement": null},
+        "M70": {"factor": 1.4442, "implement": null},
+        "M75": {"factor": 1.5267, "implement": null},
+        "M80": {"factor": 1.6166, "implement": null},
+        "M85": {"factor": 1.7149, "implement": null},
+        "M90": {"factor": 1.8493, "implement": null},
+        "M95": {"factor": 2.0563, "implement": null},
+        "M100": {"factor": 2.3825, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «High Jump»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "pole_vault",
+      "name": "Stav",
+      "gender": "M",
+      "table_event_id": "pole_vault",
+      "factor_column": "Pole Vault",
+      "classes": {
+        "M35": {"factor": 1.0129, "implement": null},
+        "M40": {"factor": 1.0708, "implement": null},
+        "M45": {"factor": 1.1351, "implement": null},
+        "M50": {"factor": 1.207, "implement": null},
+        "M55": {"factor": 1.2881, "implement": null},
+        "M60": {"factor": 1.38, "implement": null},
+        "M65": {"factor": 1.4854, "implement": null},
+        "M70": {"factor": 1.6073, "implement": null},
+        "M75": {"factor": 1.7502, "implement": null},
+        "M80": {"factor": 1.9199, "implement": null},
+        "M85": {"factor": 2.1548, "implement": null},
+        "M90": {"factor": 2.5212, "implement": null},
+        "M95": {"factor": 3.1395, "implement": null},
+        "M100": {"factor": 4.3531, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Pole Vault»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "long_jump",
+      "name": "Lengde",
+      "gender": "M",
+      "table_event_id": "long_jump",
+      "factor_column": "Long Jump",
+      "classes": {
+        "M35": {"factor": 1.0385, "implement": null},
+        "M40": {"factor": 1.0972, "implement": null},
+        "M45": {"factor": 1.1608, "implement": null},
+        "M50": {"factor": 1.2299, "implement": null},
+        "M55": {"factor": 1.3051, "implement": null},
+        "M60": {"factor": 1.3876, "implement": null},
+        "M65": {"factor": 1.4783, "implement": null},
+        "M70": {"factor": 1.5787, "implement": null},
+        "M75": {"factor": 1.6917, "implement": null},
+        "M80": {"factor": 1.8448, "implement": null},
+        "M85": {"factor": 2.0674, "implement": null},
+        "M90": {"factor": 2.4042, "implement": null},
+        "M95": {"factor": 2.9522, "implement": null},
+        "M100": {"factor": 3.9676, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Long Jump»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "shot_put",
+      "name": "Kule",
+      "gender": "M",
+      "table_event_id": "shot_put",
+      "factor_column": "Shot Put",
+      "classes": {
+        "M35": {"factor": 1.0462, "implement": "7,26kg"},
+        "M40": {"factor": 1.1125, "implement": "7,26kg"},
+        "M45": {"factor": 1.1867, "implement": "7,26kg"},
+        "M50": {"factor": 1.1551, "implement": "6kg"},
+        "M55": {"factor": 1.242, "implement": "6kg"},
+        "M60": {"factor": 1.2252, "implement": "5kg"},
+        "M65": {"factor": 1.3317, "implement": "5kg"},
+        "M70": {"factor": 1.3036, "implement": "4kg"},
+        "M75": {"factor": 1.4385, "implement": "4kg"},
+        "M80": {"factor": 1.3885, "implement": "3kg"},
+        "M85": {"factor": 1.5671, "implement": "3kg"},
+        "M90": {"factor": 1.7971, "implement": "3kg"},
+        "M95": {"factor": 2.1043, "implement": "3kg"},
+        "M100": {"factor": 2.5361, "implement": "3kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Shot Put»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "discus",
+      "name": "Diskos",
+      "gender": "M",
+      "table_event_id": "discus",
+      "factor_column": "Discus",
+      "classes": {
+        "M35": {"factor": 1.0, "implement": "2kg"},
+        "M40": {"factor": 1.0187, "implement": "2kg"},
+        "M45": {"factor": 1.0856, "implement": "2kg"},
+        "M50": {"factor": 1.0078, "implement": "1,5kg"},
+        "M55": {"factor": 1.0873, "implement": "1,5kg"},
+        "M60": {"factor": 0.9653, "implement": "1kg"},
+        "M65": {"factor": 1.059, "implement": "1kg"},
+        "M70": {"factor": 1.1746, "implement": "1kg"},
+        "M75": {"factor": 1.3205, "implement": "1kg"},
+        "M80": {"factor": 1.5103, "implement": "1kg"},
+        "M85": {"factor": 1.7672, "implement": "1kg"},
+        "M90": {"factor": 2.1341, "implement": "1kg"},
+        "M95": {"factor": 2.7, "implement": "1kg"},
+        "M100": {"factor": 3.6863, "implement": "1kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Discus»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hammer",
+      "name": "Slegge",
+      "gender": "M",
+      "table_event_id": "hammer",
+      "factor_column": "Hammer",
+      "classes": {
+        "M35": {"factor": 1.0, "implement": "7,26kg"},
+        "M40": {"factor": 1.0496, "implement": "7,26kg"},
+        "M45": {"factor": 1.119, "implement": "7,26kg"},
+        "M50": {"factor": 1.0911, "implement": "6kg"},
+        "M55": {"factor": 1.1783, "implement": "6kg"},
+        "M60": {"factor": 1.1709, "implement": "5kg"},
+        "M65": {"factor": 1.2865, "implement": "5kg"},
+        "M70": {"factor": 1.2785, "implement": "4kg"},
+        "M75": {"factor": 1.4403, "implement": "4kg"},
+        "M80": {"factor": 1.4301, "implement": "3kg"},
+        "M85": {"factor": 1.6779, "implement": "3kg"},
+        "M90": {"factor": 2.0327, "implement": "3kg"},
+        "M95": {"factor": 2.5823, "implement": "3kg"},
+        "M100": {"factor": 3.5446, "implement": "3kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Hammer»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "javelin",
+      "name": "Spyd",
+      "gender": "M",
+      "table_event_id": "javelin",
+      "factor_column": "Javelin",
+      "classes": {
+        "M35": {"factor": 1.0438, "implement": "0,8kg"},
+        "M40": {"factor": 1.1218, "implement": "0,8kg"},
+        "M45": {"factor": 1.211, "implement": "0,8kg"},
+        "M50": {"factor": 1.2293, "implement": "0,7kg"},
+        "M55": {"factor": 1.3425, "implement": "0,7kg"},
+        "M60": {"factor": 1.3675, "implement": "0,6kg"},
+        "M65": {"factor": 1.5184, "implement": "0,6kg"},
+        "M70": {"factor": 1.5566, "implement": "0,5kg"},
+        "M75": {"factor": 1.7731, "implement": "0,5kg"},
+        "M80": {"factor": 1.8402, "implement": "0,4kg"},
+        "M85": {"factor": 2.1894, "implement": "0,4kg"},
+        "M90": {"factor": 2.6989, "implement": "0,4kg"},
+        "M95": {"factor": 3.4861, "implement": "0,4kg"},
+        "M100": {"factor": 4.7841, "implement": "0,4kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Javelin»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "weight_throw",
+      "name": "Vektkast",
+      "gender": "M",
+      "table_event_id": "weight_throw",
+      "factor_column": "Weight",
+      "classes": {
+        "M35": {"factor": 1.0, "implement": "15,88kg"},
+        "M40": {"factor": 1.0668, "implement": "15,88kg"},
+        "M45": {"factor": 1.1405, "implement": "15,88kg"},
+        "M50": {"factor": 0.9978, "implement": "11,34kg"},
+        "M55": {"factor": 1.0704, "implement": "11,34kg"},
+        "M60": {"factor": 1.0071, "implement": "9,08kg"},
+        "M65": {"factor": 1.0854, "implement": "9,08kg"},
+        "M70": {"factor": 1.0263, "implement": "7,26kg"},
+        "M75": {"factor": 1.1233, "implement": "7,26kg"},
+        "M80": {"factor": 1.0544, "implement": "5,45kg"},
+        "M85": {"factor": 1.2044, "implement": "5,45kg"},
+        "M90": {"factor": 1.423, "implement": "5,45kg"},
+        "M95": {"factor": 1.768, "implement": "5,45kg"},
+        "M100": {"factor": 2.3883, "implement": "5,45kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 5, «Weight»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-menn",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_60m",
+      "name": "60 m",
+      "gender": "F",
+      "table_event_id": "sprint_60m",
+      "factor_column": "60m",
+      "classes": {
+        "W35": {"factor": 1.0, "implement": null},
+        "W40": {"factor": 0.9985, "implement": null},
+        "W45": {"factor": 0.9613, "implement": null},
+        "W50": {"factor": 0.9259, "implement": null},
+        "W55": {"factor": 0.8922, "implement": null},
+        "W60": {"factor": 0.8603, "implement": null},
+        "W65": {"factor": 0.83, "implement": null},
+        "W70": {"factor": 0.8014, "implement": null},
+        "W75": {"factor": 0.7743, "implement": null},
+        "W80": {"factor": 0.7427, "implement": null},
+        "W85": {"factor": 0.6977, "implement": null},
+        "W90": {"factor": 0.6393, "implement": null},
+        "W95": {"factor": 0.5673, "implement": null},
+        "W100": {"factor": 0.4818, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «60m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_100m",
+      "name": "100 m",
+      "gender": "F",
+      "table_event_id": "sprint_100m",
+      "factor_column": "100m",
+      "classes": {
+        "W35": {"factor": 1.0, "implement": null},
+        "W40": {"factor": 0.981, "implement": null},
+        "W45": {"factor": 0.9441, "implement": null},
+        "W50": {"factor": 0.908, "implement": null},
+        "W55": {"factor": 0.8726, "implement": null},
+        "W60": {"factor": 0.8379, "implement": null},
+        "W65": {"factor": 0.8038, "implement": null},
+        "W70": {"factor": 0.7705, "implement": null},
+        "W75": {"factor": 0.7377, "implement": null},
+        "W80": {"factor": 0.704, "implement": null},
+        "W85": {"factor": 0.659, "implement": null},
+        "W90": {"factor": 0.6011, "implement": null},
+        "W95": {"factor": 0.5302, "implement": null},
+        "W100": {"factor": 0.4464, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «100m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_200m",
+      "name": "200 m",
+      "gender": "F",
+      "table_event_id": "sprint_200m",
+      "factor_column": "200m",
+      "classes": {
+        "W35": {"factor": 1.0, "implement": null},
+        "W40": {"factor": 0.9787, "implement": null},
+        "W45": {"factor": 0.9411, "implement": null},
+        "W50": {"factor": 0.904, "implement": null},
+        "W55": {"factor": 0.8673, "implement": null},
+        "W60": {"factor": 0.8309, "implement": null},
+        "W65": {"factor": 0.795, "implement": null},
+        "W70": {"factor": 0.7594, "implement": null},
+        "W75": {"factor": 0.7242, "implement": null},
+        "W80": {"factor": 0.6875, "implement": null},
+        "W85": {"factor": 0.6374, "implement": null},
+        "W90": {"factor": 0.5723, "implement": null},
+        "W95": {"factor": 0.492, "implement": null},
+        "W100": {"factor": 0.3965, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «200m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "sprint_400m",
+      "name": "400 m",
+      "gender": "F",
+      "table_event_id": "sprint_400m",
+      "factor_column": "400m",
+      "classes": {
+        "W35": {"factor": 0.9783, "implement": null},
+        "W40": {"factor": 0.9441, "implement": null},
+        "W45": {"factor": 0.9084, "implement": null},
+        "W50": {"factor": 0.8711, "implement": null},
+        "W55": {"factor": 0.8324, "implement": null},
+        "W60": {"factor": 0.7924, "implement": null},
+        "W65": {"factor": 0.751, "implement": null},
+        "W70": {"factor": 0.7084, "implement": null},
+        "W75": {"factor": 0.6647, "implement": null},
+        "W80": {"factor": 0.6148, "implement": null},
+        "W85": {"factor": 0.5556, "implement": null},
+        "W90": {"factor": 0.4869, "implement": null},
+        "W95": {"factor": 0.409, "implement": null},
+        "W100": {"factor": 0.3219, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «400m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "middle_800m",
+      "name": "800 m",
+      "gender": "F",
+      "table_event_id": "middle_800m",
+      "factor_column": "800m",
+      "classes": {
+        "W35": {"factor": 0.9929, "implement": null},
+        "W40": {"factor": 0.9563, "implement": null},
+        "W45": {"factor": 0.9192, "implement": null},
+        "W50": {"factor": 0.8814, "implement": null},
+        "W55": {"factor": 0.8432, "implement": null},
+        "W60": {"factor": 0.8044, "implement": null},
+        "W65": {"factor": 0.7651, "implement": null},
+        "W70": {"factor": 0.7254, "implement": null},
+        "W75": {"factor": 0.6848, "implement": null},
+        "W80": {"factor": 0.6354, "implement": null},
+        "W85": {"factor": 0.5746, "implement": null},
+        "W90": {"factor": 0.5024, "implement": null},
+        "W95": {"factor": 0.4188, "implement": null},
+        "W100": {"factor": 0.3239, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «800m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "middle_1500m",
+      "name": "1500 m",
+      "gender": "F",
+      "table_event_id": "middle_1500m",
+      "factor_column": "1500m",
+      "classes": {
+        "W35": {"factor": 0.9812, "implement": null},
+        "W40": {"factor": 0.9441, "implement": null},
+        "W45": {"factor": 0.9069, "implement": null},
+        "W50": {"factor": 0.8697, "implement": null},
+        "W55": {"factor": 0.8324, "implement": null},
+        "W60": {"factor": 0.7951, "implement": null},
+        "W65": {"factor": 0.7576, "implement": null},
+        "W70": {"factor": 0.7202, "implement": null},
+        "W75": {"factor": 0.6812, "implement": null},
+        "W80": {"factor": 0.6316, "implement": null},
+        "W85": {"factor": 0.5698, "implement": null},
+        "W90": {"factor": 0.496, "implement": null},
+        "W95": {"factor": 0.4102, "implement": null},
+        "W100": {"factor": 0.3122, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «1500m»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_60m",
+      "name": "60 m hekk",
+      "gender": "F",
+      "table_event_id": "hurdles_60m",
+      "factor_column": "60m Hurdles",
+      "classes": {
+        "W35": {"factor": 1.0, "implement": "84cm"},
+        "W40": {"factor": 0.9288, "implement": "76cm"},
+        "W45": {"factor": 0.898, "implement": "76cm"},
+        "W50": {"factor": 0.8861, "implement": "76cm"},
+        "W55": {"factor": 0.853, "implement": "76cm"},
+        "W60": {"factor": 0.8192, "implement": "68cm"},
+        "W65": {"factor": 0.7847, "implement": "68cm"},
+        "W70": {"factor": 0.7438, "implement": "68cm"},
+        "W75": {"factor": 0.6926, "implement": "68cm"},
+        "W80": {"factor": 0.6311, "implement": "68cm"},
+        "W85": {"factor": 0.5594, "implement": "68cm"},
+        "W90": {"factor": 0.4776, "implement": "68cm"},
+        "W95": {"factor": 0.3855, "implement": "68cm"},
+        "W100": {"factor": 0.2834, "implement": "68cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «60m Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_100m",
+      "name": "100 m hekk",
+      "gender": "F",
+      "table_event_id": "hurdles_100m",
+      "factor_column": "Short Hurdles",
+      "classes": {
+        "W35": {"factor": 0.9932, "implement": "84cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Short Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hurdles_80m",
+      "name": "80 m hekk",
+      "gender": "F",
+      "table_event_id": "hurdles_100m",
+      "factor_column": "Short Hurdles",
+      "classes": {
+        "W40": {"factor": 1.1368, "implement": "76cm"},
+        "W45": {"factor": 1.0971, "implement": "76cm"},
+        "W50": {"factor": 1.0597, "implement": "76cm"},
+        "W55": {"factor": 1.0188, "implement": "76cm"},
+        "W60": {"factor": 0.9774, "implement": "68cm"},
+        "W65": {"factor": 0.9355, "implement": "68cm"},
+        "W70": {"factor": 0.8862, "implement": "68cm"},
+        "W75": {"factor": 0.8249, "implement": "68cm"},
+        "W80": {"factor": 0.7515, "implement": "68cm"},
+        "W85": {"factor": 0.6661, "implement": "68cm"},
+        "W90": {"factor": 0.5686, "implement": "68cm"},
+        "W95": {"factor": 0.4592, "implement": "68cm"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Short Hurdles»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "high_jump",
+      "name": "Høyde",
+      "gender": "F",
+      "table_event_id": "high_jump",
+      "factor_column": "High Jump",
+      "classes": {
+        "W35": {"factor": 1.0205, "implement": null},
+        "W40": {"factor": 1.0715, "implement": null},
+        "W45": {"factor": 1.1255, "implement": null},
+        "W50": {"factor": 1.1826, "implement": null},
+        "W55": {"factor": 1.243, "implement": null},
+        "W60": {"factor": 1.3071, "implement": null},
+        "W65": {"factor": 1.3751, "implement": null},
+        "W70": {"factor": 1.4473, "implement": null},
+        "W75": {"factor": 1.5242, "implement": null},
+        "W80": {"factor": 1.6061, "implement": null},
+        "W85": {"factor": 1.7029, "implement": null},
+        "W90": {"factor": 1.8509, "implement": null},
+        "W95": {"factor": 2.0785, "implement": null},
+        "W100": {"factor": 2.4406, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «High Jump»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "pole_vault",
+      "name": "Stav",
+      "gender": "F",
+      "table_event_id": "pole_vault",
+      "factor_column": "Pole Vault",
+      "classes": {
+        "W35": {"factor": 1.0024, "implement": null},
+        "W40": {"factor": 1.0637, "implement": null},
+        "W45": {"factor": 1.1306, "implement": null},
+        "W50": {"factor": 1.2037, "implement": null},
+        "W55": {"factor": 1.284, "implement": null},
+        "W60": {"factor": 1.3728, "implement": null},
+        "W65": {"factor": 1.4715, "implement": null},
+        "W70": {"factor": 1.5819, "implement": null},
+        "W75": {"factor": 1.7128, "implement": null},
+        "W80": {"factor": 1.8944, "implement": null},
+        "W85": {"factor": 2.1559, "implement": null},
+        "W90": {"factor": 2.5533, "implement": null},
+        "W95": {"factor": 3.213, "implement": null},
+        "W100": {"factor": 4.4938, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Pole Vault»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "long_jump",
+      "name": "Lengde",
+      "gender": "F",
+      "table_event_id": "long_jump",
+      "factor_column": "Long Jump",
+      "classes": {
+        "W35": {"factor": 1.0323, "implement": null},
+        "W40": {"factor": 1.0905, "implement": null},
+        "W45": {"factor": 1.1537, "implement": null},
+        "W50": {"factor": 1.2226, "implement": null},
+        "W55": {"factor": 1.2982, "implement": null},
+        "W60": {"factor": 1.3814, "implement": null},
+        "W65": {"factor": 1.4736, "implement": null},
+        "W70": {"factor": 1.5764, "implement": null},
+        "W75": {"factor": 1.6928, "implement": null},
+        "W80": {"factor": 1.8499, "implement": null},
+        "W85": {"factor": 2.0771, "implement": null},
+        "W90": {"factor": 2.4193, "implement": null},
+        "W95": {"factor": 2.9746, "implement": null},
+        "W100": {"factor": 4.001, "implement": null}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Long Jump»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "shot_put",
+      "name": "Kule",
+      "gender": "F",
+      "table_event_id": "shot_put",
+      "factor_column": "Shot Put",
+      "classes": {
+        "W35": {"factor": 1.0368, "implement": "4kg"},
+        "W40": {"factor": 1.1164, "implement": "4kg"},
+        "W45": {"factor": 1.2062, "implement": "4kg"},
+        "W50": {"factor": 1.133, "implement": "3kg"},
+        "W55": {"factor": 1.2347, "implement": "3kg"},
+        "W60": {"factor": 1.3534, "implement": "3kg"},
+        "W65": {"factor": 1.4938, "implement": "3kg"},
+        "W70": {"factor": 1.6631, "implement": "3kg"},
+        "W75": {"factor": 1.5282, "implement": "2kg"},
+        "W80": {"factor": 1.7433, "implement": "2kg"},
+        "W85": {"factor": 2.0244, "implement": "2kg"},
+        "W90": {"factor": 2.4079, "implement": "2kg"},
+        "W95": {"factor": 2.9631, "implement": "2kg"},
+        "W100": {"factor": 3.8399, "implement": "2kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Shot Put»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "discus",
+      "name": "Diskos",
+      "gender": "F",
+      "table_event_id": "discus",
+      "factor_column": "Discus",
+      "classes": {
+        "W35": {"factor": 1.0, "implement": "1kg"},
+        "W40": {"factor": 1.0733, "implement": "1kg"},
+        "W45": {"factor": 1.1772, "implement": "1kg"},
+        "W50": {"factor": 1.2949, "implement": "1kg"},
+        "W55": {"factor": 1.43, "implement": "1kg"},
+        "W60": {"factor": 1.5873, "implement": "1kg"},
+        "W65": {"factor": 1.7735, "implement": "1kg"},
+        "W70": {"factor": 1.9985, "implement": "1kg"},
+        "W75": {"factor": 1.9717, "implement": "0,75kg"},
+        "W80": {"factor": 2.2786, "implement": "0,75kg"},
+        "W85": {"factor": 2.6843, "implement": "0,75kg"},
+        "W90": {"factor": 3.2477, "implement": "0,75kg"},
+        "W95": {"factor": 4.0861, "implement": "0,75kg"},
+        "W100": {"factor": 5.4702, "implement": "0,75kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Discus»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "hammer",
+      "name": "Slegge",
+      "gender": "F",
+      "table_event_id": "hammer",
+      "factor_column": "Hammer",
+      "classes": {
+        "W35": {"factor": 1.0573, "implement": "4kg"},
+        "W40": {"factor": 1.1616, "implement": "4kg"},
+        "W45": {"factor": 1.2787, "implement": "4kg"},
+        "W50": {"factor": 1.2225, "implement": "3kg"},
+        "W55": {"factor": 1.3551, "implement": "3kg"},
+        "W60": {"factor": 1.5099, "implement": "3kg"},
+        "W65": {"factor": 1.694, "implement": "3kg"},
+        "W70": {"factor": 1.9176, "implement": "3kg"},
+        "W75": {"factor": 1.673, "implement": "2kg"},
+        "W80": {"factor": 1.9458, "implement": "2kg"},
+        "W85": {"factor": 2.311, "implement": "2kg"},
+        "W90": {"factor": 2.8273, "implement": "2kg"},
+        "W95": {"factor": 3.6161, "implement": "2kg"},
+        "W100": {"factor": 4.9754, "implement": "2kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Hammer»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "javelin",
+      "name": "Spyd",
+      "gender": "F",
+      "table_event_id": "javelin",
+      "factor_column": "Javelin",
+      "classes": {
+        "W35": {"factor": 1.0236, "implement": "0,6kg"},
+        "W40": {"factor": 1.1298, "implement": "0,6kg"},
+        "W45": {"factor": 1.2495, "implement": "0,6kg"},
+        "W50": {"factor": 1.265, "implement": "0,5kg"},
+        "W55": {"factor": 1.4077, "implement": "0,5kg"},
+        "W60": {"factor": 1.5732, "implement": "0,5kg"},
+        "W65": {"factor": 1.768, "implement": "0,5kg"},
+        "W70": {"factor": 2.0006, "implement": "0,5kg"},
+        "W75": {"factor": 2.0428, "implement": "0,4kg"},
+        "W80": {"factor": 2.3589, "implement": "0,4kg"},
+        "W85": {"factor": 2.7698, "implement": "0,4kg"},
+        "W90": {"factor": 3.3387, "implement": "0,4kg"},
+        "W95": {"factor": 4.183, "implement": "0,4kg"},
+        "W100": {"factor": 5.5753, "implement": "0,4kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Javelin»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    },
+    {
+      "event_id": "weight_throw",
+      "name": "Vektkast",
+      "gender": "F",
+      "table_event_id": "weight_throw",
+      "factor_column": "Weight",
+      "classes": {
+        "W35": {"factor": 1.0355, "implement": "9,08kg"},
+        "W40": {"factor": 1.1186, "implement": "9,08kg"},
+        "W45": {"factor": 1.2126, "implement": "9,08kg"},
+        "W50": {"factor": 1.1544, "implement": "7,26kg"},
+        "W55": {"factor": 1.2633, "implement": "7,26kg"},
+        "W60": {"factor": 1.1715, "implement": "5,45kg"},
+        "W65": {"factor": 1.3004, "implement": "5,45kg"},
+        "W70": {"factor": 1.4577, "implement": "5,45kg"},
+        "W75": {"factor": 1.3741, "implement": "4kg"},
+        "W80": {"factor": 1.5846, "implement": "4kg"},
+        "W85": {"factor": 1.8666, "implement": "4kg"},
+        "W90": {"factor": 2.2647, "implement": "4kg"},
+        "W95": {"factor": 2.8706, "implement": "4kg"},
+        "W100": {"factor": 3.9056, "implement": "4kg"}
+      },
+      "source": {
+        "ref": "wma-2023-appendix-b",
+        "location": "PDF-side 4, «Weight»"
+      },
+      "implement_source": {
+        "ref": "nfif-masters-mangekamp-kvinner",
+        "location": "raden «Vekt:»"
+      }
+    }
+  ]
+}

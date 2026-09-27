@@ -54,6 +54,13 @@ CONTROL = [
     ("J15 80 m hekk", F, "J15", "hurdles_80m", Result(time_seconds=12.0), 835),
     ("G15 800 m inne", M, "G15", "middle_800m", Result(time_minutes=2, time_seconds=10.0), 765),
     ("G15 100 m hekk", M, "G15", "hurdles_100m", Result(time_seconds=14.0), 824),
+    # Kvinner 100 m hekk har ingen seniorkolonne i NFIF-arkene (AP-016, avgjørelse 4).
+    ("IAAF s. 104 K 100 m hekk 12,00", F, "senior", "hurdles_100m", Result(time_seconds=12.00),
+     1280),
+    ("IAAF s. 104 K 100 m hekk 12,50", F, "senior", "hurdles_100m", Result(time_seconds=12.50),
+     1201),
+    ("IAAF s. 104 K 100 m hekk 13,50", F, "senior", "hurdles_100m", Result(time_seconds=13.50),
+     1050),
 ]  # fmt: skip
 
 
