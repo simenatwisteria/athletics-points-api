@@ -4,7 +4,7 @@ Eneste sanne oversikt over utviklerarbeid. Det finnes ingen egen `LOOP.md`: loop
 Eies av Cowork sammen med Simen. **Claude Code oppretter ikke nye oppgaver her** — funn skrives under «Innboks»
 nederst. Code oppdaterer bare `Status` og notatet på oppgaven den jobber med.
 
-**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-032**
+**ID-serie:** `AP-001`, `AP-002`, … Neste ledige: **AP-037**
 
 **Eier:** 🤖 Code (kan tas av agenten/loopen) · 🧑 Simen (legges i Todoist, agenten hopper over)
 
@@ -46,7 +46,9 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 14b | AP-030 | Fyll inn `document_url` for Tyrving-DOC-ene og `.xls` i `meta.source_documents` fra lenkene i `sources/README.md` (lagt inn 2026-09-26). PDF-ene og `.xlsx` beholder `null`. Kjør `extract_tyrving_params.py` på nytt og vis at bare `meta` endres | 🤖 | AP-027 | **Ferdig** 2026-09-26 (`.xls` lagt til som sjette dokument) | `ferdig/AP-030-document-url.md` |
 | 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | **Ferdig** 2026-09-26 (null avvik mot 30 482 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-012-wa-combined-events.md` |
 | 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | **Ferdig** 2026-09-27 (null avvik mot 427 750 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-016-masters-mangekamp.md` |
-| 16b | AP-031 | **Review** WA Combined Events-fasit: stikkprøve de 10 casene i sluttrapporten til AP-012 (`ferdig/AP-012-wa-combined-events.md`) mot NFIF-arket, godkjenn og lås `tests/fixtures/wa_combined_events_cases.json` | 🧑 | AP-012 | Ny | — |
+| 16b | AP-031 | **Review** av tre fasitfiler (WA Combined Events, masters, WMA Age Grading) | 🧑 | AP-012, AP-014, AP-016 | **Ferdig** 2026-09-27 — Cowork kontrollerte 30 av 30 stikkprøver mot kildene, Simen godkjente. Låsingen er AP-035 | — |
+| 16c | AP-032 | Masters-fasiten er 24 MB. Lagre den gzip-komprimert (`masters_combined_events_cases.json.gz`) og la oracle og test lese gzip. Innholdet skal være uendret: vis at SHA-256 av det ukomprimerte innholdet er det samme før og etter. **Styrt Code-økt, ikke loop:** `loop.sh` stopper med vilje når en eksisterende fixture endres eller slettes | 🧑 (styrt Code-økt) | AP-016 | Ny | — |
+| 16d | AP-035 | Lås de tre godkjente fasitfilene: `meta.locked = true`, `reviewed_by` og `locked_at` skrives av oracle-skriptene, testene som i dag krever `locked is False` endres til å kreve `True`, og oracle-skriptene nekter å skrive over en låst fil (som `oracle_wma_age_factors.py` allerede gjør). Masters etter AP-032. **Styrt Code-økt, ikke loop** (endrer eksisterende fixtures) | 🧑 (styrt Code-økt) | AP-031, AP-032 | Ny | — |
 | 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | **Ferdig** 2026-09-27 (4860 faktorer, ekstraksjon og oracle enige; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-014-wma-age-grading.md` |
 | 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
 
@@ -58,8 +60,9 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
 | 19 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
-| 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md` | Ny — venter på svar om hvor tolkningen skal ligge | — |
-| 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-020 | Ny | — |
+| 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md`, `docs/INTEGRASJON-5KAMP.md` | Klar — tolkningen ligger i dette API-et (B-27) | `active/AP-020-api-kontrakt.md` | — |
+| 20b | AP-036 | **Godkjenn API-kontrakten** fra AP-020 (Cowork går gjennom først og skriver anbefaling) | 🧑 | AP-020 | Ny | — |
+| 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-036 | Ny | — |
 | 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
 | 23 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
 | 24 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
@@ -71,6 +74,8 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | AP-018 | FastAPI-wrapper, deploy på Railway, frontend på Vercel | **Erstattet** 2026-09-26 | Delt opp i AP-020–AP-025 (se «API og frontend» over). |
 | AP-019 | Serietabellen / Seriepoeng (Lagserien), senior og masters | Venter på NFIF (AP-026) | B-26. Ingen offisiell fil. Kalkulatoren på minfriidrettsstatistikk.info avviker fra alle kjente tabeller (`docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md`). Reserveløsning: tilpasse parametre med tillatelse. |
 | AP-029 | Seriepoeng som egen funksjon i frontenden (senior, uten alder), med lenke til kilden | Ny | B-26. Avhenger av AP-019. |
+| AP-033 | WMA Age Grading: distanse og hekkehøyde per alder for kort hekk, lang hekk og hinder (fra WMA-reglementet, som må inn i `sources/`). Frontenden trenger det for å vise riktig øvelse. Se også hoppet i kvinner lang hekk fra 69 til 70 år | Ny | Fra Innboks (AP-014). Cowork henter kilden. |
+| AP-034 | Se over `PLAUSIBLE_RANGE` i `wma_age_grading.py` (skjønnsmessig, brukerhjelp) sammen med frontenden | Ny | Fra Innboks (AP-014). Tas i AP-023. |
 | AP-011 | WA Scoring Tables 2025: parametre tilpasses fra PDF-tabellen (`a·(x+b)²+c`), verifisering mot alle rader | Ny — flyttet hit 2026-09-26 | Eget system, ikke mangekamp. Krever vurdering av WA sitt forbehold mot kopiering før publisering (B-23). |
 
 ---
@@ -102,33 +107,6 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
 
-- **Kvinner `100m-m` i masters-mangekamparket mangler klassen i kolonne P** *(AP-016, 2026-09-27)*
-  Kolonne P har poeng i rad 138–359 (222 celler), men rad 2 er tom. Lest som W100 gir motoren samme poeng i
-  alle 222 radene, så det ser ut som en manglende overskrift. Kolonnen er utelatt fra fasiten og listet i
-  fixturens `meta`. Forslag: før det i `KILDEAVVIK.md` og ta det med i e-posten til NFIF (AP-026).
-
-- **Masters-fixturen er 25 MB** *(AP-016)*
-  `tests/fixtures/masters_combined_events_cases.json` har 427 750 caser, én per linje. Git og GitHub tåler det,
-  men klonen blir større. Vurder før låsing (AP-016-review) om fasiten heller skal genereres i CI, eller om
-  `result`-objektet kan utledes fra teksten i arket.
-
-- **Lås masters-fixturen** *(AP-016, forslag til 🧑-oppgave)*
-  Stikkprøv de 10 casene i `ferdig/AP-016-masters-mangekamp.md` mot NFIF-arkene, godkjenn og lås
-  `tests/fixtures/masters_combined_events_cases.json`, slik AP-031 gjør for WA Combined Events.
-
-- **Lås WMA Age Grading-fixturen** *(AP-014, forslag til 🧑-oppgave)*
-  Stikkprøv de 10 casene i `ferdig/AP-014-wma-age-grading.md` mot `sources/wma/wma-2023-age-factors.pdf`,
-  godkjenn og lås `tests/fixtures/wma_age_factors_cases.json`.
-
-- **Kort og lang hekk og hinder i WMA Age Grading har ingen distanse** *(AP-014)*
-  Age Factors-PDF-en har bare kolonnene «Short Hurdles», «Long Hurdles» og «Steeple Chase». Hvilken distanse og
-  hekkehøyde som gjelder per alder, står i WMA-reglementet, som ikke er i `sources/`. Motoren tilbyr derfor
-  `hurdles_short`, `hurdles_long` og `steeplechase` uten distanse. Frontenden trenger distansen for å vise riktig
-  øvelse. Kvinner lang hekk hopper fra 0,9881 (69 år) til 1,5178 (70 år), så distansen skifter trolig der.
-
-- **Rimelig område i WMA Age Grading er satt skjønnsmessig** *(AP-014)*
-  `PLAUSIBLE_RANGE` i `wma_age_grading.py` er grove grenser per øvelse som agenten har satt. Det er brukerhjelp og
-  påvirker ikke beregningen, men bør ses over før frontenden bruker det.
 
 ---
 
@@ -180,3 +158,9 @@ Datert, kort. Hvorfor noe ble valgt — ikke hva som ble gjort (det står i git)
 - **2026-09-26** — AP-027 gjennomgått av Cowork: godkjent. Innboks-funnet om manglende lenker løst ved at lenkene er ført inn i `sources/README.md`; utfyllingen i JSON er AP-030.
 - **2026-09-26** — **AP-016 avblokkert.** 80 m hekk manuell følger +0,24 s som 60 m (BV-024, anbefalt av Cowork). Forskjøvne celler i menn 200 m M90–M100 hoppes over i fasiten, ikke reparert (BV-035). Begge ført i `KILDEAVVIK.md` og tatt med i e-posten til NFIF.
 - **2026-09-26** — AP-012 gjennomgått av Cowork: godkjent (30 482 caser, null avvik). Innboks tømt: låsing av fixturen er AP-031 (🧑), og kontrolltall for kvinner 100 m hekk senior fra IAAF-boka er lagt til AP-016.
+- **2026-09-27** — AP-016 og AP-014 gjennomgått av Cowork: godkjent (427 750 og 4 860 caser, null avvik). Alle 30 stikkprøver i de tre sluttrapportene kontrollert mot kildefilene: 30 av 30 stemmer. Innboks tømt: låsing samlet i AP-031, komprimering av masters-fasiten i AP-032, hekkedistanser i AP-033, rimelig område i AP-034. Kvinner `100m-m` kolonne P ført i `KILDEAVVIK.md` og e-posten.
+- **2026-09-27** — **Fasitene godkjent** (AP-031). Simen godtok Coworks kontroll av 30 stikkprøver. Låsingen gjøres av
+  Code i AP-035, fordi testene og oracle-skriptene må endres sammen med flagget.
+- **2026-09-27** — **Tolkning av resultatlister ligger i dette API-et** (B-27, Simen). AP-020 er avblokkert.
+- **2026-09-27** — **5KAMP får automatisk poeng før stevnet, lokalt i appen** (B-28, Simen). Oppgaven er 5K-012 i
+  5KAMP-repoet, med fasit laget herfra. API-koblingen kommer etter stevnet (`docs/INTEGRASJON-5KAMP.md`).

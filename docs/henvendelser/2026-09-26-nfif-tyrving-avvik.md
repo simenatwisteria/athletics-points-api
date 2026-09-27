@@ -100,13 +100,14 @@ menn 1.39,87 1200 poeng i masters-tabellen og 1246 i kalkulatoren.
 
 **3. Mangekamptabellen for masters**
 
-Jeg har kontrollert alle klassekolonnene mot WMA-metoden (over 430 000 verdier), og tabellen stemmer, med to
+Jeg har kontrollert alle klassekolonnene mot WMA-metoden (over 430 000 verdier), og tabellen stemmer, med tre
 unntak:
 
 - I arkene for manuell tid på 60 m, 60 m hekk og 80 m hekk legges det til 0,20 s. IAAF-tabellen for mangekamp og
   WMA Appendix B bruker 0,24 s. Eksempel: 60 m menn 6,0 manuelt gir 1187 poeng i arket og 1170 i IAAF-tabellen.
 - I arket «200m» for menn er cellene for M90–M100 forskjøvet fra rad 983. Siste siffer i én kolonne står først i
   neste (rad 983: «1.00.0» og «2  1.14.72», som skal være 1.00.02 og 1.14.72).
+- I kvinnearket «100m-m» mangler klassen over kolonne P (trolig W100).
 
 **Spørsmål til dere**
 

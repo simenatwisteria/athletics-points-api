@@ -137,3 +137,10 @@ tid, og 82 celler i M95 er avkortet og gir feil poeng.
 **Valg:** Cellene hoppes over i fasiten og listes i fixturens `meta` (Cowork, 2026-09-26, gjelder til Simen sier noe annet). Vi reparerer ikke
 teksten, fordi det ville vært å tolke kilden. Motoren regner uansett etter metoden, og de øvrige cellene i
 samme ark gir null avvik. **Status overfor NFIF:** tatt med i e-posten.
+
+### Kvinner `100m-m`, kolonne P uten klasse
+
+Funnet av Code i AP-016 (2026-09-27). I `nfif-masters-mangekamp-kvinner.xlsm`, ark `100m-m`, har kolonne P poeng i
+rad 138–359 (222 celler), men ingen klasse i rad 2. Lest som W100 gir motoren samme poeng i alle 222 radene, så det
+er trolig en manglende overskrift. **Valg:** Kolonnen er utelatt fra fasiten og listet i fixturens `meta`. Motoren
+tilbyr W100 manuell 100 m etter metoden (BV-030). **Status overfor NFIF:** tatt med i e-posten.

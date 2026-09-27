@@ -61,7 +61,7 @@ Viktige detaljer:
 9. **5KAMP** har ingen backend og kaller eventuelt fra nettleseren. Det krever CORS for sitt domene. Øvelsene der
    (lengde, spyd, diskos, 200 m, 1500 m, 800 m) trenger WA-tabellene.
 
-## Åpent spørsmål
+## Avklart spørsmål (B-27, 2026-09-27: tolkningen ligger i dette API-et)
 
 Skal tolkningen av Liveres/OpenTrack-strenger ligge i **dette API-et** (anbefalt: én plass, testbar, gjenbrukbar for
 5KAMP og andre) eller i **minfriidrett** (som allerede har parsere, men som i dag kaster utstyrsinformasjonen)?

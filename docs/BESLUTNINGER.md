@@ -127,6 +127,20 @@ Beslutningen fra 2026-09-25 står: NFIF-tabellen er fasit. Motoren regner analyt
 
 Vi implementerer ikke Serietabellen før vi har en offisiell kilde (henvendelse til NFIF, se `docs/henvendelser/2026-09-26-nfif-tyrving-avvik.md`). Reserveløsningen er å tilpasse parametre fra kalkulatoren på minfriidrettsstatistikk.info, med tillatelse fra dem som drifter den, og merke kilden som «ikke offisiell». Når motorene for Combined Events og masters er bygget, kjøres en utvidet sammenligning mot kalkulatoren. Serietabell-beregning skal senere vises som en egen funksjon på siden vår.
 
+### B-27. Tolkning av resultatlister ligger i dette API-et (27.09.2026)
+
+Tekst fra Liveres, OpenTrack og minfriidrettsstatistikk.info («Kule G-18-19», «91,4 9,14m», «1,48,98») tolkes i dette
+API-et, ikke i hver klient. Svaret viser både tolkningen og poengene, så feil kan spores. Begrunnelse: én plass som kan
+testes, samme tolkning for minfriidrett.no, 5KAMP og andre, og utstyrsinformasjonen som trengs for å velge riktig
+tabell går ikke tapt. Besluttet av Simen etter anbefaling i `docs/INTEGRASJON-minfriidrett.md`.
+
+### B-28. 5KAMP får en lokal kopi av Combined Events-formelen (27.09.2026)
+
+Unntak fra B-9 for én klient. 5KAMP regner femkamp-poeng lokalt i nettleseren (fem øvelser per kjønn, senior-tabellen),
+fordi stevnet 2026-10-03 ikke skal være avhengig av nett eller en ny tjeneste. Kopien er gjort trygg ved at den testes
+mot fasit laget her: 10 685 verdier fra NFIFs tabell og resultatlista fra forrige stevne. Dette repoet er fortsatt
+kilden. Når API-et er på nett, skal 5KAMP enten bytte til API-et eller kontrollere mot det.
+
 ---
 
 ## 4. Roadmap
@@ -179,3 +193,5 @@ Hver av disse kan legges til senere uten å rive opp kjernen. Det er hele poenge
 | 2026-04-17 | Initial beslutningslogg. v2 lagt til grunn, med fire justeringer (B-5, B-6, B-7, B-8). Alle åpne punkter fra v2 kap. 13 avgjort. |
 | 2026-04-17 | Scope utvidet etter undersøkelse av NFIFs offisielle poengtabeller (kap. 3): Serietabellen/Seriepoeng, Masters Mangekamptabell og Masters Serietabell lagt til som egne poengsystemer (B-17). Tyrving beholdes som MVP, Serietabellen blir første post-MVP-leveranse foran WA Scoring (B-18). Teknisk forslag oppdatert til v2.1 med utvidet arkitektur, nye scoring-systemer og revidert roadmap. |
 | 2026-09-26 | Offisielle kilder lastet ned (NFIF og WMA i `sources/`, WA bare i Cowork-mappen `kilder/`). Kap. 3 rettet: seniormangekamp bruker Combined Events-tabellen (2001), ikke WA Scoring 2025. Masters-metoden beskrevet (WMA Appendix B). Serietabellen har ingen offisiell kilde og avviker fra alle kjente tabeller. Nye beslutninger B-22 til B-26: ny rekkefølge, kildefiler (WA utenfor repoet), kildesporing i API-et, masters-mangekamp regnes etter Appendix B med NFIF-tabellen som fasit, serietabellen avventer NFIF. |
+| 2026-09-27 | B-27: tolkning av resultatlister ligger i dette API-et. |
+| 2026-09-27 | B-28: 5KAMP får en lokal, testet kopi av Combined Events-formelen før stevnet 2026-10-03. |
