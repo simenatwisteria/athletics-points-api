@@ -45,7 +45,7 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 14 | AP-027 | Kildesporing: `source_documents` i parameter-JSON og `ref` (BV-nummer eller kilde) i beregningsstegene, også Tyrving. Test at alle BV-numre i koden finnes i `docs/BEREGNINGSVALG.md` (B-24) | 🤖 | AP-001 | **Ferdig** 2026-09-26 | `ferdig/AP-027-kildesporing.md` |
 | 14b | AP-030 | Fyll inn `document_url` for Tyrving-DOC-ene og `.xls` i `meta.source_documents` fra lenkene i `sources/README.md` (lagt inn 2026-09-26). PDF-ene og `.xlsx` beholder `null`. Kjør `extract_tyrving_params.py` på nytt og vis at bare `meta` endres | 🤖 | AP-027 | **Ferdig** 2026-09-26 (`.xls` lagt til som sjette dokument) | `ferdig/AP-030-document-url.md` |
 | 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | **Ferdig** 2026-09-26 (null avvik mot 30 482 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-012-wa-combined-events.md` |
-| 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | Klar — blokkering avgjort 2026-09-26 (se oppgavefila) | `active/AP-016-masters-mangekamp.md` |
+| 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | **Ferdig** 2026-09-27 (null avvik mot 427 750 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-016-masters-mangekamp.md` |
 | 16b | AP-031 | **Review** WA Combined Events-fasit: stikkprøve de 10 casene i sluttrapporten til AP-012 (`ferdig/AP-012-wa-combined-events.md`) mot NFIF-arket, godkjenn og lås `tests/fixtures/wa_combined_events_cases.json` | 🧑 | AP-012 | Ny | — |
 | 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
 | 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
@@ -101,6 +101,20 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
+
+- **Kvinner `100m-m` i masters-mangekamparket mangler klassen i kolonne P** *(AP-016, 2026-09-27)*
+  Kolonne P har poeng i rad 138–359 (222 celler), men rad 2 er tom. Lest som W100 gir motoren samme poeng i
+  alle 222 radene, så det ser ut som en manglende overskrift. Kolonnen er utelatt fra fasiten og listet i
+  fixturens `meta`. Forslag: før det i `KILDEAVVIK.md` og ta det med i e-posten til NFIF (AP-026).
+
+- **Masters-fixturen er 25 MB** *(AP-016)*
+  `tests/fixtures/masters_combined_events_cases.json` har 427 750 caser, én per linje. Git og GitHub tåler det,
+  men klonen blir større. Vurder før låsing (AP-016-review) om fasiten heller skal genereres i CI, eller om
+  `result`-objektet kan utledes fra teksten i arket.
+
+- **Lås masters-fixturen** *(AP-016, forslag til 🧑-oppgave)*
+  Stikkprøv de 10 casene i `ferdig/AP-016-masters-mangekamp.md` mot NFIF-arkene, godkjenn og lås
+  `tests/fixtures/masters_combined_events_cases.json`, slik AP-031 gjør for WA Combined Events.
 
 ---
 

@@ -1,6 +1,6 @@
 # AP-016: Masters mangekamp (WMA Appendix B, NFIF-tabellen som fasit)
 
-**Status:** Klar (blokkeringen er avgjort, se «Avgjørelse» nederst)
+**Status:** Ferdig 2026-09-27 (fixture ulåst, venter på Simens stikkprøve)
 **Opprettet:** 2026-09-26 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-012, AP-013, AP-015
@@ -183,8 +183,66 @@ Fortsett fra utkastet til `scripts/oracle_masters_combined_events.py`. Resten av
 
 ## Sluttrapport (fylles av Code)
 
+*(Code, 2026-09-27, commit `7d9b54e`)*
+
 - **Gjort:**
+  - `scripts/extract_masters_combined_events_params.py` leser faktorene fra Appendix B PDF-side 4–5 med
+    `pdfplumber`. Kolonnerekkefølgen står som konstanter, og fire kjente verdier kontrolleres. Klasser og
+    redskap/hekkehøyde leses fra raden «Vekt:»/«Hhøyde». Skriptet skriver
+    `athletics_scoring/data/masters_combined_events_2023.json` (35 øvelser, 3 kildedokumenter).
+  - `scripts/oracle_masters_combined_events.py` er ferdig fra utkastet og skriver
+    `tests/fixtures/masters_combined_events_cases.json` (ny, ulåst, 538 blokker, 427 750 caser). Utelatelsene
+    står i `meta.skipped_sheets`, `meta.skipped_blocks` og `meta.skipped_cells` (rad, kolonne, råtekst, grunn).
+  - `athletics_scoring/masters_combined_events.py`: `MastersCombinedCalculator` (`masters_combined_events`
+    2023), registrert i `default_registry()`. Den kaller `CombinedEventsCalculator` for poengsteget.
+    `_effective_result` i `wa_combined_events.py` er gjort om til modulfunksjonen `effective_result`, så begge
+    motorene deler kontroll, BV-025-avrunding og BV-024-tillegg. Oppførselen er uendret.
+  - `tests/test_masters_combined_events.py` (27 tester). Tre kontrolltall for kvinner 100 m hekk senior er lagt
+    til i `tests/test_wa_combined_events.py` (avgjørelse 4).
 - **Bevis:**
+  - `pytest -q`: 182 passed (56 s). `ruff check .` og `mypy athletics_scoring` er grønne.
+  - `test_all_fixture_cases`: **null avvik** på 427 750 caser (alle klassekolonner i alle ark, automatisk og
+    manuell tid, unntatt utelatelsene under).
+  - Kontrolltallene: M50 100 m 13,12 → 11,85 → 681 · W35 høyde 1,47 → 1,50 → 621 · M35 200 m 19,44 → 1200 ·
+    M50 kule 18,70 → 1200 · M50 kule med `7,26kg` avvises («M50 bruker 6kg i kule …, BV-034»).
+  - `test_fixture_covers_every_class_column`: hver (kjønn, øvelse, klasse) motoren tilbyr, har en blokk med
+    automatisk tid eller distanse, og redskapet i motoren er det samme som i arket.
+  - Begge skriptene er reproduserbare (`--check` i testene). Ingen endringer i `sources/` eller låste fixtures.
 - **Valg tatt underveis:**
-- **Avvik fra oppgavefila:**
-- **Funn som bør bli egne oppgaver:**
+  - **Avkortede celler:** i ark med automatisk tid regnes en tekstcelle med bare ett siffer etter siste punktum
+    (`^[\d.]*\.\d$`, f.eks. «1.00.0») som avkortet og hoppes over. Celler som ikke passer tidsformatet, er
+    «kan ikke leses som tid». Regelen treffer bare menn `200m`: N (M90) 20 avkortede, O (M95) 180 avkortede
+    og 20 uleselige, P (M100) 200 uleselige, til sammen 420. Det er flere enn de 82 i avgjørelsen, fordi regelen
+    også tar avkortede celler som tilfeldigvis gir riktige poeng og de 20 i M90 (rad 1163–1182). Regelen er
+    strukturell og bruker ikke motoren.
+  - **Kvinner `100m-m`, kolonne P:** kolonnen har data i rad 138–359 (222 celler), men ingen klasse i rad 2.
+    Den er utelatt og listet i `meta` (samme prinsipp som BV-035 (a)). Kontroll utenfor fixturen: lest som
+    W100 gir motoren samme poeng i alle 222 radene. Se Innboks.
+  - Stegene: `input` → (`rounded` BV-025) → (`manual_timing_addition` BV-024) → `age_factor` (ref
+    `wma-2023-appendix-b`, teksten nevner BV-030/BV-032) → `age_adjusted` (BV-030) → `age_adjusted_rounded`
+    (BV-031, vises alltid) → `difference` → `points_raw` → `points` (BV-003).
+  - Feil redskap gir `UnknownEventError`, samme type som Tyrving bruker for ukjent utstyr. `implement` kan
+    utelates, og redskapsteksten tolkes tallmessig («6 kg», «6.0kg», «700g» godtas).
+  - `result_used` er det aldersjusterte, avrundede resultatet (det tabellen slår opp). Det rimelige området er
+    seniortabellens område delt på faktoren.
+  - Bare klassene 35–100 er med (NFIF-arkene). Faktorene for 105 og 110 i Appendix B er ikke tatt med.
+- **Avvik fra oppgavefila:** Flere celler er utelatt enn de 82 som er nevnt (se over). I tillegg er kolonne P i
+  kvinner `100m-m` utelatt, som ikke var kjent da oppgaven ble avgjort.
+- **Funn som bør bli egne oppgaver:** se Innboks (kolonne P uten klasse, størrelsen på fixturen).
+- **10 caser til stikkprøve** (resultat → poeng, fra fixturen):
+
+  | Ark | Celle | Klasse | Redskap | Resultat i arket | Poeng |
+  |---|---|---|---|---|---|
+  | menn `100m` | N484 | M90 | — | 22.49 | 259 |
+  | kvinner `400m-m` | D609 | W40 | — | 1.06.3 (manuell) | 594 |
+  | menn `1500m` | I468 | M65 | — | 5.47.31 | 736 |
+  | kvinner `80-100mHK` | I16 | W75 | 68 cm | 15.29 | 1182 |
+  | menn `80-110m HK-m` | J74 | M60 | 84 cm (100 m hekk) | 19.4 (manuell) | 470 |
+  | kvinner `Høyde` | F115 | W50 | — | 0.87 | 156 |
+  | menn `Stav` | F110 | M50 | — | 4.85 | 1181 |
+  | kvinner `Kule` | G689 | W55 | 3 kg | 7.93 | 516 |
+  | menn `Spyd` | P691 | M100 | 0,4 kg | 9.39 | 514 |
+  | menn `200m-m` | J94 | M70 | — | 27.8 (manuell) | 905 |
+
+  I poeng-først-arkene er cellen resultatet og poengene står i kolonne A i samme rad. I resultat-først-arkene
+  (hopp og de fleste «-m»-arkene) er cellen poengene og resultatet står i kolonne A.
