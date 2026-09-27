@@ -46,6 +46,7 @@ Låst i AP-005 og AP-007. Regelcasene står i `tests/fixtures/tyrving_rules.json
 | BV-023 | Øvelser som ikke er i de internasjonale tabellene bruker NFIFs koeffisienter: 600 m J15/16 (0,198890 · 185 · 1,88), 800 m inne G15/16 (0,160027 · 231 · 1,836), 80 m hekk J15/16 (12,2092 · 22 · 1,835), 100 m hekk G15/16 (8,73753 · 26 · 1,83). | UM-reglementet §16.5, s. 9. Ingen uavhengig fasit finnes. | Bekreftet |
 | BV-024 | Manuell tid: +0,24 s til og med 300 m (også 60 m og 60 m hekk), +0,14 s på 400 m, ingen tillegg over 400 m. | IAAF-boka s. 23 og WMA Appendix B s. 1. IAAF-bokas tabell for manuell tid på 60 m (s. 166: 6,0 = 1170 poeng) bekrefter +0,24. NFIFs masters-ark bruker +0,20 på 60 m, 60 m hekk og 80 m hekk, se `KILDEAVVIK.md`. Vi følger de to primærkildene. | Anbefalt |
 | BV-025 | Tider med tusendeler rundes opp til hundredeler, lengder rundes ned til hel centimeter, før poengene regnes. | BV-002. Tabellene har hundredeler og centimeter. | Anbefalt |
+| BV-026 | I 5KAMP regnes alle tider som elektroniske. Ingen tillegg for manuell tid. Senior-tabell og seniorutstyr for alle deltakere. | Simen, 2026-09-27. Gjør resultatene sammenlignbare med forrige stevne. Gjelder klubbstevnet, ikke offisielle mesterskap. | Låst |
 
 ## Masters mangekamp
 
@@ -81,3 +82,4 @@ Låst i AP-005 og AP-007. Regelcasene står i `tests/fixtures/tyrving_rules.json
 |---|---|
 | 2026-09-26 | Registeret opprettet (Cowork). Tyrving-valgene samlet fra AP-005/AP-007 og beslutningsloggen. Nye valg for Combined Events, masters, Age Grading og serietabellen etter gjennomgang av kildene. |
 | 2026-09-26 | BV-024 utvidet til 80 m hekk. BV-035 utvidet med de forskjøvne 200 m-cellene. Begge etter blokkeringen av AP-016, anbefalt av Cowork og gjeldende til Simen sier noe annet. |
+| 2026-09-27 | BV-026: 5KAMP regner tider som elektroniske og bruker senior-tabellen for alle (Simen). |
