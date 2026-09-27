@@ -62,7 +62,7 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | 19 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
 | 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md`, `docs/INTEGRASJON-5KAMP.md` | **Ferdig** 2026-09-27 (`docs/api/openapi.yaml` + README, eksemplene kontrollert mot motorene; venter på godkjenning i AP-036) | `ferdig/AP-020-api-kontrakt.md` | — |
 | 20b | AP-036 | **Godkjenn API-kontrakten** fra AP-020 | 🧑 | AP-020 | **Ferdig** 2026-09-27 — godkjent av Simen etter Coworks gjennomgang. `auto` bruker klassealder | — |
-| 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7), katalogdata og `ImplementMismatchError` | 🤖 | AP-036 | Klar | `active/AP-021-api-implementasjon.md` |
+| 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7), katalogdata og `ImplementMismatchError` | 🤖 | AP-036 | **Ferdig** 2026-09-27 (alle endepunkter, `/interpret` svarer 501; `uvicorn athletics_api.main:app`) | `ferdig/AP-021-api-implementasjon.md` |
 | 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
 | 23 | AP-023 | Frontend: React/Vite etter `docs/DESIGN.md`, kaller API-et, norsk og engelsk. Styrte økter, ikke loop | 🤖 + 🧑 | AP-020 | Ny | — |
 | 24 | AP-024 | Deploy frontend på Vercel | 🤖 + 🧑 | AP-022, AP-023 | Ny | — |
@@ -107,6 +107,19 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
 
+
+- **`scripts/loop.sh` verifiserer ikke `athletics_api`** *(AP-021)*
+  `verify()` kjører `mypy athletics_scoring`. Ferdig-definisjonen er nå `mypy athletics_scoring athletics_api`
+  (CLAUDE.md, CI, `loop.md`). Loopen må også ha `.[dev,api]` installert. Ikke endret av agenten fordi skriptet
+  kjørte runden.
+
+- **Starlette advarer om `httpx` i `TestClient`** *(AP-021)*
+  `StarletteDeprecationWarning: Using httpx with starlette.testclient is deprecated; install httpx2`. Testene er
+  grønne. Bytt til det Starlette anbefaler når det er stabilt, før advarselen blir en feil.
+
+- **README er utdatert** *(AP-021)*
+  Øverst står «Ingen poengberegning er implementert ennå» og «WA Scoring Tables (2025)». Bør oppdateres til
+  dagens status.
 
 ---
 
