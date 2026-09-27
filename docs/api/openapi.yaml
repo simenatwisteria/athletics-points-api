@@ -1,0 +1,1538 @@
+# API-kontrakt v1 for athletics-points-api (AP-020). Lesbar oversikt: docs/api/README.md.
+# Fila holder seg innenfor YAML-utsnittet i scripts/openapi_check.py (ingen flyt-mappinger, ingen
+# kommentarer på samme linje som en verdi). Kontroll: python scripts/openapi_check.py
+openapi: 3.1.0
+info:
+  title: Athletics Points API
+  version: 1.0.0-draft
+  summary: Åpen, transparent beregning av norske friidrettspoeng.
+  description: |
+    Beregner poeng etter Tyrvingtabellen 2014, IAAF/WA Scoring Tables for Combined Events (2001),
+    NFIFs masters-mangekamp (WMA 2023) og WMA Age Grading 2023. Hver beregning returnerer
+    stegene med `ref` til et beregningsvalg (BV-nummer i docs/BEREGNINGSVALG.md) eller en kilde
+    (`key` i `sources` fra GET /systems).
+
+    Tall, ikke tekst: resultater sendes og returneres som tall i sekunder eller meter, med punktum
+    som desimalskille. Formatering etter språk (komma på norsk) gjøres i klienten.
+
+    Tilgang: åpent uten nøkkel i v1, med rate limiting per IP (B-4). API-nøkler med høyere grense
+    for integrasjonspartnere (først minfriidrett.no) kommer senere og er ikke en del av v1.
+
+    CORS: tillatte opphav er konfigurerbare. Standard er https://5kamp.minfriidrett.no og
+    frontendens domene, se `x-cors-allowed-origins`.
+
+    Caching (B-7): når `version` er oppgitt i forespørselen, svarer POST /calculate, /combined og
+    /batch med `Cache-Control: public, max-age=31536000, immutable`. Uten `version` brukes nyeste
+    versjon, og svaret har `Cache-Control: no-cache`.
+  license:
+    name: MIT
+    identifier: MIT
+x-cors-allowed-origins:
+  - https://5kamp.minfriidrett.no
+  - "<frontendens domene, settes ved deploy (AP-024)>"
+servers:
+  - url: /api/v1
+tags:
+  - name: katalog
+    description: Hvilke tabeller, klasser og øvelser som finnes.
+  - name: beregning
+    description: Poeng for ett resultat, en mangekamp eller mange rader.
+  - name: drift
+    description: Helsesjekk.
+  - name: tolkning
+    description: Planlagt, ikke i v1. Tolker tekst fra Liveres, OpenTrack og minfriidrettsstatistikk.info (B-27).
+paths:
+  /health:
+    get:
+      tags: [drift]
+      operationId: getHealth
+      summary: Helsesjekk
+      description: Svarer 200 når tjenesten kjører og alle motorene er lastet.
+      responses:
+        "200":
+          description: Tjenesten kjører.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+              examples:
+                ok:
+                  value:
+                    status: ok
+                    package_version: 0.1.0
+                    systems:
+                      masters_combined_events: ["2023"]
+                      tyrving: ["2014"]
+                      wa_combined_events: ["2001"]
+                      wma_age_grading: ["2023"]
+  /systems:
+    get:
+      tags: [katalog]
+      operationId: listSystems
+      summary: Poengsystemene
+      description: |
+        Alle tabellene, også de som ikke er klare (`ready: false`). Rekkefølgen er den frontenden
+        viser: ungdom, senior, masters. `classes` er klassene motoren tar imot, i motorens eget
+        format (se `ClassType`). Svaret endres bare ved ny versjon av API-et og kan caches.
+      responses:
+        "200":
+          description: Poengsystemene.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SystemInfo"
+              examples:
+                alle:
+                  value:
+                    - id: tyrving
+                      name:
+                        "no": Tyrvingtabellen
+                        en: Tyrving table
+                      description:
+                        "no": NFIFs poengtabell for gutter og jenter 10–19 år.
+                        en: The Norwegian Athletics Federation's points table for boys and girls aged 10–19.
+                      group: youth
+                      ready: true
+                      class_type: age
+                      classes:
+                        M: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+                        F: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+                      supports_combined: true
+                      result_kind: points
+                      latest_version: "2014"
+                      versions:
+                        - version: "2014"
+                          sources:
+                            - key: nfif-tyrving-2014-gutter
+                              title: Tyrvingtabellen 2014, gutter (offisiell tabell og regeltekst)
+                              publisher: Norges Friidrettsforbund (NFIF)
+                              official_page: https://www.friidrett.no/arrangement/arrangementshjelp/poengtabeller/tyrvingtabellen/
+                              document_url: https://www.friidrett.no/siteassets/arrangement/tyrvingtabellen-gutter-2014.doc
+                              local_path: sources/tyrving/tyrving-2014-gutter.doc
+                              sha256: 9cda1bfee1f31fe0b9d3c232ee04bdf73a34f00d7219eb1c1c949d262d1b9c2f
+                              retrieved: "2026-09-25"
+                    - id: wa_combined_events
+                      name:
+                        "no": Mangekamptabellen (WA)
+                        en: Combined events (World Athletics)
+                      description:
+                        "no": IAAF/WA Scoring Tables for Combined Events 2001, senior og ungdom fra 15 år.
+                        en: IAAF/WA Scoring Tables for Combined Events 2001, senior and youth from age 15.
+                      group: senior
+                      ready: true
+                      class_type: class
+                      classes:
+                        M: [senior, G15, G16, G17]
+                        F: [senior, J15, J16, J17]
+                      supports_combined: true
+                      result_kind: points
+                      latest_version: "2001"
+                      versions:
+                        - version: "2001"
+                          sources: []
+                    - id: masters_combined_events
+                      name:
+                        "no": Masters mangekamp (NFIF)
+                        en: Masters combined events (NFIF)
+                      description:
+                        "no": Resultat × WMA-aldersfaktor for femårsklassen, deretter mangekamptabellen.
+                        en: Result × WMA age factor for the five-year class, then the combined events table.
+                      group: masters
+                      ready: true
+                      class_type: masters_class
+                      classes:
+                        M: [M35, M40, M45, M50, M55, M60, M65, M70, M75, M80, M85, M90, M95, M100]
+                        F: [W35, W40, W45, W50, W55, W60, W65, W70, W75, W80, W85, W90, W95, W100]
+                      supports_combined: true
+                      result_kind: points
+                      latest_version: "2023"
+                      versions:
+                        - version: "2023"
+                          sources: []
+                    - id: wma_age_grading
+                      name:
+                        "no": WMA aldersgradering
+                        en: WMA age grading
+                      description:
+                        "no": Aldersjustert resultat med ettårige WMA-faktorer. Gir ikke poeng eller prosent.
+                        en: Age-graded result with WMA single-age factors. Gives no points or percentage.
+                      group: masters
+                      ready: true
+                      class_type: age
+                      classes:
+                        M: ["30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110"]
+                        F: ["30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110"]
+                      supports_combined: false
+                      result_kind: age_adjusted_result
+                      latest_version: "2023"
+                      versions:
+                        - version: "2023"
+                          sources: []
+                    - id: series_table
+                      name:
+                        "no": Serietabellen
+                        en: Norwegian series table
+                      description:
+                        "no": Kommer når NFIF har bekreftet en offisiell kilde.
+                        en: Coming when the federation has confirmed an official source.
+                      group: senior
+                      ready: false
+                      class_type: class
+                      classes:
+                        M: []
+                        F: []
+                      supports_combined: false
+                      result_kind: points
+                      latest_version: null
+                      versions: []
+  /events:
+    get:
+      tags: [katalog]
+      operationId: listEvents
+      summary: Øvelseskatalog for et system
+      description: |
+        Én rad per (øvelse, kjønn, klasse, utstyr). Har en øvelse flere utstyrsvarianter for samme
+        klasse (for eksempel 110 m hekk G17 med 91,4 cm og 100 cm), kommer den én gang per variant,
+        og da må `implement` sendes med i beregningen. Klienten grupperer menyene etter `category`.
+      parameters:
+        - $ref: "#/components/parameters/SystemQuery"
+        - $ref: "#/components/parameters/VersionQuery"
+        - name: gender
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Gender"
+        - name: age_class
+          in: query
+          required: false
+          description: Klasse i systemets eget format (se `classes` i GET /systems).
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Øvelsene som passer filteret.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventEntry"
+              examples:
+                tyrving_g15_800m:
+                  summary: GET /events?system=tyrving&gender=M&age_class=15 (utdrag)
+                  value:
+                    - system: tyrving
+                      version: "2014"
+                      event_id: middle_800m
+                      name:
+                        "no": 800 m
+                        en: 800 m
+                      category: run
+                      gender: M
+                      age_class: "15"
+                      implement: null
+                      formula_type: simple_quotient
+                      input:
+                        measure: time
+                        resolution: 0.1
+                        uses_minutes: true
+                        manual_timing_allowed: false
+                        plausible_min: 74.4
+                        plausible_max: 372.0
+                      points_1000_result: 124.0
+                wa_senior_200m:
+                  summary: GET /events?system=wa_combined_events&gender=M&age_class=senior (utdrag)
+                  value:
+                    - system: wa_combined_events
+                      version: "2001"
+                      event_id: sprint_200m
+                      name:
+                        "no": 200 m
+                        en: 200 m
+                      category: run
+                      gender: M
+                      age_class: senior
+                      implement: null
+                      formula_type: track
+                      input:
+                        measure: time
+                        resolution: 0.01
+                        uses_minutes: false
+                        manual_timing_allowed: true
+                        plausible_min: 12.52
+                        plausible_max: 62.59
+                      points_1000_result: 20.86
+        "422":
+          $ref: "#/components/responses/InvalidRequest"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /calculate:
+    post:
+      tags: [beregning]
+      operationId: calculate
+      summary: Poeng for ett resultat
+      description: |
+        Én beregning. Med `system: auto` velger API-et tabell etter alder (se `Selection`), og svaret
+        sier hvilket system og hvilken klasse som ble brukt. Feil gir HTTP-feil med `Error`; bruk
+        POST /batch hvis én ugyldig rad ikke skal stoppe resten.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalculateRequest"
+            examples:
+              wa_200m:
+                summary: Menn senior 200 m 23,79
+                value:
+                  system: wa_combined_events
+                  version: "2001"
+                  event_id: sprint_200m
+                  gender: M
+                  age_class: senior
+                  result: 23.79
+              tyrving_800m:
+                summary: G15 800 m 2:04,56 (hundredeler strykes, BV-011)
+                value:
+                  system: tyrving
+                  version: "2014"
+                  event_id: middle_800m
+                  gender: M
+                  age_class: "15"
+                  result: 124.56
+              masters_100m:
+                summary: M50 100 m 13,12 (WMA Appendix B s. 1)
+                value:
+                  system: masters_combined_events
+                  event_id: sprint_100m
+                  gender: M
+                  age_class: M50
+                  result: 13.12
+              auto_16:
+                summary: Automatisk tabellvalg, mann 16 år, 200 m 23,79
+                value:
+                  system: auto
+                  event_id: sprint_200m
+                  gender: M
+                  age: 16
+                  result: 23.79
+      responses:
+        "200":
+          description: Beregningen, med alle steg.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Calculation"
+              examples:
+                wa_200m:
+                  value:
+                    points: 712
+                    result_kind: points
+                    scoring_system: wa_combined_events
+                    version: "2001"
+                    event_id: sprint_200m
+                    event_name: 200 m
+                    gender: M
+                    age_class: senior
+                    implement: null
+                    result_used: 23.79
+                    parameters:
+                      a: 5.8425
+                      b: 38.0
+                      c: 1.81
+                    formula_type: track
+                    calculation_detail: 5,8425 × (38 − 23,79)^1,81 = 712,5149 → 712
+                    calculation_steps:
+                      - label: input
+                        value: 23.79
+                        formula: tid i sekunder
+                        ref: null
+                      - label: difference
+                        value: 14.21
+                        formula: b − T i s
+                        ref: null
+                      - label: points_raw
+                        value: 712.5149843926454
+                        formula: 5,8425 × (38 − 23,79)^1,81 = 712,5149
+                        ref: wma-2023-appendix-b
+                      - label: points
+                        value: 712.0
+                        formula: avkortet til heltall, minst 0
+                        ref: BV-003
+                    within_plausible_range: true
+                tyrving_800m:
+                  value:
+                    points: 991
+                    result_kind: points
+                    scoring_system: tyrving
+                    version: "2014"
+                    event_id: middle_800m
+                    event_name: 800 m
+                    gender: M
+                    age_class: "15"
+                    implement: null
+                    result_used: 124.5
+                    parameters:
+                      h1000: 124
+                      quotient: 1.8
+                    formula_type: simple_quotient
+                    calculation_detail: 1000 + (1240 − 1245) × 1,8 = 991 → 991
+                    calculation_steps:
+                      - label: hundredths_dropped
+                        value: 124.5
+                        formula: "R2: 124,56 s → 124,5 s, hundredeler strykes"
+                        ref: BV-011
+                      - label: difference
+                        value: -5.0
+                        formula: (h1000 − resultat) × 10
+                        ref: null
+                      - label: points_raw
+                        value: 991.0
+                        formula: før nedrunding
+                        ref: nfif-tyrving-2014-gutter
+                      - label: points
+                        value: 991.0
+                        formula: rundet ned, minst 0 (R3)
+                        ref: BV-003
+                    within_plausible_range: true
+                masters_100m:
+                  value:
+                    points: 681
+                    result_kind: points
+                    scoring_system: masters_combined_events
+                    version: "2023"
+                    event_id: sprint_100m
+                    event_name: 100 m
+                    gender: M
+                    age_class: M50
+                    implement: null
+                    result_used: 11.85
+                    parameters:
+                      a: 25.4347
+                      b: 18.0
+                      c: 1.81
+                      age_factor: 0.9031
+                    formula_type: track
+                    calculation_detail: 13,12 × 0,9031 = 11,848672 → 11,85; 25,4347 × (18 − 11,85)^1,81 = 681,225 → 681
+                    calculation_steps:
+                      - label: input
+                        value: 13.12
+                        formula: tid i sekunder
+                        ref: null
+                      - label: age_factor
+                        value: 0.9031
+                        formula: aldersfaktor for M50, «100m» (PDF-side 5, «100m»), BV-030/BV-032
+                        ref: wma-2023-appendix-b
+                      - label: age_adjusted
+                        value: 11.848672
+                        formula: 13,12 × 0,9031 = 11,848672
+                        ref: BV-030
+                      - label: age_adjusted_rounded
+                        value: 11.85
+                        formula: rundet opp til hundredeler
+                        ref: BV-031
+                      - label: difference
+                        value: 6.15
+                        formula: b − T i s
+                        ref: null
+                      - label: points_raw
+                        value: 681.2250023632715
+                        formula: 25,4347 × (18 − 11,85)^1,81 = 681,225
+                        ref: wma-2023-appendix-b
+                      - label: points
+                        value: 681.0
+                        formula: avkortet til heltall, minst 0
+                        ref: BV-003
+                    within_plausible_range: true
+                auto_16:
+                  value:
+                    points: 712
+                    result_kind: points
+                    scoring_system: wa_combined_events
+                    version: "2001"
+                    event_id: sprint_200m
+                    event_name: 200 m
+                    gender: M
+                    age_class: G16
+                    implement: null
+                    result_used: 23.79
+                    parameters:
+                      a: 5.8425
+                      b: 38.0
+                      c: 1.81
+                    formula_type: track
+                    calculation_detail: 5,8425 × (38 − 23,79)^1,81 = 712,5149 → 712
+                    calculation_steps:
+                      - label: input
+                        value: 23.79
+                        formula: tid i sekunder
+                        ref: null
+                      - label: difference
+                        value: 14.21
+                        formula: b − T i s
+                        ref: null
+                      - label: points_raw
+                        value: 712.5149843926454
+                        formula: 5,8425 × (38 − 23,79)^1,81 = 712,5149
+                        ref: wma-2023-appendix-b
+                      - label: points
+                        value: 712.0
+                        formula: avkortet til heltall, minst 0
+                        ref: BV-003
+                    within_plausible_range: true
+                    selection:
+                      requested_system: auto
+                      age: 16
+                      system: wa_combined_events
+                      age_class: G16
+                      rule: Fra 15 år gjelder mangekamptabellen, G/J15–17 som egne klasser, ellers senior.
+                      ref: BV-021
+        "422":
+          $ref: "#/components/responses/InvalidRequest"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /combined:
+    post:
+      tags: [beregning]
+      operationId: calculateCombined
+      summary: Mangekamp
+      description: |
+        Poeng per øvelse og summen. Alle øvelsene regnes i samme system og klasse. Samme øvelse to
+        ganger, tom liste eller et system uten mangekamp gir 422 `invalid_combined_event`.
+        Tyrving tar mangekamp til og med 14 år (BV-015). `system: auto` virker som i /calculate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CombinedRequest"
+            examples:
+              femkamp_menn:
+                summary: Femkamp menn senior, som på 5KAMP
+                value:
+                  system: wa_combined_events
+                  version: "2001"
+                  gender: M
+                  age_class: senior
+                  events:
+                    - event_id: long_jump
+                      result: 6.12
+                    - event_id: javelin
+                      result: 48.3
+                    - event_id: sprint_200m
+                      result: 23.79
+                    - event_id: discus
+                      result: 36.4
+                    - event_id: middle_1500m
+                      result: 275.4
+      responses:
+        "200":
+          description: Poeng per øvelse og sum. `events` har samme form som svaret fra /calculate.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CombinedResult"
+              examples:
+                femkamp_menn:
+                  summary: Stegene er utelatt i eksempelet (tomme lister); API-et returnerer dem.
+                  value:
+                    total: 3190
+                    scoring_system: wa_combined_events
+                    version: "2001"
+                    gender: M
+                    age_class: senior
+                    events:
+                      - points: 613
+                        result_kind: points
+                        scoring_system: wa_combined_events
+                        version: "2001"
+                        event_id: long_jump
+                        event_name: Lengde
+                        gender: M
+                        age_class: senior
+                        implement: null
+                        result_used: 6.12
+                        parameters:
+                          a: 0.14354
+                          b: 220.0
+                          c: 1.4
+                        formula_type: field
+                        calculation_detail: 0,14354 × (612 − 220)^1,4 = 613,1594 → 613
+                        calculation_steps: []
+                        within_plausible_range: true
+                      - points: 563
+                        result_kind: points
+                        scoring_system: wa_combined_events
+                        version: "2001"
+                        event_id: javelin
+                        event_name: Spyd
+                        gender: M
+                        age_class: senior
+                        implement: null
+                        result_used: 48.3
+                        parameters:
+                          a: 10.14
+                          b: 7.0
+                          c: 1.08
+                        formula_type: field
+                        calculation_detail: 10,14 × (48,3 − 7)^1,08 = 563,9803 → 563
+                        calculation_steps: []
+                        within_plausible_range: true
+                      - points: 712
+                        result_kind: points
+                        scoring_system: wa_combined_events
+                        version: "2001"
+                        event_id: sprint_200m
+                        event_name: 200 m
+                        gender: M
+                        age_class: senior
+                        implement: null
+                        result_used: 23.79
+                        parameters:
+                          a: 5.8425
+                          b: 38.0
+                          c: 1.81
+                        formula_type: track
+                        calculation_detail: 5,8425 × (38 − 23,79)^1,81 = 712,5149 → 712
+                        calculation_steps: []
+                        within_plausible_range: true
+                      - points: 592
+                        result_kind: points
+                        scoring_system: wa_combined_events
+                        version: "2001"
+                        event_id: discus
+                        event_name: Diskos
+                        gender: M
+                        age_class: senior
+                        implement: null
+                        result_used: 36.4
+                        parameters:
+                          a: 12.91
+                          b: 4.0
+                          c: 1.1
+                        formula_type: field
+                        calculation_detail: 12,91 × (36,4 − 4)^1,1 = 592,2782 → 592
+                        calculation_steps: []
+                        within_plausible_range: true
+                      - points: 710
+                        result_kind: points
+                        scoring_system: wa_combined_events
+                        version: "2001"
+                        event_id: middle_1500m
+                        event_name: 1500 m
+                        gender: M
+                        age_class: senior
+                        implement: null
+                        result_used: 275.4
+                        parameters:
+                          a: 0.03768
+                          b: 480.0
+                          c: 1.85
+                        formula_type: track
+                        calculation_detail: 0,03768 × (480 − 275,4)^1,85 = 710,0457 → 710
+                        calculation_steps: []
+                        within_plausible_range: true
+        "422":
+          $ref: "#/components/responses/InvalidRequest"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /batch:
+    post:
+      tags: [beregning]
+      operationId: calculateBatch
+      summary: Mange rader i ett kall
+      description: |
+        1–2000 rader. Hver rad får eget svar i samme rekkefølge, med `status` og begrunnelse. Én
+        ugyldig rad stopper aldri resten, og svaret er 200 så lenge selve forespørselen er gyldig.
+        Rader uten resultat (`result: null`, for eksempel DNS eller DNF) får `no_result`.
+
+        Status per rad:
+        - `ok` — poeng beregnet, `calculation` er fylt ut.
+        - `no_result` — ingen gyldig måling (`result` er null). `result_status` speiles i `message`.
+        - `ambiguous_implement` — øvelsen har flere utstyrsvarianter i klassen, og `implement` mangler.
+        - `implement_mismatch` — oppgitt utstyr er ikke det tabellen bruker for klassen. Det gis
+          aldri poeng for feil utstyr.
+        - `invalid` — alt annet (ukjent system, øvelse eller klasse, resultat 0, manuell tid der
+          regelverket ikke har tillegg). `error` har koden fra feiltabellen.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BatchRequest"
+            examples:
+              blandet:
+                value:
+                  rows:
+                    - row_id: r1
+                      system: auto
+                      event_id: sprint_200m
+                      gender: M
+                      age: 16
+                      result: 23.79
+                    - row_id: r2
+                      system: tyrving
+                      event_id: middle_800m
+                      gender: M
+                      age_class: "15"
+                      result: null
+                      result_status: DNS
+                    - row_id: r3
+                      system: tyrving
+                      event_id: hurdles_110m
+                      gender: M
+                      age_class: "17"
+                      result: 15.2
+                    - row_id: r4
+                      system: masters_combined_events
+                      event_id: shot_put
+                      gender: M
+                      age_class: M50
+                      implement: 7,26kg
+                      result: 11.2
+                    - row_id: r5
+                      system: wa_combined_events
+                      event_id: triple_jump
+                      gender: M
+                      age_class: senior
+                      result: 13.1
+      responses:
+        "200":
+          description: Ett svar per rad, i samme rekkefølge.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchResult"
+              examples:
+                blandet:
+                  summary: Stegene er utelatt i eksempelet (tom liste); API-et returnerer dem.
+                  value:
+                    summary:
+                      ok: 1
+                      no_result: 1
+                      ambiguous_implement: 1
+                      implement_mismatch: 1
+                      invalid: 1
+                    rows:
+                      - row_id: r1
+                        status: ok
+                        message: null
+                        error: null
+                        calculation:
+                          points: 712
+                          result_kind: points
+                          scoring_system: wa_combined_events
+                          version: "2001"
+                          event_id: sprint_200m
+                          event_name: 200 m
+                          gender: M
+                          age_class: G16
+                          implement: null
+                          result_used: 23.79
+                          parameters:
+                            a: 5.8425
+                            b: 38.0
+                            c: 1.81
+                          formula_type: track
+                          calculation_detail: 5,8425 × (38 − 23,79)^1,81 = 712,5149 → 712
+                          calculation_steps: []
+                          within_plausible_range: true
+                          selection:
+                            requested_system: auto
+                            age: 16
+                            system: wa_combined_events
+                            age_class: G16
+                            rule: Fra 15 år gjelder mangekamptabellen, G/J15–17 som egne klasser, ellers senior.
+                            ref: BV-021
+                      - row_id: r2
+                        status: no_result
+                        message: DNS
+                        error: null
+                        calculation: null
+                      - row_id: r3
+                        status: ambiguous_implement
+                        message: "hurdles_110m M17 finnes med flere utstyrsvarianter; oppgi implement (91,4cm/9,14m, 100,0cm/9,14m)"
+                        error: null
+                        calculation: null
+                      - row_id: r4
+                        status: implement_mismatch
+                        message: M50 bruker 6kg i kule, ikke '7,26kg'. Aldersfaktoren gjelder bare klassens redskap (BV-034)
+                        error: null
+                        calculation: null
+                      - row_id: r5
+                        status: invalid
+                        message: triple_jump finnes ikke for M i mangekamptabellen
+                        error:
+                          code: unknown_event
+                          message: triple_jump finnes ikke for M i mangekamptabellen
+                          details: null
+                        calculation: null
+        "422":
+          $ref: "#/components/responses/InvalidRequest"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /interpret:
+    post:
+      tags: [tolkning]
+      operationId: interpretRows
+      summary: Tolk rå resultatlinjer (planlagt)
+      x-status: planned
+      description: |
+        Planlagt etter B-27, bygges ikke i AP-021. Til da svarer endepunktet 501.
+
+        Tar imot tekstfeltene slik de står i Liveres, OpenTrack og minfriidrettsstatistikk.info, og
+        returnerer både tolkningen (kanoniske felt) og poengene, så feil kan spores. Utøverens klasse
+        og øvelsens klasse er ikke det samme (`KU20 Spyd 600g` kan ha utøvere i J17), så poengene
+        regnes per utøver. Mangler utstyr og klassen har én variant, brukes den. Er det flere, blir
+        status `ambiguous_implement`. Vind og inne/ute leses, men påvirker ikke poengene i v1.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterpretRequest"
+            examples:
+              liveres:
+                value:
+                  source: liveres
+                  competition_date: "2026-06-14"
+                  rows:
+                    - row_id: "4711"
+                      event_text: Kule G-15 (4,0kg)
+                      class_text: G-15
+                      result_text: 11,74
+                      wind_text: null
+      responses:
+        "200":
+          description: Tolkning og poeng per rad (når endepunktet er bygget).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpretResult"
+              examples:
+                liveres:
+                  summary: Stegene er utelatt i eksempelet (tom liste); API-et returnerer dem.
+                  value:
+                    rows:
+                      - row_id: "4711"
+                        status: ok
+                        message: null
+                        interpretation:
+                          system: tyrving
+                          event_id: shot_put
+                          gender: M
+                          age_class: "15"
+                          implement: 4kg
+                          implement_source: event_text
+                          result: 11.74
+                          result_status: null
+                          manual_timing: false
+                          wind: null
+                          indoor: null
+                        calculation:
+                          points: 756
+                          result_kind: points
+                          scoring_system: tyrving
+                          version: "2014"
+                          event_id: shot_put
+                          event_name: Kule
+                          gender: M
+                          age_class: "15"
+                          implement: 4kg
+                          result_used: 11.74
+                          parameters:
+                            h1000: 15.3
+                            f1: 0.3
+                            f2: 0.6
+                            f3: 1.2
+                          formula_type: three_interval
+                          calculation_detail: 1000 − ((1530 − 1224) × 0,6 + (1224 − 1174) × 1,2) = 756,4 → 756
+                          calculation_steps: []
+                          within_plausible_range: true
+        "501":
+          description: Ikke bygget ennå (v1).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                planlagt:
+                  value:
+                    error:
+                      code: not_implemented
+                      message: Tolkning av resultatlister er planlagt, men ikke bygget ennå.
+                      details: null
+components:
+  parameters:
+    SystemQuery:
+      name: system
+      in: query
+      required: true
+      schema:
+        $ref: "#/components/schemas/SystemId"
+    VersionQuery:
+      name: version
+      in: query
+      required: false
+      description: Tabellversjon (B-5). Uten versjon brukes nyeste.
+      schema:
+        $ref: "#/components/schemas/Version"
+  headers:
+    CacheControl:
+      description: "`public, max-age=31536000, immutable` når `version` er oppgitt (B-7), ellers `no-cache`."
+      schema:
+        type: string
+  responses:
+    InvalidRequest:
+      description: |
+        Forespørselen kan ikke beregnes. `code` sier hvorfor (se feiltabellen i `Error`).
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ukjent_ovelse:
+              value:
+                error:
+                  code: unknown_event
+                  message: triple_jump finnes ikke for M i mangekamptabellen
+                  details: null
+            flere_varianter:
+              value:
+                error:
+                  code: ambiguous_implement
+                  message: "hurdles_110m M17 finnes med flere utstyrsvarianter; oppgi implement (91,4cm/9,14m, 100,0cm/9,14m)"
+                  details:
+                    implements:
+                      - 91,4cm/9,14m
+                      - 100,0cm/9,14m
+            skjema:
+              value:
+                error:
+                  code: validation_error
+                  message: Feltet age er påkrevd når system er auto.
+                  details:
+                    field: age
+    RateLimited:
+      description: For mange forespørsler fra samme IP (B-4). `Retry-After` sier hvor mange sekunder.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            grense:
+              value:
+                error:
+                  code: rate_limited
+                  message: For mange forespørsler. Prøv igjen om litt.
+                  details:
+                    retry_after_seconds: 10
+  schemas:
+    SystemId:
+      type: string
+      description: Poengsystem. `series_table` finnes i katalogen, men er ikke klar.
+      enum: [tyrving, wa_combined_events, masters_combined_events, wma_age_grading, series_table]
+    SystemSelector:
+      type: string
+      description: Poengsystem, eller `auto` for tabellvalg etter alder (se `Selection`).
+      enum: [auto, tyrving, wa_combined_events, masters_combined_events, wma_age_grading]
+    Version:
+      type: string
+      description: Tabellversjon som årstall, for eksempel "2014" (B-5).
+    Gender:
+      type: string
+      description: M = menn/gutter, F = kvinner/jenter.
+      enum: [M, F]
+    ClassType:
+      type: string
+      description: |
+        Hvordan `age_class` skrives i systemet. API-et bruker motorens eget format og oversetter ikke:
+        - `age` — alder i hele år som tekst: "10"–"19" i Tyrving (klassealder), "30"–"110" i WMA
+          Age Grading (alder på konkurransedagen, BV-040).
+        - `class` — "senior", og G15–G17 / J15–J17 i mangekamptabellen (BV-021, BV-023).
+        - `masters_class` — femårsklasse: M35–M100 og W35–W100 (BV-032).
+      enum: [age, class, masters_class]
+    ResultKind:
+      type: string
+      description: |
+        `points` — `points` er poengsummen. `age_adjusted_result` — WMA Age Grading gir ikke poeng:
+        `points` er 0, og det aldersjusterte resultatet står i `result_used` (BV-041).
+      enum: [points, age_adjusted_result]
+    Category:
+      type: string
+      description: |
+        Menygruppe, utledet av `event_id`: run (sprint_, middle_, distance_, half_marathon, marathon),
+        hurdles (hurdles_, steeplechase), racewalk (racewalk_), jump (high_jump, pole_vault,
+        long_jump, triple_jump og uten tilløp), throw (shot_put, discus, hammer, javelin,
+        weight_throw, ball_throw, swing_ball).
+      enum: [run, hurdles, racewalk, jump, throw]
+    LocalizedText:
+      type: object
+      required: ["no", en]
+      additionalProperties: false
+      properties:
+        "no":
+          type: string
+        en:
+          type: string
+    Health:
+      type: object
+      required: [status, package_version, systems]
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        package_version:
+          type: string
+          description: Versjonen av athletics_scoring.
+        systems:
+          type: object
+          description: Registrerte systemer med versjoner.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    SourceDocument:
+      type: object
+      description: Kildedokument (B-24). `key` er det `ref` i beregningsstegene peker til.
+      required: [key, title, publisher, official_page, document_url, local_path, sha256, retrieved]
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        title:
+          type: string
+        publisher:
+          type: string
+        official_page:
+          type: [string, "null"]
+        document_url:
+          type: [string, "null"]
+        local_path:
+          type: [string, "null"]
+          description: Sti i repoet (sources/…). Null for kilder som ikke er sjekket inn (B-23).
+        sha256:
+          type: [string, "null"]
+        retrieved:
+          type: [string, "null"]
+          description: Dato kilden ble lastet ned (ÅÅÅÅ-MM-DD).
+    SystemVersion:
+      type: object
+      required: [version, sources]
+      additionalProperties: false
+      properties:
+        version:
+          $ref: "#/components/schemas/Version"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceDocument"
+    SystemInfo:
+      type: object
+      required: [id, name, description, group, ready, class_type, classes, supports_combined, result_kind, latest_version, versions]
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/SystemId"
+        name:
+          $ref: "#/components/schemas/LocalizedText"
+        description:
+          $ref: "#/components/schemas/LocalizedText"
+        group:
+          type: string
+          enum: [youth, senior, masters]
+        ready:
+          type: boolean
+          description: Tabellen kan brukes til beregning. Ikke klare tabeller vises med melding i frontenden.
+        class_type:
+          $ref: "#/components/schemas/ClassType"
+        classes:
+          type: object
+          description: Klassene motoren tar imot, per kjønn.
+          required: [M, F]
+          additionalProperties: false
+          properties:
+            M:
+              type: array
+              items:
+                type: string
+            F:
+              type: array
+              items:
+                type: string
+        supports_combined:
+          type: boolean
+          description: POST /combined virker for systemet. Tyrving bare til og med 14 år (BV-015).
+        result_kind:
+          $ref: "#/components/schemas/ResultKind"
+        latest_version:
+          type: [string, "null"]
+        versions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemVersion"
+    InputSpec:
+      type: object
+      description: Hvordan resultatet tastes inn. Rimelig område er brukerhjelp, ikke en regel.
+      required: [measure, resolution, uses_minutes, manual_timing_allowed, plausible_min, plausible_max]
+      additionalProperties: false
+      properties:
+        measure:
+          type: string
+          description: time = sekunder, distance = meter.
+          enum: [time, distance]
+        resolution:
+          type: number
+          description: Minste enhet som teller (0.01 eller 0.1).
+        uses_minutes:
+          type: boolean
+          description: Tiden vises naturlig som minutter og sekunder. Sendes likevel som sekunder totalt.
+        manual_timing_allowed:
+          type: boolean
+        plausible_min:
+          type: number
+        plausible_max:
+          type: number
+    EventEntry:
+      type: object
+      required: [system, version, event_id, name, category, gender, age_class, implement, formula_type, input, points_1000_result]
+      additionalProperties: false
+      properties:
+        system:
+          $ref: "#/components/schemas/SystemId"
+        version:
+          $ref: "#/components/schemas/Version"
+        event_id:
+          type: string
+          description: Felles øvelses-ID på tvers av systemene, for eksempel sprint_200m eller shot_put.
+        name:
+          $ref: "#/components/schemas/LocalizedText"
+        category:
+          $ref: "#/components/schemas/Category"
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        implement:
+          type: [string, "null"]
+          description: Redskapsvekt eller hekkehøyde/-avstand, for eksempel 4kg eller 91,4cm/9,14m. Null når øvelsen ikke har utstyr.
+        formula_type:
+          type: string
+        input:
+          $ref: "#/components/schemas/InputSpec"
+        points_1000_result:
+          type: [number, "null"]
+          description: Resultatet som gir 1000 poeng (grå referanse i resultatfeltet). Null i WMA Age Grading.
+    CalculateRequest:
+      type: object
+      description: |
+        `age_class` er påkrevd, unntatt med `system: auto`, som krever `age` i stedet. `result` er
+        sekunder totalt for tider (2:04,56 = 124.56) og meter for lengder. Hvilken av dem styres av
+        `input.measure` for øvelsen.
+      required: [system, event_id, gender, result]
+      additionalProperties: false
+      properties:
+        system:
+          $ref: "#/components/schemas/SystemSelector"
+        version:
+          $ref: "#/components/schemas/Version"
+        event_id:
+          type: string
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        age:
+          type: integer
+          minimum: 10
+          maximum: 110
+          description: "Bare med `system: auto`. Klassealder, det vil si alderen utøveren fyller i konkurranseåret."
+        implement:
+          type: string
+          description: Må oppgis når øvelsen har flere utstyrsvarianter i klassen.
+        result:
+          type: number
+        manual_timing:
+          type: boolean
+          default: false
+          description: Manuell tidtaking. Gir tillegg der regelverket har det, ellers 422.
+    CombinedEventRequest:
+      type: object
+      required: [event_id, result]
+      additionalProperties: false
+      properties:
+        event_id:
+          type: string
+        implement:
+          type: string
+        result:
+          type: number
+        manual_timing:
+          type: boolean
+          default: false
+    CombinedRequest:
+      type: object
+      required: [system, gender, events]
+      additionalProperties: false
+      properties:
+        system:
+          $ref: "#/components/schemas/SystemSelector"
+        version:
+          $ref: "#/components/schemas/Version"
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        age:
+          type: integer
+          minimum: 10
+          maximum: 110
+        events:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/CombinedEventRequest"
+    CalculationStep:
+      type: object
+      required: [label, value, formula, ref]
+      additionalProperties: false
+      properties:
+        label:
+          type: string
+          description: Maskinlesbart navn på steget, for eksempel points_raw.
+        value:
+          type: number
+        formula:
+          type: string
+          description: Lesbar forklaring på norsk, med desimalkomma.
+        ref:
+          type: [string, "null"]
+          description: BV-nummer i docs/BEREGNINGSVALG.md eller `key` til en kilde i GET /systems.
+    Selection:
+      type: object
+      description: |
+        Hvilken tabell `system: auto` valgte. Reglene: under 15 år Tyrving med alderen som klasse
+        (10–14); 15–17 år mangekamptabellen med G/J15–17; fra 18 år mangekamptabellen senior (BV-021).
+        Masters brukes bare når klienten ber om det, fordi klubbstevner ofte bruker senior for alle voksne.
+      required: [requested_system, age, system, age_class, rule, ref]
+      additionalProperties: false
+      properties:
+        requested_system:
+          type: string
+          enum: [auto]
+        age:
+          type: integer
+        system:
+          $ref: "#/components/schemas/SystemId"
+        age_class:
+          type: string
+        rule:
+          type: string
+        ref:
+          type: string
+    Calculation:
+      type: object
+      description: Svar på én beregning. Tilsvarer `ScoreResult` i athletics_scoring, pluss `result_kind` og `selection`.
+      required: [points, result_kind, scoring_system, version, event_id, event_name, gender, age_class, implement, result_used, parameters, formula_type, calculation_detail, calculation_steps, within_plausible_range]
+      additionalProperties: false
+      properties:
+        points:
+          type: integer
+          minimum: 0
+        result_kind:
+          $ref: "#/components/schemas/ResultKind"
+        scoring_system:
+          $ref: "#/components/schemas/SystemId"
+        version:
+          $ref: "#/components/schemas/Version"
+        event_id:
+          type: string
+        event_name:
+          type: string
+          description: Norsk navn fra motoren. Engelsk navn står i GET /events.
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        implement:
+          type: [string, "null"]
+        result_used:
+          type: number
+          description: Resultatet som faktisk ble regnet med, etter tillegg, avrunding og aldersjustering.
+        parameters:
+          type: object
+          additionalProperties:
+            type: number
+        formula_type:
+          type: string
+        calculation_detail:
+          type: string
+        calculation_steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalculationStep"
+        within_plausible_range:
+          type: boolean
+        selection:
+          $ref: "#/components/schemas/Selection"
+    CombinedResult:
+      type: object
+      required: [total, scoring_system, version, gender, age_class, events]
+      additionalProperties: false
+      properties:
+        total:
+          type: integer
+        scoring_system:
+          $ref: "#/components/schemas/SystemId"
+        version:
+          $ref: "#/components/schemas/Version"
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/Calculation"
+        selection:
+          $ref: "#/components/schemas/Selection"
+    BatchRow:
+      type: object
+      description: Som CalculateRequest, men `result` kan være null (ingen gyldig måling).
+      required: [system, event_id, gender, result]
+      additionalProperties: false
+      properties:
+        row_id:
+          type: string
+          description: Klientens egen ID, speiles i svaret.
+        system:
+          $ref: "#/components/schemas/SystemSelector"
+        version:
+          $ref: "#/components/schemas/Version"
+        event_id:
+          type: string
+        gender:
+          $ref: "#/components/schemas/Gender"
+        age_class:
+          type: string
+        age:
+          type: integer
+          minimum: 10
+          maximum: 110
+        implement:
+          type: string
+        result:
+          type: [number, "null"]
+        result_status:
+          type: string
+          description: Klientens status når resultat mangler, for eksempel DNS, DNF, NM eller DQ.
+        manual_timing:
+          type: boolean
+          default: false
+    BatchRequest:
+      type: object
+      required: [rows]
+      additionalProperties: false
+      properties:
+        rows:
+          type: array
+          minItems: 1
+          maxItems: 2000
+          items:
+            $ref: "#/components/schemas/BatchRow"
+    RowStatus:
+      type: string
+      enum: [ok, no_result, ambiguous_implement, implement_mismatch, invalid]
+    BatchRowResult:
+      type: object
+      required: [row_id, status, message, error, calculation]
+      additionalProperties: false
+      properties:
+        row_id:
+          type: [string, "null"]
+        status:
+          $ref: "#/components/schemas/RowStatus"
+        message:
+          type: [string, "null"]
+          description: Begrunnelse på norsk når status ikke er ok.
+        error:
+          oneOf:
+            - $ref: "#/components/schemas/ErrorBody"
+            - type: "null"
+        calculation:
+          oneOf:
+            - $ref: "#/components/schemas/Calculation"
+            - type: "null"
+    BatchResult:
+      type: object
+      required: [summary, rows]
+      additionalProperties: false
+      properties:
+        summary:
+          type: object
+          description: Antall rader per status.
+          required: [ok, no_result, ambiguous_implement, implement_mismatch, invalid]
+          additionalProperties: false
+          properties:
+            ok:
+              type: integer
+            no_result:
+              type: integer
+            ambiguous_implement:
+              type: integer
+            implement_mismatch:
+              type: integer
+            invalid:
+              type: integer
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/BatchRowResult"
+    InterpretRow:
+      type: object
+      required: [row_id, event_text, class_text, result_text]
+      additionalProperties: false
+      properties:
+        row_id:
+          type: string
+        event_text:
+          type: string
+          description: Øvelsen slik den står i kilden, for eksempel «Kule G-15 (4,0kg)» eller «MU20 Kule 6,0kg».
+        class_text:
+          type: string
+          description: Utøverens klasse, for eksempel «G-15», «J18/19», «M60».
+        result_text:
+          type: string
+          description: Resultatet som tekst, for eksempel «11,74», «1,48,98», «2:21.47», «DNS».
+        wind_text:
+          type: [string, "null"]
+        gender:
+          $ref: "#/components/schemas/Gender"
+        indoor:
+          type: [boolean, "null"]
+    InterpretRequest:
+      type: object
+      required: [source, rows]
+      additionalProperties: false
+      properties:
+        source:
+          type: string
+          enum: [liveres, opentrack, minfriidrettsstatistikk]
+        competition_date:
+          type: string
+          description: ÅÅÅÅ-MM-DD. Brukes til alder på konkurransedagen der systemet krever det.
+        rows:
+          type: array
+          minItems: 1
+          maxItems: 2000
+          items:
+            $ref: "#/components/schemas/InterpretRow"
+    Interpretation:
+      type: object
+      required: [system, event_id, gender, age_class, implement, implement_source, result, result_status, manual_timing, wind, indoor]
+      additionalProperties: false
+      properties:
+        system:
+          type: [string, "null"]
+        event_id:
+          type: [string, "null"]
+        gender:
+          oneOf:
+            - $ref: "#/components/schemas/Gender"
+            - type: "null"
+        age_class:
+          type: [string, "null"]
+        implement:
+          type: [string, "null"]
+        implement_source:
+          type: string
+          description: Hvor utstyret kom fra.
+          enum: [event_text, class_default, missing]
+        result:
+          type: [number, "null"]
+        result_status:
+          type: [string, "null"]
+          description: DNS, DNF, NM, DQ eller «-» når det ikke finnes et resultat.
+        manual_timing:
+          type: boolean
+        wind:
+          type: [number, "null"]
+        indoor:
+          type: [boolean, "null"]
+    InterpretRowResult:
+      type: object
+      required: [row_id, status, message, interpretation, calculation]
+      additionalProperties: false
+      properties:
+        row_id:
+          type: string
+        status:
+          type: string
+          enum: [ok, no_result, ambiguous_implement, implement_mismatch, invalid, uninterpretable]
+        message:
+          type: [string, "null"]
+        interpretation:
+          $ref: "#/components/schemas/Interpretation"
+        calculation:
+          oneOf:
+            - $ref: "#/components/schemas/Calculation"
+            - type: "null"
+    InterpretResult:
+      type: object
+      required: [rows]
+      additionalProperties: false
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterpretRowResult"
+    ErrorBody:
+      type: object
+      description: |
+        Felles feilformat. `message` er på norsk. Feiltyper fra athletics_scoring og HTTP-status:
+        - UnknownSystemError → 422 `unknown_system`
+        - UnknownVersionError → 422 `unknown_version`
+        - UnknownEventError → 422 `unknown_event` (ukjent øvelse, klasse eller kombinasjon)
+        - AmbiguousEventError → 422 `ambiguous_implement`
+        - UnknownEventError på grunn av feil utstyr → 422 `implement_mismatch`
+        - InvalidResultError → 422 `invalid_result`
+        - UnsupportedManualTimingError → 422 `unsupported_manual_timing`
+        - InvalidCombinedEventError → 422 `invalid_combined_event`
+        - ugyldig forespørsel (skjema) → 422 `validation_error`
+        - for mange forespørsler → 429 `rate_limited`
+        - /interpret i v1 → 501 `not_implemented`
+        - DuplicateEngineError og alt annet uventet → 500 `internal_error`
+      required: [code, message, details]
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          enum: [unknown_system, unknown_version, unknown_event, ambiguous_implement, implement_mismatch, invalid_result, unsupported_manual_timing, invalid_combined_event, validation_error, rate_limited, not_implemented, internal_error]
+        message:
+          type: string
+        details:
+          type: [object, "null"]
+    Error:
+      type: object
+      required: [error]
+      additionalProperties: false
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorBody"
