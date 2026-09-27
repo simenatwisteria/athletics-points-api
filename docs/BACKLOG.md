@@ -47,7 +47,7 @@ i NFIFs masters-tabeller. Bakgrunn: `docs/PLAN_FLERE_POENGSYSTEMER.md`.
 | 15 | AP-012 | WA Combined Events: parametre fra Appendix B s. 2 (menn 16, kvinner 15 øvelser + kvinner 1500 m), NFIFs UM-tillegg (600 m, 800 m inne, 80/100 m hekk), fasit fra «Sr»-kolonnen i `sources/masters/` (null avvik), summering | 🤖 | AP-001, AP-013, AP-015, AP-027 | **Ferdig** 2026-09-26 (null avvik mot 30 482 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-012-wa-combined-events.md` |
 | 16 | AP-016 | Masters mangekamp: håndtidskorreksjon → resultat × aldersfaktor (5-årsklasse) → avrunding (løp opp, hopp/kast ned) → Combined Events. Fasit er hele NFIF-tabellen, null avvik (B-25). Eksemplene i Appendix B som enhetstester. Kartlegg redskap per klasse fra raden «Vekt:» | 🤖 | AP-012, AP-013, AP-015 | **Ferdig** 2026-09-27 (null avvik mot 427 750 rader; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-016-masters-mangekamp.md` |
 | 16b | AP-031 | **Review** WA Combined Events-fasit: stikkprøve de 10 casene i sluttrapporten til AP-012 (`ferdig/AP-012-wa-combined-events.md`) mot NFIF-arket, godkjenn og lås `tests/fixtures/wa_combined_events_cases.json` | 🧑 | AP-012 | Ny | — |
-| 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | Klar | `active/AP-014-wma-age-grading.md` |
+| 17 | AP-014 | WMA Age Grading 2023: ettårige faktorer fra `wma-2023-age-factors.pdf`. Aldersjustert resultat, ikke prosent (BV-041). Fixtures krever Simens review | 🤖 | AP-001, AP-013, AP-027 | **Ferdig** 2026-09-27 (4860 faktorer, ekstraksjon og oracle enige; fixture ulåst, venter på Simens stikkprøve) | `ferdig/AP-014-wma-age-grading.md` |
 | 18 | AP-028 | Serietabellen: utvidet sammenligning mellom kalkulatoren på minfriidrettsstatistikk.info og våre motorer (flere punkter per øvelse, få innsendinger). Grunnlag: `docs/SERIETABELL_SAMMENLIGNING_2026-09-26.md` | 🧑 (Cowork) | AP-012, AP-016 | Klar | `active/AP-028-serietabell-sammenligning.md` |
 
 ## API og frontend — rekkefølge besluttet 2026-09-26
@@ -115,6 +115,20 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 - **Lås masters-fixturen** *(AP-016, forslag til 🧑-oppgave)*
   Stikkprøv de 10 casene i `ferdig/AP-016-masters-mangekamp.md` mot NFIF-arkene, godkjenn og lås
   `tests/fixtures/masters_combined_events_cases.json`, slik AP-031 gjør for WA Combined Events.
+
+- **Lås WMA Age Grading-fixturen** *(AP-014, forslag til 🧑-oppgave)*
+  Stikkprøv de 10 casene i `ferdig/AP-014-wma-age-grading.md` mot `sources/wma/wma-2023-age-factors.pdf`,
+  godkjenn og lås `tests/fixtures/wma_age_factors_cases.json`.
+
+- **Kort og lang hekk og hinder i WMA Age Grading har ingen distanse** *(AP-014)*
+  Age Factors-PDF-en har bare kolonnene «Short Hurdles», «Long Hurdles» og «Steeple Chase». Hvilken distanse og
+  hekkehøyde som gjelder per alder, står i WMA-reglementet, som ikke er i `sources/`. Motoren tilbyr derfor
+  `hurdles_short`, `hurdles_long` og `steeplechase` uten distanse. Frontenden trenger distansen for å vise riktig
+  øvelse. Kvinner lang hekk hopper fra 0,9881 (69 år) til 1,5178 (70 år), så distansen skifter trolig der.
+
+- **Rimelig område i WMA Age Grading er satt skjønnsmessig** *(AP-014)*
+  `PLAUSIBLE_RANGE` i `wma_age_grading.py` er grove grenser per øvelse som agenten har satt. Det er brukerhjelp og
+  påvirker ikke beregningen, men bør ses over før frontenden bruker det.
 
 ---
 
