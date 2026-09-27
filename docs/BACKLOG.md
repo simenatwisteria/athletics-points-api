@@ -60,7 +60,7 @@ bruken fra minfriidrett.no, som sjekkes før kontrakten låses.
 | # | ID | Oppgave | Eier | Avhenger av | Status | Fil |
 |---|---|---|---|---|---|---|
 | 19 | AP-025 | Lagre skissen i repoet (`docs/design/`) og skriv `docs/DESIGN.md` | 🤖 | — | **Ferdig** 2026-09-26 | `docs/DESIGN.md` |
-| 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md`, `docs/INTEGRASJON-5KAMP.md` | Klar — tolkningen ligger i dette API-et (B-27) | `active/AP-020-api-kontrakt.md` | — |
+| 20 | AP-020 | API-kontrakt: OpenAPI-spesifikasjon (`/systems`, `/events`, `/calculate`, mangekamp, batch og tolkning for minfriidrett.no, `/health`). Simen godkjenner før implementasjon | 🤖 | AP-025, `docs/INTEGRASJON-minfriidrett.md`, `docs/INTEGRASJON-5KAMP.md` | **Ferdig** 2026-09-27 (`docs/api/openapi.yaml` + README, eksemplene kontrollert mot motorene; venter på godkjenning i AP-036) | `ferdig/AP-020-api-kontrakt.md` | — |
 | 20b | AP-036 | **Godkjenn API-kontrakten** fra AP-020 (Cowork går gjennom først og skriver anbefaling) | 🧑 | AP-020 | Ny | — |
 | 21 | AP-021 | API-implementasjon: FastAPI rundt pakken, tester mot kontrakten, rate limiting (B-4), cache (B-7) | 🤖 | AP-036 | Ny | — |
 | 22 | AP-022 | Deploy API på Railway (`/health` først) | 🤖 + 🧑 | AP-021 | Ny | — |
@@ -106,6 +106,22 @@ Code skriver hit. Cowork tømmer lista og prioriterer inn i Now/Next/Later.
 - **LibreOffice-tester hoppes over i CI** *(AP-002, AP-004)*
   `test_xls_has_same_parameters` og `test_fixture_is_reproducible` krever `soffice` og er `skip` i GitHub
   Actions. Lokalt kjører de. Vurder `apt-get install libreoffice-calc` i CI (koster ca. 1–2 min per kjøring).
+
+- **Katalogdata som kontrakten krever, men som motorene ikke har** *(AP-020, til AP-021)*
+  `GET /systems` og `GET /events` lover navn og beskrivelse på norsk og engelsk, `category` og
+  `points_1000_result`. Motorene har bare norsk `event_name`, og 1000-poengsresultatet er bare internt
+  (`_result_for_1000` i WA, `h1000` i Tyrving). Kategorien kan utledes av `event_id`, slik skjemaet `Category`
+  beskriver. Det må avgjøres om dette hører hjemme i API-laget eller i pakken.
+
+- **Feil utstyr har ingen egen feiltype** *(AP-020)*
+  Tyrving og masters kaster `UnknownEventError` både når øvelsen er ukjent og når utstyret ikke er klassens.
+  Kontrakten skiller dem (`unknown_event` / `implement_mismatch`). API-laget kan skille dem ved å prøve uten
+  `implement`, men en underklasse (`ImplementMismatchError(UnknownEventError)`) i `errors.py` er enklere og
+  tryggere.
+
+- **`auto` bruker klassealder** *(AP-020, bør avklares i AP-036)*
+  Kontrakten bruker alderen utøveren fyller i konkurranseåret, slik ungdomsklassene gjør. 5KAMP har fødselsår, så
+  alderen blir konkurranseår minus fødselsår. Simen bør bekrefte dette før 5K-012 skrives.
 
 
 ---

@@ -1,6 +1,6 @@
 # AP-020: API-kontrakt (OpenAPI), v1
 
-**Status:** Klar
+**Status:** Ferdig 2026-09-27
 **Opprettet:** 2026-09-27 (Cowork)
 **Eier:** 🤖 Code
 **Avhenger av:** AP-025 (ferdig). Leses sammen med `docs/INTEGRASJON-minfriidrett.md` og `docs/INTEGRASJON-5KAMP.md`
@@ -103,20 +103,54 @@ Alt annet avgjør du selv, og skriver valget i sluttrapporten og i `docs/api/REA
 
 ## Akseptansekriterier
 
-- [ ] `docs/api/openapi.yaml` er gyldig OpenAPI 3.1. Valider med et verktøy som allerede finnes, eller et lite
+- [x] `docs/api/openapi.yaml` er gyldig OpenAPI 3.1. Valider med et verktøy som allerede finnes, eller et lite
       skript i `scripts/` som bruker dev-avhengighetene. Ingen nye runtime-avhengigheter
-- [ ] Alle endepunktene over er med, `/interpret` merket som planlagt
-- [ ] Eksemplene bruker kontrolltallene over, og en test sjekker at eksemplene i YAML-en gir de samme poengene når
+- [x] Alle endepunktene over er med, `/interpret` merket som planlagt
+- [x] Eksemplene bruker kontrolltallene over, og en test sjekker at eksemplene i YAML-en gir de samme poengene når
       de kjøres gjennom motorene direkte
-- [ ] `docs/api/README.md` forklarer endepunktene, tabellvalget, feilformatet, CORS og `ref` på én til to sider
-- [ ] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
-- [ ] Ingen endringer i `sources/`, `tests/fixtures/` eller `athletics_scoring/`
-- [ ] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
+- [x] `docs/api/README.md` forklarer endepunktene, tabellvalget, feilformatet, CORS og `ref` på én til to sider
+- [x] `pytest -q && ruff check . && mypy athletics_scoring` er grønt
+- [x] Ingen endringer i `sources/`, `tests/fixtures/` eller `athletics_scoring/`
+- [x] Før commit: gått gjennom kriteriene ett for ett mot `git diff`, og rettet det som mangler
 
 ## Sluttrapport (fylles av Code)
 
-- **Gjort:**
+- **Gjort:** `docs/api/openapi.yaml` (OpenAPI 3.1, v1 under `/api/v1`): `/health`, `/systems`, `/events`,
+  `/calculate`, `/combined`, `/batch` og `/interpret` (`x-status: planned`, 501 i v1). Felles feilformat med
+  mapping fra alle feiltypene i `errors.py`, CORS-liste (`x-cors-allowed-origins`), `Cache-Control` etter B-7,
+  429 ved rate limiting, `system: auto` med `selection` i svaret. `docs/api/README.md` er oversikten.
+  `scripts/openapi_check.py` leser YAML-en og kontrollerer OpenAPI-strukturen (påkrevde felt, operasjoner, svar,
+  alle `$ref`) og at hvert eksempel stemmer med skjemaet sitt. `tests/test_api_contract.py` (18 tester) kjører
+  alle eksemplene gjennom motorene.
 - **Bevis:**
-- **Valg tatt underveis:**
-- **Avvik fra oppgavefila:**
-- **Funn som bør bli egne oppgaver:**
+  - `python scripts/openapi_check.py` → `docs/api/openapi.yaml: gyldig`. Negativ test: et eksempel uten `points`,
+    med et ukjent felt og en `$ref` som ikke finnes, gir tre feil.
+  - Kontrolltallene gir de samme tallene i motorene: `wa_combined_events` menn 200 m 23,79 = 712;
+    `tyrving` G15 800 m 124,56 = 991 med steg `hundredths_dropped` `ref = "BV-011"`;
+    `masters_combined_events` M50 100 m 13,12 = 681; `auto` mann 16 år 200 m 23,79 → `wa_combined_events` G16 = 712.
+    `/calculate`-eksemplene sammenlignes felt for felt med motoren, også alle stegene.
+  - `/combined` femkamp menn (6,12 / 48,30 / 23,79 / 36,40 / 4:35,4) = 613 + 563 + 712 + 592 + 710 = 3190.
+    `/batch` har én rad per status, og status og melding er de motoren gir. `/events`: `points_1000_result`
+    (124,0 og 20,86) gir 1000 poeng. `/systems` og `/health` stemmer med `default_registry()`.
+  - `pytest -q`: 220 passed. `ruff check .` og `mypy athletics_scoring`: grønt.
+  - `git diff` mot forrige commit: ingen endringer i `sources/`, `tests/fixtures/` eller `athletics_scoring/`.
+- **Valg tatt underveis:** (står også under «Valg» i `docs/api/README.md`)
+  1. `age_class` i motorens eget format. `class_type` og `classes` i `/systems` sier hvordan det leses. Klienter
+     som bare kjenner alderen, bruker `auto`.
+  2. `result` er ett tall: sekunder totalt eller meter, valgt etter `input.measure`.
+  3. `auto`: 10–14 → Tyrving; 15–17 → mangekamp G/J15–17; 18+ → senior. Alderen er klassealder. Masters bare når
+     klienten ber om det.
+  4. Feil utstyr gir `implement_mismatch`. API-laget skiller det fra `unknown_event` ved å prøve uten `implement`.
+  5. Alle beregningsfeil er 422, også ukjent system og versjon.
+  6. `/systems` viser tabeller som ikke er klare (`series_table`, `ready: false`).
+  7. Vind og inne/ute er bare med i `/interpret`.
+- **Avvik fra oppgavefila:** Det finnes ingen YAML-pakke i dev-avhengighetene. Derfor leser `openapi_check.py` et
+  avgrenset utsnitt av YAML og avviser alt utenfor det, i stedet for å legge til PyYAML eller en OpenAPI-validator.
+  Kontrollen er ikke en full OpenAPI 3.1-validator. Den dekker struktur, `$ref` og eksempler mot skjema. I
+  `/combined`, `/batch` og `/interpret` står stegene som tomme lister i eksemplene, og det er sagt i `summary`.
+  Poeng, felt og sum kontrolleres likevel.
+- **Funn som bør bli egne oppgaver:** skrevet under «Innboks» i backloggen: (1) motoren har ikke engelske
+  øvelsesnavn, kategori eller 1000-poengsresultat som offentlig metode, og `/systems` trenger navn og beskrivelse
+  på to språk. Det må komme fra API-laget eller pakken i AP-021. (2) Feil utstyr gir `UnknownEventError`. En egen
+  underklasse, for eksempel `ImplementMismatchError`, ville gjort det enklere for API-et. (3) `auto` bruker
+  klassealder, og det bør bekreftes før 5K-012.
